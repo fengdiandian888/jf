@@ -1,0 +1,69 @@
+/**
+ * 减脂App · PWA Service Worker
+ * 策略：Network First + Cache Fallback
+ * 在线时拉最新 → GitHub 更新后用户秒级获取
+ * 离线时用缓存 → 页面依然可打开
+ */
+const CACHE_NAME = 'jf-v1';
+const URLS_TO_CACHE = [
+  '/jf/',
+  '/jf/今日计划.html',
+  '/jf/减脂全面计划.html',
+  '/jf/减脂训练日跟练_三分化.html',
+  '/jf/减脂完整教程_饮食运动作息动作库.html',
+  '/jf/每周小结.html',
+  '/jf/gist-storage.js',
+  '/jf/manifest.json'
+];
+
+// 安装：预缓存核心文件
+self.addEventListener('install', function(event) {
+  event.waitUntil(
+    caches.open(CACHE_NAME).then(function(cache) {
+      return cache.addAll(URLS_TO_CACHE).catch(function(e) {
+        console.warn('SW install cache error:', e);
+      });
+    })
+  );
+  self.skipWaiting();
+});
+
+// 激活：清理旧缓存
+self.addEventListener('activate', function(event) {
+  event.waitUntil(
+    caches.keys().then(function(keys) {
+      return Promise.all(
+        keys.filter(function(k) { return k !== CACHE_NAME; })
+            .map(function(k) { return caches.delete(k); })
+      );
+    })
+  );
+  self.clients.claim();
+});
+
+// 请求拦截：Network First
+self.addEventListener('fetch', function(event) {
+  // 跳过 API 请求（wttr.in, api.github.com）
+  if (event.request.url.includes('api.github.com') || 
+      event.request.url.includes('wttr.in')) {
+    return; // 不拦截，走正常网络
+  }
+
+  event.respondWith(
+    fetch(event.request).then(function(response) {
+      // 网络成功 → 更新缓存
+      if (response && response.status === 200 && response.type === 'basic') {
+        const cloned = response.clone();
+        caches.open(CACHE_NAME).then(function(cache) {
+          cache.put(event.request, cloned);
+        });
+      }
+      return response;
+    }).catch(function() {
+      // 网络失败 → 用缓存
+      return caches.match(event.request).then(function(cached) {
+        return cached || new Response('离线加载失败', { status: 503 });
+      });
+    })
+  );
+});

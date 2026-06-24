@@ -1,0 +1,23 @@
+{
+  "name": "减脂教练",
+  "short_name": "减脂",
+  "description": "个人减脂健身助手 · 饮食运动作息一站式管理",
+  "start_url": "/jf/今日计划.html",
+  "scope": "/jf/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "theme_color": "#0f0f0f",
+  "background_color": "#0f0f0f",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

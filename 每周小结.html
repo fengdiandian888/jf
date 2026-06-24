@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0f0f0f">
+<link rel="manifest" href="/jf/manifest.json">
+<title>每周小结 · 减脂</title>
+<style>
+:root {
+  --bg:#0f0f0f; --card:#1a1a1a; --card-bg:#1a1a1a; --text:#e0e0e0; --sub:#888;
+  --accent:#e07040; --orange:#e07040; --blue:#60a5fa; --green:#4ade80; --red:#f87171; --border:#2a2a2a; --radius:12px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:system-ui,-apple-system,'PingFang SC','Microsoft YaHei',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding:8px;max-width:500px;margin:0 auto;padding-bottom:30px}
+
+/* Top Tab Bar */
+.tab-bar{display:flex;gap:0;margin-bottom:10px;background:var(--card);border-radius:var(--radius) var(--radius) 0 0;border:1px solid var(--border);border-bottom:none;overflow:hidden;position:sticky;top:0;z-index:10}
+.tab-bar a{flex:1;text-align:center;padding:8px 4px;font-size:11px;font-weight:600;color:var(--sub);text-decoration:none;transition:.2s;-webkit-tap-highlight-color:transparent;border-bottom:2px solid transparent}
+.tab-bar a.active{color:#fff;border-bottom-color:var(--orange)}
+
+.header{text-align:center;padding:18px 0 10px}
+.header h1{font-size:20px;font-weight:700}
+.header .date{font-size:12px;color:var(--sub);margin-top:3px}
+
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;margin-bottom:10px}
+.card-title{font-size:13px;font-weight:700;margin-bottom:10px}
+
+.field{margin-bottom:12px}
+.field label{display:block;font-size:12px;color:var(--sub);margin-bottom:6px}
+.qb{display:flex;gap:6px;flex-wrap:wrap}
+.qb-btn{padding:4px 12px;border-radius:8px;font-size:12px;cursor:pointer;background:var(--bg);border:1px solid var(--border);color:var(--text);transition:.2s}
+.qb-btn:hover{border-color:var(--accent)}
+.qb-btn.selected{background:var(--accent);color:#fff;border-color:var(--accent)}
+textarea{width:100%;padding:10px 12px;background:var(--bg);border:1px solid var(--border);border-radius:8px;font-size:13px;font-family:inherit;min-height:60px;resize:vertical;color:var(--text);outline:none}
+.btn{padding:10px 20px;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;background:var(--accent);color:#fff;width:100%;transition:.2s}
+.btn:hover{opacity:.88}
+.saved-msg{text-align:center;font-size:12px;color:var(--green);margin-top:8px;display:none}
+.saved-msg.show{display:block}
+
+/* Past reviews */
+.past{margin-top:14px;border-top:1px solid var(--border);padding-top:12px}
+.past-item{padding:10px 12px;background:var(--bg);border-radius:8px;margin-bottom:8px;font-size:12px}
+.past-week{font-weight:600;margin-bottom:3px}
+.past-meta{color:var(--sub);font-size:11px}
+.past-notes{color:#aaa;margin-top:4px;font-size:11px}
+
+</style>
+</head>
+<body>
+
+<nav class="tab-bar">
+  <a href="今日计划.html">📋 今日</a>
+  <a href="减脂全面计划.html">📖 计划</a>
+  <a href="减脂训练日跟练_三分化.html">💪 跟练</a>
+  <a href="减脂完整教程_饮食运动作息动作库.html">📚 教程</a>
+</nav>
+
+<div class="header">
+  <h1>📝 每周小结</h1>
+  <div class="date" id="dateStr"></div>
+</div>
+
+<div class="card">
+  <div class="card-title">📊 本周体重统计</div>
+  <div id="weekWeight" style="text-align:center;padding:10px;font-size:13px;color:var(--sub)">加载中...</div>
+</div>
+
+<div class="card">
+  <div class="card-title">本周回顾</div>
+
+  <div class="field">
+    <label>力量训练完成了几次？（目标 3 次）</label>
+    <div class="qb" id="exBtns">
+      <button class="qb-btn" onclick="setField('exercises','0次')">0次</button>
+      <button class="qb-btn" onclick="setField('exercises','1次')">1次</button>
+      <button class="qb-btn" onclick="setField('exercises','2次')">2次</button>
+      <button class="qb-btn selected" onclick="setField('exercises','3次')">3次 ✓</button>
+    </div>
+  </div>
+
+  <div class="field">
+    <label>骑行日完成情况</label>
+    <div class="qb" id="rdBtns">
+      <button class="qb-btn" onclick="setField('rides','没骑')">没骑</button>
+      <button class="qb-btn" onclick="setField('rides','1次')">1次</button>
+      <button class="qb-btn" onclick="setField('rides','2次')">2次</button>
+      <button class="qb-btn selected" onclick="setField('rides','3次')">3次 ✓</button>
+    </div>
+  </div>
+
+  <div class="field">
+    <label>饮食控制</label>
+    <div class="qb" id="dtBtns">
+      <button class="qb-btn" onclick="setField('diet','崩了')">崩了</button>
+      <button class="qb-btn" onclick="setField('diet','一般')">一般</button>
+      <button class="qb-btn selected" onclick="setField('diet','不错')">不错</button>
+      <button class="qb-btn" onclick="setField('diet','完美')">完美 ✓</button>
+    </div>
+  </div>
+
+  <div class="field">
+    <label>睡眠质量</label>
+    <div class="qb" id="slBtns">
+      <button class="qb-btn" onclick="setField('sleep','很差')">很差</button>
+      <button class="qb-btn" onclick="setField('sleep','一般')">一般</button>
+      <button class="qb-btn selected" onclick="setField('sleep','不错')">不错</button>
+      <button class="qb-btn" onclick="setField('sleep','很好')">很好 ✓</button>
+    </div>
+  </div>
+
+  <div class="field">
+    <label>备注（困难？调整想法？）</label>
+    <textarea id="notes" placeholder="比如：这周肩膀不怎么疼了、周三太累跳过了训练..."></textarea>
+  </div>
+
+  <button class="btn" onclick="saveReview()">保存本周小结</button>
+  <div class="saved-msg" id="savedMsg">✓ 已保存</div>
+</div>
+
+<div class="card">
+  <div class="card-title">📋 历史小结</div>
+  <div class="past" id="pastList">
+    <div style="text-align:center;color:var(--sub);font-size:12px;padding:20px">还没有记录</div>
+  </div>
+</div>
+
+<script>
+const now=new Date();
+document.getElementById('dateStr').textContent=
+  `${now.getFullYear()}.${String(now.getMonth()+1).padStart(2,'0')}.${String(now.getDate()).padStart(2,'0')}`;
+
+let review={exercises:'3次',rides:'3次',diet:'不错',sleep:'不错',notes:''};
+let reviews=JSON.parse(localStorage.getItem('fit_weekly_reviews')||'[]');
+
+function setField(field,value){
+  review[field]=value;
+  const groupId=field==='exercises'?'ex':field==='rides'?'rd':field==='diet'?'dt':'sl';
+  document.querySelectorAll('#'+groupId+'Btns .qb-btn').forEach(b=>b.classList.remove('selected'));
+  // Find the clicked button by text content and highlight it
+  const btns=document.querySelectorAll('#'+groupId+'Btns .qb-btn');
+  btns.forEach(b=>{if(b.textContent.trim().startsWith(value))b.classList.add('selected');});
+}
+
+function saveReview(){
+  review.notes=document.getElementById('notes').value;
+  const d=new Date(now);
+  const day=d.getDay();
+  const mon=new Date(d);mon.setDate(d.getDate()-(day===0?6:day-1));
+  const sun=new Date(mon);sun.setDate(mon.getDate()+6);
+  const weekStr=`${mon.toISOString().slice(0,10)} ~ ${sun.toISOString().slice(0,10)}`;
+  const idx=reviews.findIndex(r=>r.week===weekStr);
+  const entry={week:weekStr,...review,savedAt:now.toISOString().slice(0,10)};
+  if(idx>=0)reviews[idx]=entry;else reviews.push(entry);
+  reviews.sort((a,b)=>b.week.localeCompare(a.week));
+  localStorage.setItem('fit_weekly_reviews',JSON.stringify(reviews));
+  document.getElementById('savedMsg').classList.add('show');
+  setTimeout(()=>document.getElementById('savedMsg').classList.remove('show'),2000);
+  document.getElementById('notes').value='';
+  renderPast();
+}
+
+function renderPast(){
+  const container=document.getElementById('pastList');
+  if(!reviews.length){container.innerHTML='<div style="text-align:center;color:var(--sub);font-size:12px;padding:20px">还没有记录</div>';return;}
+  container.innerHTML=reviews.slice(0,10).map(r=>`
+    <div class="past-item">
+      <div class="past-week">📅 ${r.week}</div>
+      <div class="past-meta">训练 ${r.exercises} · 骑行 ${r.rides} · 饮食 ${r.diet} · 睡眠 ${r.sleep}</div>
+      ${r.notes?`<div class="past-notes">💬 ${r.notes}</div>`:''}
+    </div>
+  `).join('');
+}
+renderPast();
+
+// ── Weekly Weight Stats ──
+(function showWeekWeight(){
+  const wLog=JSON.parse(localStorage.getItem('fit_weight_log')||'[]');
+  const d=new Date(now);
+  const day=d.getDay();
+  const mon=new Date(d);mon.setDate(d.getDate()-(day===0?6:day-1));mon.setHours(0,0,0,0);
+  const sun=new Date(mon);sun.setDate(mon.getDate()+6);
+  const weekEntries=wLog.filter(e=>{const ed=new Date(e.date);return ed>=mon&&ed<=sun;}).sort((a,b)=>a.date.localeCompare(b.date));
+  const el=document.getElementById('weekWeight');
+  if(weekEntries.length<1){el.innerHTML='本周尚未记录体重';return;}
+  const first=weekEntries[0],last=weekEntries[weekEntries.length-1];
+  const diff=(last.weight-first.weight).toFixed(1);
+  const arrow=diff<0?'↓ 减了':diff>0?'↑ 涨了':'→ 持平';
+  el.innerHTML=`${mon.toISOString().slice(0,10)} ～ ${sun.toISOString().slice(0,10)}<br>
+    <b style="font-size:16px">${first.weight} → ${last.weight} kg</b> 
+    <span style="color:${diff<0?'var(--green)':diff>0?'#f87171':'var(--sub)'};font-weight:600">${arrow} ${Math.abs(diff)} kg</span>
+    ${weekEntries.length>=2?`<br><span style="font-size:11px;color:var(--sub)">${weekEntries.length} 天有记录</span>`:''}`;
+})();
+</script>
+<script>
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.register('/jf/serviceWorker.js').catch(function(){});
+}
+</script>
+</body>
+</html>
