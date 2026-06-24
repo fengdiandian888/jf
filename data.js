@@ -46,7 +46,18 @@ const FIT = {
     stretchAlt:     { bv: 'BV1gVLFzBEBN', title: '张德琪 · 6′拉伸' },
     stretchAltLong: { bv: 'BV1skaizGEqH', title: '暴躁小细菌 · 40′全身拉伸' },
     bandFullBody:   { bv: 'BV1ZT4y1U7vX', title: 'Erik埃里克 · 弹力带全身训练', plays: '180万', note: '19′49″·无跳跃·膝盖友好·周六维持日' },
+    pullBandPro:    { bv: 'BV162421N7Xs', title: '梅林FIT · 弹力绳三分化 背+二头', plays: '5.5万', note: '45′59″·完整跟练·弹力绳拉日' },
+    legBandPro:     { bv: 'BV15C41137dN', title: '梅林FIT · 弹力绳三分化 肩+臀腿', plays: '3.5万', note: '47′42″·完整跟练·弹力绳腿日' },
     pushBandPro:    { bv: 'BV1VF4m1L7Mb', title: '梅林FIT · 弹力绳三分化 胸+三头', plays: '5.3万', note: '50′56″·进阶推荐·完整跟练' }
+  },
+
+  // ---- 抖音精选视频（点击跳转抖音App观看） ----
+  douyin: {
+    cardio1:   { id: '7633005394315387062', title: '30分钟无跳跃有氧｜大体重膝盖友好', note: '不跳不蹲不废膝盖·全程低冲击' },
+    cardio2:   { id: '7615091538897944006', title: '大体重减脂必练·低冲击无跳跃', note: '护膝燃脂·全程暴汗跟练' },
+    legs:      { id: '7604314582463141221', title: 'MIZI搬运·30分钟无器械臀腿', note: '无跳跃·居家练翘臀美腿' },
+    pull:      { id: '7621139006446168753', title: '三分化拉日训练记录·背+肩后束+二头', note: '丹尼Danny·训练记录参考' },
+    legBand:   { id: '7566585849870711616', title: '弹力绳三分化腿日·彬哥居家教练', note: '收藏跟着练·居家弹力绳腿日' }
   },
 
   // ---- 晚餐默认配置 ----
@@ -86,7 +97,9 @@ FIT.bvLink = function(bvid) {
   return 'https://www.bilibili.com/video/' + bvid;
 };
 
-// ---- 天气 Emoji 映射 ----
+FIT.dyUrl = function(vid) {
+  return 'https://www.douyin.com/video/' + vid;
+};
 function wxEmo(c) {
   if (c >= 200 && c < 300) return '⛈️';
   if (c >= 300 && c < 400) return '🌧️';
