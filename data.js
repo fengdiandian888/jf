@@ -33,7 +33,7 @@ const FIT = {
     legWorkout:     { bv: 'BV1TA411q7UD', title: '帕梅拉 · 20分钟臀腿训练', plays: '154万', note: '20′42″·经典入门·无器械' },
     sundayStretch:  { bv: 'BV1MjXZBGEVt', title: '阿见见 · 20分钟拉伸全身' },
     theoryNewbie:   { bv: 'BV1Hk4y187jF', title: '好人松松 · 健身新手训练完全手册' },
-    warmupSaturday: { bv: 'BV1Q4411A7Kw', title: '周六野 · 10分钟全身动态热身' },
+    warmupSaturday: { bv: 'BV1jk4y117eK', title: '周六野 · 5分钟快速热身运动', plays: '1052万', note: '6′32″·全身简易无工具' },
     shoulderWarmup: { bv: 'BV1E2RkBWEFs', title: '骨科康复师 · 上肢完整热身' },
     foamRoller:     { bv: 'BV1wY4y1h7Bd', title: '健身普拉斯 · 40分钟全身泡沫轴' },
     cardioJo:       { bv: 'BV1cs421w77d', title: 'Jo姐 · 30′膝盖友好有氧' },
