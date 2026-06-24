@@ -1,7 +1,8 @@
 // ============================================================
-// 减脂计划 · 共享数据源 v1.0
+// 减脂计划 · 共享数据源 v2.0 — 2026-06-24 视频升级
 // 用途：4个HTML文件共享的数据、视频BV号、天气逻辑
 // 更新：改此处一处，所有页面自动同步
+// v2.0: 替换低质视频 → 有氧(277万)、腿日(154万)、拉日(72.8万)
 // ============================================================
 
 // ---- 核心指标 ----
@@ -23,12 +24,13 @@ const FIT = {
     morningCardio:  { bv: 'BV1oLpFeGEu6', title: 'MIZI · 20分钟晨起空腹有氧', plays: '14.5万' },
     morningCore:    { bv: 'BV1Ss421P7Uz', title: 'MIZI · 15分钟腹部核心（零基础）' },
     morningYoga:    { bv: 'BV1M9GC6uE1V', title: 'Yoga With Nancy · 16分钟晨间舒展' },
-    cardioMarina:   { bv: 'BV1ge6ZB2ECj', title: 'Marina Takewaki · 30分钟燃脂', plays: '6.1万' },
+    cardioMain:     { bv: 'BV1KH4y137xv', title: '游书庭 · 30分钟无跳跃有氧HIIT', plays: '277万', note: '大体重/新手·无跳跃·膝盖友好' },
+    cardioAlt2:     { bv: 'BV1sA411Q7R3', title: '周六野 · 30分钟无跳跃站立有氧', plays: '1400万', note: '膝友好·无深蹲·千万级爆款' },
     stretchEleni:   { bv: 'BV1j35azKEWA', title: 'Eleni Fit · 20分钟全身拉伸' },
     yogaEleni:      { bv: 'BV1sWs5z8Enm', title: 'Eleni Fit · 30分钟瑜伽拉伸' },
-    pullWorkout:    { bv: 'BV1bB54zGEeT', title: '棠晞xx · 弹力带还原背部训练' },
-    pushWorkout:    { bv: 'BV16SGH6aEyU', title: '阿龙新手健身 · 居家三分化 胸+三头' },
-    legWorkout:     { bv: 'BV1Ry4y1Y7rP', title: '帅soserious · 8′高效臀腿' },
+    pullWorkout:    { bv: 'BV1Aq4y1a7W2', title: 'Chloe彤哥 · 弹力带练背7动作跟练', plays: '72.8万', note: '14′45″·7动作·收藏6.8万' },
+    pushWorkout:    { bv: 'BV16SGH6aEyU', title: '阿龙新手健身 · 居家三分化 胸+三头', note: '13′49″·无器械·适合新手' },
+    legWorkout:     { bv: 'BV1TA411q7UD', title: '帕梅拉 · 20分钟臀腿训练', plays: '154万', note: '20′42″·经典入门·无器械' },
     sundayStretch:  { bv: 'BV1MjXZBGEVt', title: '阿见见 · 20分钟拉伸全身' },
     theoryNewbie:   { bv: 'BV1Hk4y187jF', title: '好人松松 · 健身新手训练完全手册' },
     warmupSaturday: { bv: 'BV1Q4411A7Kw', title: '周六野 · 10分钟全身动态热身' },
@@ -42,7 +44,9 @@ const FIT = {
     cardioAltMizi:  { bv: 'BV1rZunziEST', title: 'MIZI + BLACKPINK · 22′' },
     cardioAltEleni: { bv: 'BV1wV4y1t7iv', title: 'EleniFit · 30′ 腰腹' },
     stretchAlt:     { bv: 'BV1gVLFzBEBN', title: '张德琪 · 6′拉伸' },
-    stretchAltLong: { bv: 'BV1skaizGEqH', title: '暴躁小细菌 · 40′全身拉伸' }
+    stretchAltLong: { bv: 'BV1skaizGEqH', title: '暴躁小细菌 · 40′全身拉伸' },
+    bandFullBody:   { bv: 'BV1ZT4y1U7vX', title: 'Erik埃里克 · 弹力带全身训练', plays: '180万', note: '19′49″·无跳跃·膝盖友好·周六维持日' },
+    pushBandPro:    { bv: 'BV1VF4m1L7Mb', title: '梅林FIT · 弹力绳三分化 胸+三头', plays: '5.3万', note: '50′56″·进阶推荐·完整跟练' }
   },
 
   // ---- 晚餐默认配置 ----
