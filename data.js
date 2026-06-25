@@ -3,6 +3,7 @@
 // 用途：4个HTML文件共享的数据、视频BV号、天气逻辑
 // 更新：改此处一处，所有页面自动同步
 // v3.0: 全部跟练视频替换为男性博主（游书庭/刘畊宏/梅林FIT/凯圣王/闫帅奇/张德琪）
+// v3.1: 新增哑铃+杠铃器械（单手最重20KG，可组合杠铃），力量训练大幅升级
 // ============================================================
 
 // ---- 核心指标 ----
@@ -16,6 +17,13 @@ const FIT = {
   body: {
     gender: '男', age: 40, height: 170, weight: 83.25, bmi: 28.7,
     goal: '63-70', location: '株洲 · 石峰区', commute: '小电动通勤'
+  },
+  // 器材
+  equipment: {
+    bands: true,
+    jumpRope: { have: true, usable: false, reason: 'BMI≥25，等75kg以下再用' },
+    mat: true,
+    dumbbell: { have: true, maxPerHandKg: 20, note: '可组合成杠铃' },
   },
 
   // ---- B站视频BV号注册表（所有BV号的唯一来源） ----
