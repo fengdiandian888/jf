@@ -1,8 +1,8 @@
 // ============================================================
-// 减脂计划 · 共享数据源 v2.0 — 2026-06-24 视频升级
+// 减脂计划 · 共享数据源 v3.0 — 2026-06-25 全男性博主
 // 用途：4个HTML文件共享的数据、视频BV号、天气逻辑
 // 更新：改此处一处，所有页面自动同步
-// v2.0: 替换低质视频 → 有氧(277万)、腿日(154万)、拉日(72.8万)
+// v3.0: 全部跟练视频替换为男性博主（游书庭/刘畊宏/梅林FIT/凯圣王/闫帅奇/张德琪）
 // ============================================================
 
 // ---- 核心指标 ----
@@ -21,34 +21,32 @@ const FIT = {
   // ---- B站视频BV号注册表（所有BV号的唯一来源） ----
   vids: {
     shoulderRehab:  { bv: 'BV1WM411U7yq', title: '倍他运动康复 · 肩袖弹力带', plays: '99万' },
-    morningCardio:  { bv: 'BV1oLpFeGEu6', title: 'MIZI · 20分钟晨起空腹有氧', plays: '14.5万' },
-    morningCore:    { bv: 'BV1Ss421P7Uz', title: 'MIZI · 15分钟腹部核心（零基础）' },
-    morningYoga:    { bv: 'BV1M9GC6uE1V', title: 'Yoga With Nancy · 16分钟晨间舒展' },
+    morningCardio:  { bv: 'BV1e541197y8', title: '刘畊宏 · 18分钟晨间暖身训练', plays: '254.6万', note: '提高代谢·运动前提升心率' },
+    morningCore:    { bv: 'BV182eRzuEMD', title: '游书庭 · 20分钟瘦腰腹核心', note: '全程站立·无跳跃·大体重友好' },
+    morningYoga:    { bv: 'BV1gVLFzBEBN', title: '张德琪 · 6分钟晨间柔韧拉伸' },
     cardioMain:     { bv: 'BV1KH4y137xv', title: '游书庭 · 30分钟无跳跃有氧HIIT', plays: '277万', note: '大体重/新手·无跳跃·膝盖友好' },
-    cardioAlt2:     { bv: 'BV1sA411Q7R3', title: '周六野 · 30分钟无跳跃站立有氧', plays: '1400万', note: '膝友好·无深蹲·千万级爆款' },
-    stretchEleni:   { bv: 'BV1j35azKEWA', title: 'Eleni Fit · 20分钟全身拉伸' },
-    yogaEleni:      { bv: 'BV1sWs5z8Enm', title: 'Eleni Fit · 30分钟瑜伽拉伸' },
-    pullWorkout:    { bv: 'BV1Aq4y1a7W2', title: 'Chloe彤哥 · 弹力带练背7动作跟练', plays: '72.8万', note: '14′45″·7动作·收藏6.8万' },
+    cardioAlt2:     { bv: 'BV1pr4y1t7BZ', title: '刘畊宏 · 30分钟有氧快乐健身操', plays: '1459.8万', note: '附带拉伸·无剧烈运动·男女皆宜' },
+    stretchEleni:   { bv: 'BV1Eu41187oU', title: '凯圣王 · 躯干拉伸', plays: '21.7万', note: '7′41″·新手增肌系列·运动后必做' },
+    yogaEleni:      { bv: 'BV18P411v72s', title: '凯圣王 · 四肢拉伸', plays: '18.4万', note: '7′16″·新手增肌系列·恢复日必做' },
+    pullWorkout:    { bv: 'BV162421N7Xs', title: '梅林FIT · 弹力绳三分化 背+二头', plays: '5.5万', note: '45′59″·完整跟练·弹力绳拉日' },
     pushWorkout:    { bv: 'BV16SGH6aEyU', title: '阿龙新手健身 · 居家三分化 胸+三头', note: '13′49″·无器械·适合新手' },
-    legWorkout:     { bv: 'BV1TA411q7UD', title: '帕梅拉 · 20分钟臀腿训练', plays: '154万', note: '20′42″·经典入门·无器械' },
+    legWorkout:     { bv: 'BV15C41137dN', title: '梅林FIT · 弹力绳三分化 肩+臀腿', plays: '3.5万', note: '47′42″·完整跟练·弹力绳腿日' },
     sundayStretch:  { bv: 'BV1MjXZBGEVt', title: '阿见见 · 20分钟拉伸全身' },
     theoryNewbie:   { bv: 'BV1Hk4y187jF', title: '好人松松 · 健身新手训练完全手册' },
-    warmupSaturday: { bv: 'BV1jk4y117eK', title: '周六野 · 5分钟快速热身运动', plays: '1052万', note: '6′32″·全身简易无工具' },
+    warmupSaturday: { bv: 'BV1DbM2eKEe2', title: '游书庭 · 5分钟暖身操', plays: '3.8万', note: '5′26″·居家运动前必做·唤醒肌肉' },
     shoulderWarmup: { bv: 'BV1E2RkBWEFs', title: '骨科康复师 · 上肢完整热身' },
     foamRoller:     { bv: 'BV1wY4y1h7Bd', title: '健身普拉斯 · 40分钟全身泡沫轴' },
-    cardioJo:       { bv: 'BV1cs421w77d', title: 'Jo姐 · 30′膝盖友好有氧' },
-    cardioBurpee:   { bv: 'BV1we411j7YV', title: 'Burpeegirl · 30′华语歌单' },
+    cardioJo:       { bv: 'BV182eRzuEKL', title: '游书庭 · 30分钟站立式全身燃脂', note: '零跳跃·不伤膝盖·简单有效' },
+    cardioBurpee:   { bv: 'BV1KH4y137xv', title: '游书庭 · 30分钟无跳跃HIIT', note: '大体重/新手友好·零跳跃' },
     pullTheory:     { bv: 'BV18jxRznELd', title: '梅林FIT · 三分化4.0 拉日' },
     pushTheory:     { bv: 'BV1LhnmzFEEa', title: '梅林FIT · 三分化4.0 推日' },
     legTheory:      { bv: 'BV1FusRzAEYv', title: '梅林FIT · 三分化4.0 腿日' },
-    cardioAltMizi:  { bv: 'BV1rZunziEST', title: 'MIZI + BLACKPINK · 22′' },
-    cardioAltEleni: { bv: 'BV1wV4y1t7iv', title: 'EleniFit · 30′ 腰腹' },
-    stretchAlt:     { bv: 'BV1gVLFzBEBN', title: '张德琪 · 6′拉伸' },
+    cardioAltMizi:  { bv: 'BV1pr4y1t7BZ', title: '刘畊宏 · 30分钟有氧快乐健身操', note: '附带拉伸·男女皆宜' },
+    cardioAltEleni: { bv: 'BV1bz411b7HH', title: '闫帅奇 · 健身前全身热身训练', plays: '71.2万', note: '5′53″·收藏向·激活全身' },
+    stretchAlt:     { bv: 'BV1shM2eTEhW', title: '游书庭 · 6分钟收操拉伸', note: '训练后·全身放松舒展' },
     stretchAltLong: { bv: 'BV1skaizGEqH', title: '暴躁小细菌 · 40′全身拉伸' },
     bandFullBody:   { bv: 'BV1ZT4y1U7vX', title: 'Erik埃里克 · 弹力带全身训练', plays: '180万', note: '19′49″·无跳跃·膝盖友好·周六维持日' },
-    pullBandPro:    { bv: 'BV162421N7Xs', title: '梅林FIT · 弹力绳三分化 背+二头', plays: '5.5万', note: '45′59″·完整跟练·弹力绳拉日' },
-    legBandPro:     { bv: 'BV15C41137dN', title: '梅林FIT · 弹力绳三分化 肩+臀腿', plays: '3.5万', note: '47′42″·完整跟练·弹力绳腿日' },
-    pushBandPro:    { bv: 'BV1VF4m1L7Mb', title: '梅林FIT · 弹力绳三分化 胸+三头', plays: '5.3万', note: '50′56″·进阶推荐·完整跟练' }
+    pushBandPro:    { bv: 'BV1VF4m1L7Mb', title: '梅林FIT · 弹力绳三分化 胸+三头', plays: '5.3万', note: '50′56″·完整跟练·弹力绳推日' }
   },
 
   // ---- 抖音精选视频（点击跳转抖音App观看） ----
