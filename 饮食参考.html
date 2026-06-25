@@ -3,18 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<meta name="theme-color" content="#0f0f0f">
+<meta name="theme-color" content="#faf8f5">
 <link rel="manifest" href="manifest.json">
 <title>饮食参考 · 减脂计划</title>
 <style>
 :root {
-  --bg:#0f0f0f; --card-bg:#1a1a1a; --card2:#222; --border:#2a2a2a; --radius:12px;
-  --text:#e0e0e0; --sub:#999; --orange:#e07040; --blue:#60a5fa;
-  --green:#4ade80; --red:#ef4444; --warn:#f59e0b; --purple:#a78bfa;
+  --bg: #faf8f5; --card: #ffffff; --card2: #f3f4f6; --border: #e5e7eb; --radius: 12px;
+  --text: #1a1a2e; --sub: #9ca3af; --orange: #f97316; --blue: #3b82f6;
+  --green: #22c55e; --red: #ef4444; --warn: #f59e0b; --purple: #a78bfa;
 }
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:system-ui,'PingFang SC','Microsoft YaHei',sans-serif;background:var(--bg);color:var(--text);line-height:1.65;padding:8px;max-width:500px;margin:0 auto;font-size:14px}
-.card{background:var(--card-bg);border-radius:var(--radius);padding:14px;margin-bottom:10px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:14px;margin:0 10px 10px}
 h1{font-size:19px;text-align:center;padding:10px 0 2px;color:var(--orange)}
 .subtitle{text-align:center;font-size:12px;color:var(--sub);margin-bottom:10px}
 h2{font-size:15px;margin:12px 0 6px;padding-bottom:5px;border-bottom:2px solid var(--border);color:var(--orange)}
@@ -23,7 +23,7 @@ h4{font-size:12px;margin:6px 0 3px;color:var(--green)}
 
 /* 顶部导航 */
 .top-nav{display:flex;gap:4px;overflow-x:auto;padding:6px 0;margin-bottom:8px;-webkit-overflow-scrolling:touch}
-.top-nav a{flex:0 0 auto;padding:5px 10px;border-radius:16px;font-size:11px;font-weight:600;text-decoration:none;white-space:nowrap;background:rgba(255,255,255,.06);color:var(--sub)}
+.top-nav a{flex:0 0 auto;padding:5px 10px;border-radius:16px;font-size:11px;font-weight:600;text-decoration:none;white-space:nowrap;background:rgba(0,0,0,.06);color:var(--sub)}
 .top-nav a.active{background:var(--orange);color:#fff}
 
 /* 食物卡片 */
@@ -59,7 +59,7 @@ h4{font-size:12px;margin:6px 0 3px;color:var(--green)}
 
 /* 营养素表格 */
 .nutr-table{width:100%;border-collapse:collapse;font-size:12px;margin:6px 0}
-.nutr-table th{background:rgba(255,255,255,.04);padding:5px 6px;font-size:11px;color:var(--sub)}
+.nutr-table th{background:rgba(0,0,0,.04);padding:5px 6px;font-size:11px;color:var(--sub)}
 .nutr-table td{padding:5px 6px;border-bottom:1px solid var(--border);font-size:12px}
 .nutr-table tr:last-child td{border-bottom:none}
 
@@ -71,9 +71,9 @@ h4{font-size:12px;margin:6px 0 3px;color:var(--green)}
 .tag-b{background:rgba(96,165,250,.1);color:var(--blue)}
 
 /* 小提示 */
-.tip-box{background:rgba(74,222,128,.05);border:1px solid rgba(74,222,128,.15);border-radius:8px;padding:8px 10px;margin:6px 0;font-size:12px;color:#166534;line-height:1.6}
-.warn-box{background:rgba(245,158,11,.05);border:1px solid rgba(245,158,11,.15);border-radius:8px;padding:8px 10px;margin:6px 0;font-size:12px;color:#92400e;line-height:1.6}
-.danger-box{background:rgba(239,68,68,.05);border:1px solid rgba(239,68,68,.15);border-radius:8px;padding:8px 10px;margin:6px 0;font-size:12px;color:#991b1b;line-height:1.6}
+.tip-box{background:rgba(74,222,128,.12);border:1px solid rgba(74,222,128,.3);border-radius:8px;padding:8px 10px;margin:6px 0;font-size:12px;color:#166534;line-height:1.6}
+.warn-box{background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.3);border-radius:8px;padding:8px 10px;margin:6px 0;font-size:12px;color:#92400e;line-height:1.6}
+.danger-box{background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.3);border-radius:8px;padding:8px 10px;margin:6px 0;font-size:12px;color:#991b1b;line-height:1.6}
 
 /* 折叠 */
 .collapse-header{cursor:pointer;user-select:none;display:flex;align-items:center;gap:6px}
