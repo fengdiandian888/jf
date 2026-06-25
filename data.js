@@ -4,6 +4,7 @@
 // 更新：改此处一处，所有页面自动同步
 // v3.0: 全部跟练视频替换为男性博主（游书庭/刘畊宏/梅林FIT/凯圣王/闫帅奇/张德琪）
 // v3.1: 新增哑铃+杠铃器械（单手最重20KG，可组合杠铃），力量训练大幅升级
+// v3.2: 哑铃/杠铃指导跟练视频全覆盖（梅林FIT哑铃二分化/三分化）
 // ============================================================
 
 // ---- 核心指标 ----
@@ -36,9 +37,13 @@ const FIT = {
     cardioAlt2:     { bv: 'BV1pr4y1t7BZ', title: '刘畊宏 · 30分钟有氧快乐健身操', plays: '1459.8万', note: '附带拉伸·无剧烈运动·男女皆宜' },
     stretchEleni:   { bv: 'BV1Eu41187oU', title: '凯圣王 · 躯干拉伸', plays: '21.7万', note: '7′41″·新手增肌系列·运动后必做' },
     yogaEleni:      { bv: 'BV18P411v72s', title: '凯圣王 · 四肢拉伸', plays: '18.4万', note: '7′16″·新手增肌系列·恢复日必做' },
-    pullWorkout:    { bv: 'BV162421N7Xs', title: '梅林FIT · 弹力绳三分化 背+二头', plays: '5.5万', note: '45′59″·完整跟练·弹力绳拉日' },
-    pushWorkout:    { bv: 'BV16SGH6aEyU', title: '阿龙新手健身 · 居家三分化 胸+三头', note: '13′49″·无器械·适合新手' },
-    legWorkout:     { bv: 'BV15C41137dN', title: '梅林FIT · 弹力绳三分化 肩+臀腿', plays: '3.5万', note: '47′42″·完整跟练·弹力绳腿日' },
+    pullWorkout:    { bv: 'BV1uZ42127Gz', title: '梅林FIT · 二分化拉日 哑铃增肌', plays: '12.8万', note: '52′·一对哑铃·背+二头·新手时间少首选', dbType: true },
+    pullBandAlt:    { bv: 'BV162421N7Xs', title: '梅林FIT · 弹力绳三分化 背+二头', plays: '5.5万', note: '45′59″·弹力绳备选版' },
+    pushWorkout:    { bv: 'BV1qF4m1M7rL', title: '梅林FIT · 二分化推日 哑铃增肌', plays: '34万', note: '51′45″·一对哑铃·胸+三头·肩安全关注', dbType: true },
+    pushBandAlt:    { bv: 'BV16SGH6aEyU', title: '阿龙新手健身 · 居家三分化 胸+三头', note: '13′49″·无器械·弹力绳备选' },
+    legWorkout:     { bv: 'BV1RW42197ez', title: '梅林FIT · 三分化 哑铃增肌 肩+臀腿', plays: '33.6万', note: '66′30″·哑铃臀腿·收藏1.6万·一步到位', dbType: true },
+    legBandAlt:     { bv: 'BV15C41137dN', title: '梅林FIT · 弹力绳三分化 肩+臀腿', plays: '3.5万', note: '47′42″·弹力绳备选版' },
+    fullBodyDB:     { bv: 'BV11cmmYeED4', title: '梅林FIT · 20分钟哑铃全身塑形', plays: '9.3万', note: '21′·轻量哑铃·周六维持日·新手友好', dbType: true },
     sundayStretch:  { bv: 'BV1MjXZBGEVt', title: '阿见见 · 20分钟拉伸全身' },
     theoryNewbie:   { bv: 'BV1Hk4y187jF', title: '好人松松 · 健身新手训练完全手册' },
     warmupSaturday: { bv: 'BV1DbM2eKEe2', title: '游书庭 · 5分钟暖身操', plays: '3.8万', note: '5′26″·居家运动前必做·唤醒肌肉' },
