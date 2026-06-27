@@ -113,8 +113,8 @@
  .moves-title { font-size: 20px; font-weight: 700; color: var(--text); margin: 16px 0 10px; padding-bottom: 8px; border-bottom: 1px solid var(--border); letter-spacing: -0.01em; }
  .moves-grid { display: grid; grid-template-columns: 1fr; gap: 2px; }
  .move-row {
- display: grid; grid-template-columns: 24px 1fr 52px 52px;
- align-items: center; gap: 8px; padding: 7px 8px; border-radius: 6px; font-size: 15px; font-weight: 500;
+ display: grid; grid-template-columns: 24px 1fr 48px 48px 52px;
+ align-items: center; gap: 6px; padding: 7px 8px; border-radius: 6px; font-size: 15px; font-weight: 500;
  transition: background .15s;
  }
  .move-row:hover { background: rgba(0,0,0,0.03); }
@@ -122,7 +122,9 @@
  .move-row .move-name { color: var(--text); font-weight: 600; }
  .move-row .move-sets { color: var(--sub); text-align: center; font-size: 13px; font-weight: 600; }
  .move-row .move-rest { color: var(--sub); text-align: center; font-size: 13px; }
- .move-row .move-note { font-size: 12px; color: var(--warn); grid-column: 2/5; margin-top: -1px; font-weight: 400; }
+ .move-row .move-note { font-size: 12px; color: var(--warn); grid-column: 2/6 !important; margin-top: -1px; font-weight: 400; }
+ .move-row .move-time { text-align: center; font-size: 11px; font-weight: 700; color: var(--primary); font-variant-numeric: tabular-nums; white-space: nowrap; }
+ .move-row .move-time.adjusted { color: var(--info); }
 
  /* Caution & Rehab */
  .caution { background: rgba(245,158,11,0.06); border: 1px solid rgba(245,158,11,0.2); border-radius: 8px; padding: 10px 14px; margin: 10px 0; font-size: 15px; color: var(--warn); line-height: 1.6; font-weight: 500; }
@@ -463,6 +465,117 @@
 }
 .vc-divider::before { left: 0; }
 .vc-divider::after { right: 0; }
+
+/* ===== 预估时长行 + 调整按钮 ===== */
+.tm-estimate-row { display: flex; align-items: center; gap: 10px; margin: 10px 0 6px; flex-wrap: wrap; }
+.tm-total-estimate {
+  display: inline-flex; align-items: center; gap: 5px;
+  background: linear-gradient(135deg, rgba(249,115,22,.08), rgba(234,88,12,.06));
+  border: 1px solid rgba(249,115,22,.2); color: var(--primary);
+  font-size: 14px; font-weight: 700; padding: 7px 16px; border-radius: 10px;
+  font-variant-numeric: tabular-nums;
+}
+.tm-total-estimate .tm-total-estimate-val { font-size: 16px; }
+.btn-adjust {
+  display: inline-flex; align-items: center; gap: 5px;
+  background: var(--surface); border: 1px solid var(--border);
+  color: var(--sub); font-size: 13px; font-weight: 600;
+  padding: 7px 16px; border-radius: 10px; cursor: pointer;
+  transition: all .15s; font-family: var(--font);
+  -webkit-tap-highlight-color: transparent;
+}
+.btn-adjust:hover { border-color: var(--primary); color: var(--primary); background: rgba(249,115,22,.04); }
+.btn-adjust:active { transform: scale(.95); }
+
+/* ===== 调整参数弹窗 ===== */
+.adj-overlay {
+  position: fixed; inset: 0; z-index: 10001;
+  background: rgba(0,0,0,.55); display: none;
+  align-items: center; justify-content: center;
+  animation: tmIn .2s ease-out;
+}
+.adj-overlay.active { display: flex; }
+.adj-modal {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 16px; width: 94%; max-width: 480px; max-height: 88vh;
+  overflow-y: auto; box-shadow: 0 20px 60px rgba(0,0,0,.2);
+}
+.adj-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 18px 20px 14px; border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; background: var(--surface); z-index: 2;
+}
+.adj-title { font-size: 17px; font-weight: 700; color: var(--text); }
+.adj-close {
+  background: none; border: none; font-size: 22px; cursor: pointer;
+  color: var(--sub); line-height: 1; padding: 2px 6px; border-radius: 6px;
+}
+.adj-close:hover { background: rgba(0,0,0,.06); color: var(--text); }
+.adj-body { padding: 14px 20px; }
+
+.adj-formula {
+  background: rgba(96,165,250,.06); border: 1px solid rgba(96,165,250,.15);
+  border-radius: 10px; padding: 10px 14px; margin-bottom: 14px;
+  font-size: 12px; color: #1e40af; line-height: 1.7;
+}
+.adj-formula b { color: #1e3a8a; }
+.adj-formula .formula-line { display: block; }
+
+.adj-ex-row {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 10px; padding: 12px 14px; margin-bottom: 10px;
+  transition: border-color .15s;
+}
+.adj-ex-row:hover { border-color: rgba(0,0,0,.15); }
+.adj-ex-name { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+.adj-ex-inputs { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.adj-input-group { display: flex; align-items: center; gap: 4px; }
+.adj-input-group label { font-size: 12px; color: var(--sub); font-weight: 600; white-space: nowrap; }
+.adj-input-group input {
+  width: 52px; padding: 6px 8px; border: 1px solid var(--border);
+  border-radius: 6px; font-size: 14px; color: var(--text); background: var(--bg);
+  outline: none; transition: border-color .15s; text-align: center; font-weight: 600;
+  font-family: var(--font);
+}
+.adj-input-group input:focus { border-color: var(--primary); }
+.adj-input-group input.wide { width: 72px; }
+.adj-input-group .unit { font-size: 12px; color: var(--sub); }
+.adj-ex-time {
+  margin-left: auto; font-size: 13px; font-weight: 700; color: var(--primary);
+  font-variant-numeric: tabular-nums; white-space: nowrap;
+  background: rgba(249,115,22,.06); padding: 4px 10px; border-radius: 6px;
+  border: 1px solid rgba(249,115,22,.15);
+}
+.adj-ex-time.adjusted { color: var(--info); background: rgba(96,165,250,.06); border-color: rgba(96,165,250,.15); }
+
+.adj-footer {
+  position: sticky; bottom: 0; background: var(--surface);
+  border-top: 1px solid var(--border); padding: 14px 20px;
+}
+.adj-total-row {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 12px;
+}
+.adj-total-label { font-size: 14px; font-weight: 600; color: var(--sub); }
+.adj-total-val {
+  font-size: 22px; font-weight: 800; color: var(--primary);
+  font-variant-numeric: tabular-nums;
+}
+.adj-actions { display: flex; gap: 10px; justify-content: flex-end; }
+.adj-btn {
+  padding: 10px 18px; border: none; border-radius: 8px; font-size: 14px;
+  font-weight: 600; cursor: pointer; transition: all .15s; font-family: var(--font);
+}
+.adj-btn-reset { background: rgba(239,68,68,.08); color: #ef4444; border: 1px solid rgba(239,68,68,.2); }
+.adj-btn-reset:hover { background: rgba(239,68,68,.15); }
+.adj-btn-save { background: var(--primary); color: #fff; }
+.adj-btn-save:hover { opacity: .85; }
+
+/* 训练弹窗中的剩余预估时间 */
+.tm-remaining-est {
+  font-size: 12px; color: rgba(255,255,255,.35); font-weight: 500;
+  margin-top: 2px; font-variant-numeric: tabular-nums;
+}
 </style>
 <script src="data.js"></script>
 </head>
@@ -580,6 +693,10 @@
 
 <div style="background:rgba(59,130,246,0.06);border:1px solid rgba(59,130,246,0.2);border-radius:8px;padding:8px 12px;margin-bottom:8px;font-size:12px;color:#1e40af;">💡 <b>器材选择：</b>哑铃为主跟练（12.8万播放）。弹力绳版可作为备选 → <a href="https://www.bilibili.com/video/BV162421N7Xs" target="_blank" style="color:#2563eb;">梅林FIT弹力绳背+二头</a></div>
  <button class="btn-start-training" data-day="pull-evening"><span class="btn-icon">▶</span> 开始拉日计时训练</button>
+ <div class="tm-estimate-row">
+  <div class="tm-total-estimate">⏱ 预计 <span class="tm-total-estimate-val">计算中…</span></div>
+  <button class="btn-adjust" data-session="pull-evening">⚙ 调整参数</button>
+ </div>
 <div class="moves-title">📋 动作清单（3组起步，组间休 90s）</div>
  <div class="moves-grid">
  <div class="move-row"><span class="move-num">1</span><span class="move-name">弹力带高位下拉（跪姿）</span><span class="move-sets">3×12–15</span><span class="move-rest">休 90s</span><span class="move-note" style="grid-column:2/5;">弹力带挂门上方，跪姿下拉，肩胛下沉不耸肩</span></div>
@@ -748,6 +865,10 @@
  <div class="caution"><strong> 右肩保护：</strong>跟练中遇到推举/飞鸟类动作直接跳过，改为下方地板卧推。如任何动作引发右肩疼痛，立即停止。</div>
 
  <button class="btn-start-training" data-day="push-evening"><span class="btn-icon">▶</span> 开始推日计时训练</button>
+ <div class="tm-estimate-row">
+  <div class="tm-total-estimate">⏱ 预计 <span class="tm-total-estimate-val">计算中…</span></div>
+  <button class="btn-adjust" data-session="push-evening">⚙ 调整参数</button>
+ </div>
 <div class="moves-title"> 动作清单（右肩保护·禁推举/飞鸟/宽距俯卧撑）</div>
  <div class="moves-grid">
  <div class="move-row"><span class="move-num">1</span><span class="move-name">哑铃地板卧推 <small style="color:#2563eb;font-size:11px;">🆕肩安全版</small></span><span class="move-sets">3×10–12</span><span class="move-rest">休 90s</span><span class="move-note" style="grid-column:2/5;">仰卧地板（非凳），肘45°贴身，行程短·肩关节压力小。<b>轻量起步5-8KG/手</b></span></div>
@@ -878,6 +999,10 @@
 
 <div style="background:rgba(220,38,38,0.06);border:1px solid rgba(220,38,38,0.2);border-radius:8px;padding:8px 12px;margin-bottom:8px;font-size:12px;color:#991b1b;">💡 <b>腿日 = 最大受益日！</b>哑铃/杠铃负重深蹲→最大化睾酮分泌→全身增肌减脂。弹力绳备选 → <a href="https://www.bilibili.com/video/BV15C41137dN" target="_blank" style="color:#dc2626;">梅林FIT弹力绳肩+臀腿 47′42″</a></div>
  <button class="btn-start-training" data-day="leg-evening"><span class="btn-icon">▶</span> 开始腿日计时训练（最大受益日！）</button>
+ <div class="tm-estimate-row">
+  <div class="tm-total-estimate">⏱ 预计 <span class="tm-total-estimate-val">计算中…</span></div>
+  <button class="btn-adjust" data-session="leg-evening">⚙ 调整参数</button>
+ </div>
 <div class="moves-title"> 动作清单 — 哑铃/杠铃腿日（核心训练日·做完别开车）</div>
  <div class="moves-grid">
  <div class="move-row"><span class="move-num">1</span><span class="move-name">高脚杯深蹲 <small style="color:#2563eb;font-size:11px;">🆕哑铃</small></span><span class="move-sets">3×10–12</span><span class="move-rest">休 90s</span><span class="move-note" style="grid-column:2/5;">双手托哑铃于胸前，核心收紧，下蹲至大腿平行地面。<b>从8-10KG起步，逐步到20KG</b></span></div>
@@ -950,6 +1075,10 @@
  </div>
  <div class="day-body">
  <button class="btn-start-training" data-day="sat-evening"><span class="btn-icon">▶</span> 开始维持日计时训练（轻量·不求力竭）</button>
+ <div class="tm-estimate-row">
+  <div class="tm-total-estimate">⏱ 预计 <span class="tm-total-estimate-val">计算中…</span></div>
+  <button class="btn-adjust" data-session="sat-evening">⚙ 调整参数</button>
+ </div>
 <div class="moves-title"> 轻量全身力量（前30′）— 每组留5个余力就停·哑铃用轻量</div>
  <div class="moves-grid">
  <div class="move-row"><span class="move-num">1</span><span class="move-name">高脚杯深蹲（轻量哑铃）</span><span class="move-sets">2×10</span><span class="move-rest">休 60s</span><span class="move-note" style="grid-column:2/5;">5-8KG哑铃 | 膝盖不内扣</span></div>
@@ -1280,6 +1409,7 @@ if('serviceWorker' in navigator){
   <div class="tm-header">
     <button class="tm-btn-close" id="tmClose" title="退出训练">✕ 退出</button>
     <div class="tm-session-name" id="tmSessionName">加载中...</div>
+    <div class="tm-remaining-est" id="tmRemainingEst"></div>
     <div class="tm-timer-big" id="tmTimerDisplay">00:00</div>
   </div>
 
@@ -1376,6 +1506,35 @@ if('serviceWorker' in navigator){
   </div>
 </div>
 
+<!-- 调整参数弹窗 -->
+<div class="adj-overlay" id="adjustOverlay">
+  <div class="adj-modal">
+    <div class="adj-header">
+      <div class="adj-title" id="adjTitle">⚙ 调整训练参数</div>
+      <button class="adj-close" id="adjClose">✕</button>
+    </div>
+    <div class="adj-body" id="adjBody">
+      <div class="adj-formula">
+        <span class="formula-line">📐 <b>时间估算公式：</b></span>
+        <span class="formula-line">次数型 → 组数 × (次数 × 3秒 + 休息秒数)</span>
+        <span class="formula-line">时间型 → 组数 × (动作时长 + 休息秒数)</span>
+        <span class="formula-line">💡 3秒/次 = 2秒离心（放下）+ 1秒向心（举起）</span>
+      </div>
+      <div id="adjExercises"></div>
+    </div>
+    <div class="adj-footer">
+      <div class="adj-total-row">
+        <span class="adj-total-label">总预估时长</span>
+        <span class="adj-total-val" id="adjTotalVal">--</span>
+      </div>
+      <div class="adj-actions">
+        <button class="adj-btn adj-btn-reset" id="adjReset">重置默认</button>
+        <button class="adj-btn adj-btn-save" id="adjSave">保存并关闭</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- 训练计时弹窗 JS 核心逻辑 -->
 <script>
 // ============================================================
@@ -1393,6 +1552,7 @@ var WorkoutTimer = (function() {
   var btnPause, btnComplete, btnSkip, btnClose;
   var completeScreen;
   var restScreen, restCountdown;
+  var remainingEst;
 
   // --- 状态 ---
   var STATE = { IDLE: 'idle', TRAINING: 'training', REST: 'rest', DONE: 'done', PAUSED: 'paused' };
@@ -1620,6 +1780,14 @@ var WorkoutTimer = (function() {
     }
   }
 
+  // --- 更新剩余预估时间 ---
+  function updateRemainingEst() {
+    if (!remainingEst || !window.TimeEstimator) return;
+    if (state === STATE.DONE) { remainingEst.textContent = ''; return; }
+    var remaining = TimeEstimator.calcRemaining(exercises, currentIndex, currentSet);
+    remainingEst.textContent = '⏱ 剩余约 ' + TimeEstimator.formatDuration(remaining);
+  }
+
   // --- 核心状态流转 ---
   function loadExercise(index) {
     if (index >= exercises.length) {
@@ -1651,6 +1819,7 @@ var WorkoutTimer = (function() {
     showControlsForState();
     updateDisplay();
     updateExerciseCard();
+    updateRemainingEst();
 
     // 加载视频
     loadVideo(ex.name);
@@ -1714,6 +1883,7 @@ var WorkoutTimer = (function() {
 
     showControlsForState();
     updateDisplay();
+    updateRemainingEst();
 
     startTicker();
 
@@ -1741,6 +1911,7 @@ var WorkoutTimer = (function() {
 
       showControlsForState();
       updateDisplay();
+      updateRemainingEst();
       speak('继续！' + ex.name + '，第 ' + currentSet + ' 组');
       startTicker();
     } else {
@@ -1753,6 +1924,7 @@ var WorkoutTimer = (function() {
   function finishWorkout() {
     stopTicker();
     state = STATE.DONE;
+    if (remainingEst) remainingEst.textContent = '';
 
     var elapsed = Math.floor((Date.now() - startTime - totalPausedTime) / 1000);
     $('tmStatDuration').textContent = formatTime(elapsed);
@@ -1761,10 +1933,12 @@ var WorkoutTimer = (function() {
     // 预估消耗热量（粗略估算：每分钟约7-10大卡）
     var calEst = Math.round(elapsed / 60 * 8);
     $('tmStatCalories').textContent = calEst + ' kcal';
+    var totalEst = window.TimeEstimator ? TimeEstimator.estimateTotal(exercises) : 0;
+    var estStr = totalEst > 0 ? '（预估 ' + TimeEstimator.formatDuration(totalEst) + '）' : '';
     $('tmCompleteSub').textContent = [
-      '太棒了，今天的训练非常出色！',
-      '坚持就是胜利，你做到了！',
-      '每一次付出都在让你更强！'
+      '太棒了，今天的训练非常出色！' + estStr,
+      '坚持就是胜利，你做到了！' + estStr,
+      '每一次付出都在让你更强！' + estStr
     ][Math.floor(Math.random() * 3)];
 
     document.getElementById('tmExerciseInfo').style.display = 'none';
@@ -1848,9 +2022,15 @@ var WorkoutTimer = (function() {
     var activePanel = document.querySelector('.day-panel.active');
     if (!activePanel) { alert('请先选择一个训练日'); return; }
 
-    // 解析动作数据
-    exercises = parseMoves(activePanel);
+    // 解析动作数据（使用调整后的参数）
+    exercises = (window.TimeEstimator ? TimeEstimator.parseMovesAdjusted(activePanel) : parseMoves(activePanel));
     if (!exercises.length) { alert('当前日期没有可训练的动作'); return; }
+
+    // 计算总预估时间
+    var totalEst = window.TimeEstimator ? TimeEstimator.estimateTotal(exercises) : 0;
+    if (remainingEst && totalEst > 0) {
+      remainingEst.textContent = '⏱ 总计约 ' + TimeEstimator.formatDuration(totalEst);
+    }
 
     // 初始化DOM引用
     overlay = $('workoutTimer');
@@ -1872,6 +2052,7 @@ var WorkoutTimer = (function() {
     completeScreen = $('tmCompleteScreen');
     restScreen = $('tmRestScreen');
     restCountdown = $('tmRestCountdown');
+    remainingEst = $('tmRemainingEst');
 
     // 重置UI
     document.getElementById('tmExerciseInfo').style.display = '';
@@ -2324,6 +2505,404 @@ var VideoManager = (function() {
   });
 
   return { getVideoForExercise: getVideoForExercise, hasVideo: hasVideo };
+})();
+</script>
+
+<!-- 时间估算 + 参数调整模块 -->
+<script>
+// ============================================================
+// TimeEstimator — 动作时间估算 + 参数调整系统 v5.0
+// 公式: 次数型 → 组数 × (次数 × 3秒 + 休息秒数)
+//       时间型 → 组数 × (动作时长 + 休息秒数)
+// 3秒/次 = 2秒离心(放下) + 1秒向心(举起)
+// ============================================================
+var TimeEstimator = (function() {
+  var ADJUST_KEY = 'jf_exercise_adjustments';
+  var SECONDS_PER_REP = 3;
+  var currentSession = '';
+
+  function $(id) { return document.getElementById(id); }
+
+  // --- 解析次数字符串 → 估算次数 ---
+  function parseReps(repsStr) {
+    if (!repsStr) return 12;
+    var m = repsStr.match(/(\d+)\s*[–\-~]\s*(\d+)/);
+    if (m) return Math.round((parseInt(m[1]) + parseInt(m[2])) / 2);
+    m = repsStr.match(/(\d+)/);
+    return m ? parseInt(m[1]) : 12;
+  }
+
+  // --- 时间估算公式 ---
+  function estimateTime(ex) {
+    var workTime;
+    if (ex.timed && ex.duration > 0) {
+      workTime = ex.duration;
+    } else {
+      workTime = parseReps(ex.reps) * SECONDS_PER_REP;
+    }
+    return ex.sets * (workTime + ex.rest);
+  }
+
+  function estimateTotal(exercises) {
+    return exercises.reduce(function(sum, ex) { return sum + estimateTime(ex); }, 0);
+  }
+
+  // --- 格式化时长 ---
+  function formatDuration(sec) {
+    sec = Math.max(0, Math.round(sec));
+    var m = Math.floor(sec / 60);
+    var s = sec % 60;
+    if (m === 0) return s + '″';
+    if (s === 0) return m + '′';
+    return m + '′' + (s < 10 ? '0' : '') + s + '″';
+  }
+
+  // --- 调整参数管理 (localStorage) ---
+  function getAdjustments() {
+    try { return JSON.parse(localStorage.getItem(ADJUST_KEY) || '{}'); }
+    catch(e) { return {}; }
+  }
+  function getAdjustment(sessionId, exIdx) {
+    return getAdjustments()[sessionId + '_' + exIdx] || null;
+  }
+  function saveAdjustment(sessionId, exIdx, adj) {
+    var all = getAdjustments();
+    all[sessionId + '_' + exIdx] = adj;
+    localStorage.setItem(ADJUST_KEY, JSON.stringify(all));
+  }
+  function resetSession(sessionId) {
+    var all = getAdjustments();
+    Object.keys(all).forEach(function(key) {
+      if (key.indexOf(sessionId + '_') === 0) delete all[key];
+    });
+    localStorage.setItem(ADJUST_KEY, JSON.stringify(all));
+  }
+
+  // --- 获取面板的 session ID ---
+  function getSessionId(panel) {
+    var btn = panel.querySelector('.btn-start-training');
+    return btn ? btn.dataset.day : '';
+  }
+
+  // --- 应用调整后的动作列表（供 WorkoutTimer 调用）---
+  function parseMovesAdjusted(panel) {
+    var sessionId = getSessionId(panel);
+    var moves = WorkoutTimer.parseMoves(panel);
+    moves.forEach(function(move, i) {
+      var adj = getAdjustment(sessionId, i);
+      if (adj) {
+        move.sets = adj.sets;
+        move.reps = adj.reps;
+        move.fullSetsStr = adj.sets + '×' + adj.reps;
+        move.rest = adj.rest;
+        move.adjusted = true;
+      }
+    });
+    return moves;
+  }
+
+  // --- 注入时间徽章到 move-row ---
+  function injectTimeBadges() {
+    document.querySelectorAll('.day-panel').forEach(function(panel) {
+      var sessionId = getSessionId(panel);
+      if (!sessionId) return;
+
+      var rows = panel.querySelectorAll('.move-row');
+      var moveIdx = 0;
+
+      rows.forEach(function(row) {
+        if (row.querySelector('.move-time')) return;
+
+        var setsEl = row.querySelector('.move-sets');
+        if (!setsEl) return;
+        var setsStr = setsEl.textContent.trim();
+        if (!setsStr) return;
+
+        var nameEl = row.querySelector('.move-name');
+        var restEl = row.querySelector('.move-rest');
+        var name = nameEl ? nameEl.textContent.trim() : '';
+
+        // 保存原始值（用于恢复显示）
+        if (!setsEl.dataset.original) setsEl.dataset.original = setsStr;
+        if (restEl && !restEl.dataset.original) restEl.dataset.original = restEl.textContent.trim();
+
+        // 解析原始值
+        var setsMatch = setsStr.match(/(\d+)\s*[×x]\s*(.+)/);
+        var numSets = setsMatch ? parseInt(setsMatch[1]) : 1;
+        var reps = setsMatch ? setsMatch[2].trim() : '';
+        var restMatch = restEl ? restEl.textContent.trim().match(/(\d+)/) : null;
+        var restSec = restMatch ? parseInt(restMatch[1]) : 90;
+
+        // 判断是否时间型
+        var timed = /\d+\s*(分钟|分|′|分钟)/.test(name + ' ' + setsStr) ||
+                    /\d+\s*['\"]/.test(setsStr);
+        var duration = 0;
+        if (timed) {
+          var minMatch = (name + ' ' + setsStr).match(/(\d+)\s*(分钟|分|′)/);
+          if (minMatch) duration = parseInt(minMatch[1]) * 60;
+          else {
+            var secMatch = setsStr.match(/(\d+)/);
+            if (secMatch) duration = parseInt(secMatch[1]);
+          }
+          var min2 = setsStr.match(/(\d+)\s*['']/);
+          if (min2) duration = parseInt(min2[1]) * 60;
+        }
+
+        // 应用调整（仅用于时间计算，不修改DOM文本）
+        var adj = getAdjustment(sessionId, moveIdx);
+        var isAdjusted = !!adj;
+        if (adj) {
+          numSets = adj.sets;
+          reps = adj.reps;
+          restSec = adj.rest;
+        }
+
+        var exercise = {
+          sets: numSets, reps: reps, rest: restSec,
+          timed: timed, duration: duration || 60
+        };
+        var timeSec = estimateTime(exercise);
+
+        var badge = document.createElement('span');
+        badge.className = 'move-time' + (isAdjusted ? ' adjusted' : '');
+        badge.textContent = '⏱' + formatDuration(timeSec);
+        var workStr = timed ? formatDuration(duration || 60) : parseReps(reps) + '×3s';
+        badge.title = (isAdjusted ? '⚙ 已调整 · ' : '') + '公式: ' + numSets + '×(' + workStr + '+' + restSec + 's) = ' + formatDuration(timeSec);
+        row.appendChild(badge);
+
+        moveIdx++;
+      });
+    });
+  }
+
+  // --- 更新各训练日总预估时间 ---
+  function updateTotalTimes() {
+    document.querySelectorAll('.day-panel').forEach(function(panel) {
+      var sessionId = getSessionId(panel);
+      if (!sessionId) return;
+      var moves = parseMovesAdjusted(panel);
+      var totalSec = estimateTotal(moves);
+      var totalEl = panel.querySelector('.tm-total-estimate-val');
+      if (totalEl) totalEl.textContent = formatDuration(totalSec);
+    });
+  }
+
+  // --- 刷新所有显示 ---
+  function refresh() {
+    document.querySelectorAll('.move-time').forEach(function(el) { el.remove(); });
+    injectTimeBadges();
+    updateTotalTimes();
+  }
+
+  // --- 计算剩余预估时间（供 WorkoutTimer 调用）---
+  function calcRemaining(exercises, currentIndex, currentSet) {
+    var remaining = 0;
+    for (var i = currentIndex; i < exercises.length; i++) {
+      var ex = exercises[i];
+      var workTime = (ex.timed && ex.duration > 0) ? ex.duration : parseReps(ex.reps) * SECONDS_PER_REP;
+      var setsToCount = (i === currentIndex) ? (ex.sets - currentSet + 1) : ex.sets;
+      if (setsToCount > 0) remaining += setsToCount * (workTime + ex.rest);
+    }
+    return remaining;
+  }
+
+  // --- 调整面板 ---
+  function openAdjustPanel(sessionId) {
+    currentSession = sessionId;
+    var panel = null;
+    document.querySelectorAll('.day-panel').forEach(function(p) {
+      if (getSessionId(p) === sessionId) panel = p;
+    });
+    if (!panel) return;
+
+    var nameEl = panel.querySelector('.day-info .day-name');
+    var sessionName = nameEl ? nameEl.textContent.trim() : '训练参数';
+    $('adjTitle').textContent = '⚙ 调整参数 · ' + sessionName;
+    renderAdjustExercises(sessionId, panel);
+    $('adjustOverlay').classList.add('active');
+  }
+
+  function closeAdjustPanel() {
+    $('adjustOverlay').classList.remove('active');
+    currentSession = '';
+  }
+
+  function getPanelBySession(sid) {
+    var found = null;
+    document.querySelectorAll('.day-panel').forEach(function(p) {
+      if (getSessionId(p) === sid) found = p;
+    });
+    return found;
+  }
+
+  function renderAdjustExercises(sessionId, panel) {
+    var container = $('adjExercises');
+    container.innerHTML = '';
+    var moves = WorkoutTimer.parseMoves(panel);
+
+    moves.forEach(function(move, i) {
+      var adj = getAdjustment(sessionId, i);
+      var sets = adj ? adj.sets : move.sets;
+      var reps = adj ? adj.reps : move.reps;
+      var rest = adj ? adj.rest : move.rest;
+      var isAdjusted = !!adj;
+
+      var row = document.createElement('div');
+      row.className = 'adj-ex-row';
+      row.innerHTML =
+        '<div class="adj-ex-name">' + (i + 1) + '. ' + move.name +
+          (move.timed ? ' <small style="color:var(--sub);font-size:11px;">⏱时间型</small>' : '') +
+        '</div>' +
+        '<div class="adj-ex-inputs">' +
+          '<div class="adj-input-group"><label>组数</label>' +
+            '<input type="number" class="adj-in-sets" value="' + sets + '" min="1" max="10" data-idx="' + i + '">' +
+          '</div>' +
+          '<div class="adj-input-group"><label>次数</label>' +
+            '<input type="text" class="adj-in-reps wide" value="' + reps + '" data-idx="' + i + '" placeholder="12-15">' +
+          '</div>' +
+          '<div class="adj-input-group"><label>休息</label>' +
+            '<input type="number" class="adj-in-rest" value="' + rest + '" min="0" max="300" step="15" data-idx="' + i + '">' +
+            '<span class="unit">s</span>' +
+          '</div>' +
+          '<span class="adj-ex-time' + (isAdjusted ? ' adjusted' : '') + '" data-idx="' + i + '">⏱ --</span>' +
+        '</div>';
+      container.appendChild(row);
+    });
+
+    container.querySelectorAll('input').forEach(function(input) {
+      input.addEventListener('input', onAdjustInput);
+    });
+    container.querySelectorAll('.adj-ex-time').forEach(function(el) { updateSingleRowTime(el); });
+    updateAdjustTotal();
+  }
+
+  function onAdjustInput(e) {
+    var idx = e.target.dataset.idx;
+    var timeEl = document.querySelector('.adj-ex-time[data-idx="' + idx + '"]');
+    if (timeEl) updateSingleRowTime(timeEl);
+    updateAdjustTotal();
+  }
+
+  function updateSingleRowTime(timeEl) {
+    var idx = parseInt(timeEl.dataset.idx);
+    var panel = getPanelBySession(currentSession);
+    if (!panel) return;
+    var moves = WorkoutTimer.parseMoves(panel);
+    var move = moves[idx];
+    if (!move) return;
+
+    var setsInput = document.querySelector('.adj-in-sets[data-idx="' + idx + '"]');
+    var repsInput = document.querySelector('.adj-in-reps[data-idx="' + idx + '"]');
+    var restInput = document.querySelector('.adj-in-rest[data-idx="' + idx + '"]');
+    if (!setsInput || !repsInput || !restInput) return;
+
+    var ex = {
+      sets: Math.max(1, parseInt(setsInput.value) || 1),
+      reps: repsInput.value.trim() || '12',
+      rest: Math.max(0, parseInt(restInput.value) || 0),
+      timed: move.timed,
+      duration: move.duration
+    };
+    timeEl.textContent = '⏱ ' + formatDuration(estimateTime(ex));
+  }
+
+  function updateAdjustTotal() {
+    var total = 0;
+    var panel = getPanelBySession(currentSession);
+    if (!panel) return;
+    var moves = WorkoutTimer.parseMoves(panel);
+
+    document.querySelectorAll('.adj-ex-time').forEach(function(el) {
+      var idx = parseInt(el.dataset.idx);
+      var move = moves[idx];
+      if (!move) return;
+      var setsInput = document.querySelector('.adj-in-sets[data-idx="' + idx + '"]');
+      var repsInput = document.querySelector('.adj-in-reps[data-idx="' + idx + '"]');
+      var restInput = document.querySelector('.adj-in-rest[data-idx="' + idx + '"]');
+      if (!setsInput || !repsInput || !restInput) return;
+
+      var ex = {
+        sets: Math.max(1, parseInt(setsInput.value) || 1),
+        reps: repsInput.value.trim() || '12',
+        rest: Math.max(0, parseInt(restInput.value) || 0),
+        timed: move.timed,
+        duration: move.duration
+      };
+      total += estimateTime(ex);
+    });
+    $('adjTotalVal').textContent = formatDuration(total);
+  }
+
+  function saveAdjustmentsFromPanel() {
+    if (!currentSession) return;
+    var panel = getPanelBySession(currentSession);
+    if (!panel) return;
+    var moves = WorkoutTimer.parseMoves(panel);
+
+    moves.forEach(function(move, i) {
+      var setsInput = document.querySelector('.adj-in-sets[data-idx="' + i + '"]');
+      var repsInput = document.querySelector('.adj-in-reps[data-idx="' + i + '"]');
+      var restInput = document.querySelector('.adj-in-rest[data-idx="' + i + '"]');
+      if (!setsInput || !repsInput || !restInput) return;
+
+      var newSets = Math.max(1, parseInt(setsInput.value) || 1);
+      var newReps = repsInput.value.trim();
+      var newRest = Math.max(0, parseInt(restInput.value) || 0);
+
+      if (newSets !== move.sets || newReps !== move.reps || newRest !== move.rest) {
+        saveAdjustment(currentSession, i, { sets: newSets, reps: newReps, rest: newRest });
+      } else {
+        var all = getAdjustments();
+        delete all[currentSession + '_' + i];
+        localStorage.setItem(ADJUST_KEY, JSON.stringify(all));
+      }
+    });
+
+    closeAdjustPanel();
+    refresh();
+  }
+
+  function resetAdjustments() {
+    if (!currentSession) return;
+    resetSession(currentSession);
+    var panel = getPanelBySession(currentSession);
+    if (panel) renderAdjustExercises(currentSession, panel);
+  }
+
+  // --- 初始化 ---
+  document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(function() {
+      injectTimeBadges();
+      updateTotalTimes();
+    }, 200);
+
+    document.querySelectorAll('.btn-adjust').forEach(function(btn) {
+      btn.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        openAdjustPanel(this.dataset.session);
+      });
+    });
+
+    $('adjClose').addEventListener('click', closeAdjustPanel);
+    $('adjSave').addEventListener('click', saveAdjustmentsFromPanel);
+    $('adjReset').addEventListener('click', resetAdjustments);
+    $('adjustOverlay').addEventListener('click', function(e) {
+      if (e.target === this) closeAdjustPanel();
+    });
+  });
+
+  return {
+    estimateTime: estimateTime,
+    estimateTotal: estimateTotal,
+    formatDuration: formatDuration,
+    parseReps: parseReps,
+    parseMovesAdjusted: parseMovesAdjusted,
+    getSessionId: getSessionId,
+    calcRemaining: calcRemaining,
+    refresh: refresh,
+    SECONDS_PER_REP: SECONDS_PER_REP
+  };
 })();
 </script>
 
