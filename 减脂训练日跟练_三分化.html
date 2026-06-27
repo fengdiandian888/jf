@@ -196,6 +196,164 @@
  color: var(--sub); text-decoration: none; transition: .2s;
 }
 .bottom-nav a.active { color: var(--primary); }
+
+/* ========== 训练计时弹窗系统 v4.0 ========== */
+/* "开始训练" 按钮 */
+.btn-start-training {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: linear-gradient(135deg, #f97316, #ea580c);
+  color: #fff; border: none; border-radius: 10px;
+  padding: 11px 22px; font-size: 15px; font-weight: 700;
+  cursor: pointer; margin: 12px 0 6px;
+  box-shadow: 0 3px 12px rgba(249,115,22,.35);
+  transition: all .2s; font-family: var(--font);
+  -webkit-tap-highlight-color: transparent;
+}
+.btn-start-training:hover { transform: translateY(-1px); box-shadow: 0 5px 18px rgba(249,115,22,.45); }
+.btn-start-training:active { transform: scale(.97); }
+.btn-start-training .btn-icon { font-size: 18px; }
+
+/* move-row 加可点击提示 */
+.move-row { cursor: pointer; position: relative; }
+.move-row::after {
+  content: '▶'; position: absolute; right: 8px; top: 50%; transform: translateY(-50%);
+  color: var(--primary); font-size: 11px; opacity: 0; transition: opacity .15s;
+}
+.move-row:hover::after { opacity: .6; }
+
+/* 全屏弹窗遮罩 */
+.tm-overlay {
+  position: fixed; inset: 0; z-index: 9999;
+  background: #0a0a0f; display: none;
+  flex-direction: column; font-family: var(--font);
+  animation: tmIn .3s ease-out;
+}
+@keyframes tmIn { from{opacity:0}to{opacity:1} }
+.tm-overlay.active { display: flex; }
+
+/* 顶部信息栏 */
+.tm-header {
+  flex: 0 0 auto; display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 18px; background: rgba(255,255,255,.04);
+  border-bottom: 1px solid rgba(255,255,255,.08);
+}
+.tm-session-name { font-size: 13px; color: rgba(255,255,255,.5); font-weight: 500; }
+.tm-timer-big { font-size: 38px; font-weight: 800; color: #fff;
+  letter-spacing: -0.02em; font-variant-numeric: tabular-nums;
+}
+.tm-timer-big.rest-mode { color: #22c55e; }
+.tm-timer-big.warning { color: #f59e0b; animation: tmPulse .8s ease-in-out infinite; }
+@keyframes tmPulse { 50%{opacity:.6} }
+
+/* 中央视频区域 */
+.tm-video-area {
+  flex: 0 0 auto; width: 100%; aspect-ratio: 16/9; max-height: 40vh;
+  background: #000; display: flex; align-items: center; justify-content: center;
+  position: relative; overflow: hidden;
+}
+.tm-video-placeholder {
+  color: rgba(255,255,255,.25); font-size: 16px; font-weight: 600;
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+}
+.tm-video-placeholder svg { width: 48px; height: 48px; opacity: .3; }
+.tm-video-area video, .tm-video-area img { width: 100%; height: 100%; object-fit: cover; }
+.tm-video-badge {
+  position: absolute; top: 10px; left: 10px;
+  background: rgba(0,0,0,.55); color: #f97316;
+  padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 700;
+}
+
+/* 动作标题区 */
+.tm-exercise-info {
+  flex: 0 0 auto; padding: 16px 20px 12px;
+  text-align: center;
+}
+.tm-exercise-name { font-size: 22px; font-weight: 800; color: #fff; margin-bottom: 6px; line-height: 1.3; }
+.tm-exercise-meta { font-size: 14px; color: rgba(255,255,255,.45); font-weight: 500; }
+.tm-set-info { font-size: 13px; color: #f97316; font-weight: 700; margin-top: 4px; }
+
+/* 进度条 */
+.tm-progress-wrap {
+  flex: 0 0 auto; padding: 0 20px; margin-bottom: 4px;
+}
+.tm-progress-bar {
+  width: 100%; height: 4px; background: rgba(255,255,255,.08);
+  border-radius: 2px; overflow: hidden;
+}
+.tm-progress-fill {
+  height: 100%; background: linear-gradient(90deg,#f97316,#f59e0b);
+  border-radius: 2px; transition: width .35s ease;
+}
+.rest-mode .tm-progress-fill { background: linear-gradient(90deg,#22c55e,#4ade80); }
+
+/* 底部动作列表 */
+.tm-exercises {
+  flex: 1 1 auto; overflow-y: auto; padding: 8px 16px 12px;
+  display: flex; gap: 8px; overflow-x: auto;
+  -webkit-overflow-scrolling: touch; scroll-snap-type: x mandatory;
+}
+.tm-exercises::-webkit-scrollbar { display: none; }
+.tm-ex-card {
+  flex: 0 0 120px; scroll-snap-align: start;
+  background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.08);
+  border-radius: 10px; padding: 10px; text-align: center;
+  transition: all .25s; cursor: default;
+}
+.tm-ex-card.current { border-color: #f97316; background: rgba(249,115,22,.1);
+  box-shadow: 0 0 16px rgba(249,115,22,.15); }
+.tm-ex-card.done { opacity: .35; }
+.tm-ex-card .ex-num {
+  width: 26px; height: 26px; border-radius: 50%;
+  background: rgba(255,255,255,.08); color: rgba(255,255,255,.4);
+  font-size: 13px; font-weight: 700; line-height: 26px; margin: 0 auto 6px;
+}
+.tm-ex-card.current .ex-num { background: #f97316; color: #fff; }
+.tm-ex-card.done .ex-num { background: #22c55e; color: #fff; }
+.tm-ex-card .ex-name { font-size: 11px; color: rgba(255,255,255,.7); line-height: 1.35; font-weight: 500; }
+.tm-ex-card.current .ex-name { color: #fff; font-weight: 600; }
+.tm-ex-card .ex-detail { font-size: 10px; color: rgba(255,255,255,.35); margin-top: 2px; }
+
+/* 控制按钮栏 */
+.tm-controls {
+  flex: 0 0 auto; display: flex; gap: 10px; justify-content: center;
+  padding: 12px 20px 20px; padding-bottom: max(20px, env(safe-area-inset-bottom));
+}
+.tm-btn {
+  border: none; border-radius: 12px; padding: 14px 28px; font-size: 16px;
+  font-weight: 700; cursor: pointer; font-family: var(--font);
+  transition: all .15s; -webkit-tap-highlight-color: transparent;
+}
+.tm-btn:active { transform: scale(.95); }
+.tm-btn-pause {
+  background: rgba(255,255,255,.08); color: #fff; border: 1px solid rgba(255,255,255,.15);
+}
+.tm-btn-pause:hover { background: rgba(255,255,255,.14); }
+.tm-btn-complete {
+  background: linear-gradient(135deg,#22c55e,#16a34a); color: #fff;
+  box-shadow: 0 3px 12px rgba(34,197,94,.3);
+}
+.tm-btn-complete:hover { box-shadow: 0 5px 18px rgba(34,197,94,.45); }
+.tm-btn-skip { background: rgba(255,255,255,.06); color: rgba(255,255,255,.4);
+  border: 1px solid rgba(255,255,255,.08); padding: 14px 18px; font-size: 13px; }
+.tm-btn-close {
+  position: absolute; top: 12px; right: 12px; z-index: 10;
+  background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.12);
+  color: rgba(255,255,255,.6); border-radius: 8px; width: 34px; height: 34px;
+  font-size: 18px; cursor: pointer; display: flex; align-items: center;
+  justify-content: center; transition: all .15s;
+}
+.tm-btn-close:hover { background: rgba(239,68,68,.2); color: #ef4444; border-color: rgba(239,68,68,.3); }
+
+/* 完成庆祝界面 */
+.tm-complete-screen { display: none; flex-direction: column; align-items: center; justify-content: center; flex: 1; text-align: center; padding: 40px 20px; }
+.tm-complete-screen.active { display: flex; }
+.tm-complete-icon { font-size: 64px; margin-bottom: 16px; }
+.tm-complete-title { font-size: 28px; font-weight: 800; color: #fff; margin-bottom: 8px; }
+.tm-complete-sub { font-size: 15px; color: rgba(255,255,255,.45); margin-bottom: 28px; }
+.tm-complete-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 32px; width: 100%; max-width: 300px; }
+.tm-stat-card { background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.08); border-radius: 12px; padding: 14px; }
+.tm-stat-val { font-size: 26px; font-weight: 800; color: #f97316; }
+.tm-stat-label { font-size: 12px; color: rgba(255,255,255,.4); margin-top: 2px; }
 </style>
 <script src="data.js"></script>
 </head>
@@ -339,7 +497,8 @@
  </div>
 
 <div style="background:rgba(59,130,246,0.06);border:1px solid rgba(59,130,246,0.2);border-radius:8px;padding:8px 12px;margin-bottom:8px;font-size:12px;color:#1e40af;">💡 <b>器材选择：</b>哑铃为主跟练（12.8万播放）。弹力绳版可作为备选 → <a href="https://www.bilibili.com/video/BV162421N7Xs" target="_blank" style="color:#2563eb;">梅林FIT弹力绳背+二头</a></div>
- <div class="moves-title">📋 动作清单（3组起步，组间休 90s）</div>
+ <button class="btn-start-training" data-day="pull-evening"><span class="btn-icon">▶</span> 开始拉日计时训练</button>
+<div class="moves-title">📋 动作清单（3组起步，组间休 90s）</div>
  <div class="moves-grid">
  <div class="move-row"><span class="move-num">1</span><span class="move-name">弹力带高位下拉（跪姿）</span><span class="move-sets">3×12–15</span><span class="move-rest">休 90s</span><span class="move-note" style="grid-column:2/5;">弹力带挂门上方，跪姿下拉，肩胛下沉不耸肩</span></div>
  <div class="move-row"><span class="move-num">2</span><span class="move-name">哑铃俯身划船 <small style="color:#2563eb;font-size:11px;">🆕双器械</small></span><span class="move-sets">3×10–12</span><span class="move-rest">休 90s</span><span class="move-note" style="grid-column:2/5;"><b>哑铃：</b>屈髋俯身，哑铃沿大腿前侧上拉至腹部，肘贴身。<b>弹力绳备选：</b>坐姿划船</span></div>
@@ -506,7 +665,8 @@
  </div>
  <div class="caution"><strong> 右肩保护：</strong>跟练中遇到推举/飞鸟类动作直接跳过，改为下方地板卧推。如任何动作引发右肩疼痛，立即停止。</div>
 
- <div class="moves-title"> 动作清单（右肩保护·禁推举/飞鸟/宽距俯卧撑）</div>
+ <button class="btn-start-training" data-day="push-evening"><span class="btn-icon">▶</span> 开始推日计时训练</button>
+<div class="moves-title"> 动作清单（右肩保护·禁推举/飞鸟/宽距俯卧撑）</div>
  <div class="moves-grid">
  <div class="move-row"><span class="move-num">1</span><span class="move-name">哑铃地板卧推 <small style="color:#2563eb;font-size:11px;">🆕肩安全版</small></span><span class="move-sets">3×10–12</span><span class="move-rest">休 90s</span><span class="move-note" style="grid-column:2/5;">仰卧地板（非凳），肘45°贴身，行程短·肩关节压力小。<b>轻量起步5-8KG/手</b></span></div>
  <div class="move-row"><span class="move-num">2</span><span class="move-name">哑铃/弹力带 前平举</span><span class="move-sets">3×12–15</span><span class="move-rest">休 90s</span><span class="move-note" style="grid-column:2/5;">手臂前举至肩高，控制速度。右肩无痛才继续，<b>哑铃3-5KG起步</b></span></div>
@@ -635,7 +795,8 @@
  </div>
 
 <div style="background:rgba(220,38,38,0.06);border:1px solid rgba(220,38,38,0.2);border-radius:8px;padding:8px 12px;margin-bottom:8px;font-size:12px;color:#991b1b;">💡 <b>腿日 = 最大受益日！</b>哑铃/杠铃负重深蹲→最大化睾酮分泌→全身增肌减脂。弹力绳备选 → <a href="https://www.bilibili.com/video/BV15C41137dN" target="_blank" style="color:#dc2626;">梅林FIT弹力绳肩+臀腿 47′42″</a></div>
- <div class="moves-title"> 动作清单 — 哑铃/杠铃腿日（核心训练日·做完别开车）</div>
+ <button class="btn-start-training" data-day="leg-evening"><span class="btn-icon">▶</span> 开始腿日计时训练（最大受益日！）</button>
+<div class="moves-title"> 动作清单 — 哑铃/杠铃腿日（核心训练日·做完别开车）</div>
  <div class="moves-grid">
  <div class="move-row"><span class="move-num">1</span><span class="move-name">高脚杯深蹲 <small style="color:#2563eb;font-size:11px;">🆕哑铃</small></span><span class="move-sets">3×10–12</span><span class="move-rest">休 90s</span><span class="move-note" style="grid-column:2/5;">双手托哑铃于胸前，核心收紧，下蹲至大腿平行地面。<b>从8-10KG起步，逐步到20KG</b></span></div>
  <div class="move-row"><span class="move-num">2</span><span class="move-name">哑铃罗马尼亚硬拉 <small style="color:#2563eb;font-size:11px;">🆕</small></span><span class="move-sets">3×10–12</span><span class="move-rest">休 90s</span><span class="move-note" style="grid-column:2/5;">双手持哑铃，微屈膝，臀部后推，哑铃沿大腿前侧下滑至小腿中段。<b>10-15KG起步</b></span></div>
@@ -706,7 +867,8 @@
  </div>
  </div>
  <div class="day-body">
- <div class="moves-title"> 轻量全身力量（前30′）— 每组留5个余力就停·哑铃用轻量</div>
+ <button class="btn-start-training" data-day="sat-evening"><span class="btn-icon">▶</span> 开始维持日计时训练（轻量·不求力竭）</button>
+<div class="moves-title"> 轻量全身力量（前30′）— 每组留5个余力就停·哑铃用轻量</div>
  <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:8px;">
  <div style="background:rgba(74,222,128,0.05);border:1px solid rgba(74,222,128,0.2);border-radius:8px;padding:8px;"><b style="color:#4ade80;">① 高脚杯深蹲（轻量哑铃）</b><br><span style="font-size:12px;color:#888;">2×10 | 5-8KG哑铃 | 膝盖不内扣</span></div>
  <div style="background:rgba(74,222,128,0.05);border:1px solid rgba(74,222,128,0.2);border-radius:8px;padding:8px;"><b style="color:#4ade80;">② 哑铃地板卧推（轻量）</b><br><span style="font-size:12px;color:#888;">2×10 | 5-8KG/手 | 肩安全版</span></div>
@@ -1029,6 +1191,559 @@ if('serviceWorker' in navigator){
  </div>
  <p style="font-size:11px;color:var(--sub);margin-top:10px;">💡 抖音视频需在抖音App内观看。点击链接后如未自动跳转，可复制链接在抖音内搜索。</p>
 </div>
+
+<!-- ====== 训练计时弹窗系统 v4.0 ====== -->
+<div class="tm-overlay" id="workoutTimer">
+  <!-- 顶部 -->
+  <div class="tm-header">
+    <button class="tm-btn-close" id="tmClose" title="退出训练">×</button>
+    <div class="tm-session-name" id="tmSessionName">加载中...</div>
+    <div class="tm-timer-big" id="tmTimerDisplay">00:00</div>
+  </div>
+
+  <!-- 视频区域 -->
+  <div class="tm-video-area" id="tmVideoArea">
+    <div class="tm-video-placeholder" id="tmVideoPlaceholder">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="4" width="20" height="16" rx="3"/><path d="M10 9l5 3-5 3V9z"/></svg>
+      <span>视频区域（待插入）</span>
+    </div>
+    <div class="tm-video-badge" id="tmVideoBadge">第1组</div>
+  </div>
+
+  <!-- 动作信息（训练中/休息中） -->
+  <div class="tm-exercise-info" id="tmExerciseInfo">
+    <div class="tm-exercise-name" id="tmExerciseName">准备开始</div>
+    <div class="tm-exercise-meta" id="tmExerciseMeta"></div>
+    <div class="tm-set-info" id="tmSetInfo"></div>
+  </div>
+
+  <!-- 进度条 -->
+  <div class="tm-progress-wrap">
+    <div class="tm-progress-bar"><div class="tm-progress-fill" id="tmProgressFill" style="width:0%"></div></div>
+  </div>
+
+  <!-- 底部动作列表 -->
+  <div class="tm-exercises" id="tmExercisesList"></div>
+
+  <!-- 控制按钮 -->
+  <div class="tm-controls" id="tmControls">
+    <button class="tm-btn tm-btn-pause" id="tmBtnPause">⏸ 暂停</button>
+    <button class="tm-btn tm-btn-complete" id="tmBtnComplete">✅ 完成本组</button>
+    <button class="tm-btn tm-btn-skip" id="tmBtnSkip">跳过 →</button>
+  </div>
+
+  <!-- 完成界面 -->
+  <div class="tm-complete-screen" id="tmCompleteScreen">
+    <div class="tm-complete-icon">🎉</div>
+    <div class="tm-complete-title">训练完成！</div>
+    <div class="tm-complete-sub" id="tmCompleteSub">太棒了，今天的表现很出色</div>
+    <div class="tm-complete-stats">
+      <div class="tm-stat-card"><div class="tm-stat-val" id="tmStatDuration">--</div><div class="tm-stat-label">总时长</div></div>
+      <div class="tm-stat-card"><div class="tm-stat-val" id="tmStatExercises">--</div><div class="tm-stat-label">完成动作</div></div>
+      <div class="tm-stat-card"><div class="tm-stat-val" id="tmStatSets">--</div><div class="tm-stat-label">完成组数</div></div>
+      <div class="tm-stat-card"><div class="tm-stat-val" id="tmStatCalories">--</div><div class="tm-stat-label">预估消耗</div></div>
+    </div>
+    <button class="tm-btn tm-btn-pause" onclick="WorkoutTimer.close()">返回跟练页</button>
+  </div>
+</div>
+
+<!-- 训练计时弹窗 JS 核心逻辑 -->
+<script>
+// ============================================================
+// WorkoutTimer — 训练计时弹窗系统 v4.0
+// 状态机: idle → training → rest → next (循环) → done
+// 支持: 倒计时(时间型) / 手动完成(次数型) / 自动间组休息 / 中文语音播报
+// ============================================================
+var WorkoutTimer = (function() {
+  // --- DOM 引用 ---
+  var $ = function(id) { return document.getElementById(id); };
+  var overlay, timerDisplay, sessionName;
+  var exerciseName, exerciseMeta, setInfo;
+  var videoArea, videoPlaceholder, videoBadge;
+  var progressFill, exercisesList, controls;
+  var btnPause, btnComplete, btnSkip, btnClose;
+  var completeScreen;
+
+  // --- 状态 ---
+  var STATE = { IDLE: 'idle', TRAINING: 'training', REST: 'rest', DONE: 'done', PAUSED: 'paused' };
+  var state = STATE.IDLE;
+  var exercises = [];      // 解析后的动作列表
+  var currentIndex = 0;    // 当前动作索引
+  var currentSet = 1;      // 当前组数
+  var totalSets = 1;       // 当前动作总组数
+  var timeLeft = 0;        // 剩余秒数
+  var totalTime = 0;       // 总时长（用于进度条）
+  var restTime = 90;       // 默认休息时间
+  var isTimed = false;     // 是否为时间型动作（自动倒计时）
+  var timerInterval = null;
+  var startTime = 0;       // 开始时间戳
+
+  // 统计
+  var stats = { setsCompleted: 0, exercisesCompleted: 0 };
+
+  // --- 语音合成 ---
+  var synth = window.speechSynthesis;
+  var chineseVoice = null;
+
+  function initVoice() {
+    if (!synth) return;
+    var voices = synth.getVoices();
+    if (!voices.length) {
+      synth.addEventListener('voiceschanged', function() {
+        voices = synth.getVoices(); findChineseVoice(voices);
+      });
+    } else {
+      findChineseVoice(voices);
+    }
+  }
+  function findChineseVoice(voices) {
+    // 优先中文女声，其次中文男声，再次任意中文
+    var prefs = ['zh-CN', 'zh_TW', 'zh-HK', 'zh'];
+    for (var p = 0; p < prefs.length; p++) {
+      for (var i = 0; i < voices.length; i++) {
+        if (voices[i].lang && voices[i].lang.indexOf(prefs[p]) === 0) {
+          if (!chineseVoice || (prefs[p] === 'zh-CN' && voices[i].name.toLowerCase().indexOf('female') > -1)) {
+            chineseVoice = voices[i];
+          }
+        }
+      }
+      if (chineseVoice) break;
+    }
+    if (!chineseVoice && voices.length) chineseVoice = voices[0];
+  }
+
+  function speak(text) {
+    if (!synth || !text) return;
+    synth.cancel(); // 中断之前的语音
+    var utt = new SpeechSynthesisUtterance(text);
+    utt.lang = 'zh-CN';
+    utt.rate = 1.0;
+    utt.pitch = 1.0;
+    utt.volume = 0.85;
+    if (chineseVoice) utt.voice = chineseVoice;
+    synth.speak(utt);
+  }
+
+  // --- 解析 move-row 数据 ---
+  function parseMoves(dayPanel) {
+    var rows = dayPanel.querySelectorAll('.move-row');
+    var result = [];
+    rows.forEach(function(row) {
+      var nameEl = row.querySelector('.move-name');
+      var setsEl = row.querySelector('.move-sets');
+      var restEl = row.querySelector('.move-rest');
+      if (!nameEl) return;
+
+      var name = nameEl.textContent.trim();
+      var setsStr = setsEl ? setsEl.textContent.trim() : '';
+      var restStr = restEl ? restEl.textContent.trim() : '';
+
+      // 解析组数和次数: "3×12–15" 或 "3×10–12"
+      var setsMatch = setsStr.match(/(\d+)\s*[×x]\s*(\d+)/);
+      var numSets = setsMatch ? parseInt(setsMatch[1]) : 1;
+      var reps = setsMatch ? setsMatch[2] : '';
+
+      // 解析休息时间: "休 90s" 或 "休 120s"
+      var restMatch = restStr.match(/(\d+)/);
+      var restSec = restMatch ? parseInt(restMatch[1]) : 90;
+
+      // 判断是否为时间型: 名称或sets包含 分钟/秒/′/″ 符号
+      var timed = /\d+\s*(分钟|分|′|分钟)/.test(name + ' ' + setsStr) ||
+                   /\d+\s*['\"]/.test(setsStr);
+
+      // 提取时间型时长（秒）
+      var duration = 0;
+      if (timed) {
+        var minMatch = (name + ' ' + setsStr).match(/(\d+)\s*(分钟|分|′)/);
+        if (minMatch) duration = parseInt(minMatch[1]) * 60;
+        else {
+          var secMatch = setsStr.match(/(\d+)/);
+          if (secMatch) duration = parseInt(secMatch[1]);
+        }
+        // 特殊处理: "× 20′" 格式
+        var min2 = setsStr.match(/(\d+)\s*['']/);
+        if (min2) duration = parseInt(min2[1]) * 60;
+      }
+
+      result.push({
+        name: name,
+        sets: numSets,
+        reps: reps,
+        fullSetsStr: setsStr,
+        rest: restSec,
+        timed: timed,
+        duration: duration || 60 // 默认至少60秒
+      });
+    });
+    return result;
+  }
+
+  // --- UI 更新 ---
+  function formatTime(sec) {
+    sec = Math.max(0, Math.floor(sec));
+    var m = Math.floor(sec / 60);
+    var s = sec % 60;
+    return (m < 10 ? '0' + m : m) + ':' + (s < 10 ? '0' + s : s);
+  }
+
+  function updateDisplay() {
+    timerDisplay.textContent = formatTime(timeLeft);
+
+    // 进度条
+    var pct = totalTime > 0 ? ((totalTime - timeLeft) / totalTime * 100) : 0;
+    progressFill.style.width = Math.min(100, Math.max(0, pct)) + '%';
+
+    // 时间警告（最后10秒）
+    if (timeLeft <= 10 && state === STATE.TRAINING) {
+      timerDisplay.classList.add('warning');
+    } else {
+      timerDisplay.classList.remove('warning');
+    }
+
+    // 休息模式颜色
+    if (state === STATE.REST) {
+      timerDisplay.classList.add('rest-mode');
+      overlay.classList.add('rest-mode');
+    } else {
+      timerDisplay.classList.remove('rest-mode');
+      overlay.classList.remove('rest-mode');
+    }
+  }
+
+  function updateExerciseCard() {
+    var cards = exercisesList.querySelectorAll('.tm-ex-card');
+    cards.forEach(function(card, i) {
+      card.classList.remove('current', 'done');
+      if (i < currentIndex) card.classList.add('done');
+      else if (i === currentIndex) card.classList.add('current');
+    });
+
+    // 滚动当前卡片到可见区
+    var currentCard = exercisesList.querySelector('.tm-ex-card.current');
+    if (currentCard) currentCard.scrollIntoView({ behavior: 'smooth', inline: 'center' });
+  }
+
+  function renderExercisesList() {
+    exercisesList.innerHTML = '';
+    exercises.forEach(function(ex, i) {
+      var card = document.createElement('div');
+      card.className = 'tm-ex-card';
+      if (i === currentIndex) card.classList.add('current');
+
+      var detailText = ex.timed ? '' : ex.fullSetsStr;
+      card.innerHTML =
+        '<div class="ex-num">' + (i + 1) + '</div>' +
+        '<div class="ex-name">' + ex.name + '</div>' +
+        (detailText ? '<div class="ex-detail">' + detailText + '</div>' : '');
+
+      exercisesList.appendChild(card);
+    });
+  }
+
+  function showControlsForState() {
+    switch(state) {
+      case STATE.TRAINING:
+        btnPause.style.display = '';
+        btnComplete.style.display = isTimed ? 'none' : '';
+        btnSkip.style.display = '';
+        break;
+      case STATE.REST:
+        btnPause.style.display = '';
+        btnComplete.style.display = 'none';
+        btnSkip.style.display = '';
+        break;
+      default:
+        controls.style.display = 'none';
+    }
+  }
+
+  // --- 核心状态流转 ---
+  function loadExercise(index) {
+    if (index >= exercises.length) {
+      finishWorkout();
+      return;
+    }
+    currentIndex = index;
+    currentSet = 1;
+    var ex = exercises[index];
+    totalSets = ex.sets;
+    restTime = ex.rest;
+    isTimed = ex.timed;
+    totalTime = isTimed ? ex.duration : 999; // 次数型用大数值表示"手动完成"
+
+    state = STATE.TRAINING;
+    timeLeft = totalTime;
+
+    // UI更新
+    exerciseName.textContent = ex.name;
+    setInfo.textContent = isTimed ?
+      ('⏱ ' + formatTime(ex.duration)) :
+      ('第 ' + currentSet + '／' + totalSets + ' 组 · ' + (ex.reps ? ex.reps + '次' : ''));
+    videoBadge.textContent = isTimed ? '进行中' : ('第' + currentSet + '组');
+
+    showControlsForState();
+    updateDisplay();
+    updateExerciseCard();
+
+    // 语音播报
+    speak('下一个动作：' + ex.name + (isTimed ? '，时长 ' + formatTime(ex.duration) : '，第 ' + currentSet + ' 组，' + ex.reps + ' 次'));
+
+    startTicker();
+  }
+
+  function completeCurrentSet() {
+    stats.setCompleted++;
+    speak('完成！休息 ' + restTime + ' 秒');
+    startRest();
+  }
+
+  function startRest() {
+    state = STATE.REST;
+    timeLeft = restTime;
+    totalTime = restTime;
+
+    exerciseName.textContent = '☕ 间组休息';
+    setInfo.textContent = '休息 ' + restTime + ' 秒';
+    videoBadge.textContent = '休息中';
+
+    showControlsForState();
+    updateDisplay();
+
+    startTicker();
+
+    // 休息结束自动进入下一组/下一动作
+  }
+
+  function nextAfterRest() {
+    currentSet++;
+    if (currentSet <= totalSets) {
+      // 同一动作下一组
+      var ex = exercises[currentIndex];
+      totalTime = isTimed ? ex.duration : 999;
+      timeLeft = totalTime;
+      state = STATE.TRAINING;
+
+      exerciseName.textContent = ex.name;
+      setInfo.textContent = isTimed ?
+        ('⏱ ' + formatTime(ex.duration)) :
+        ('第 ' + currentSet + '／' + totalSets + ' 组 · ' + (ex.reps ? ex.reps + '次' : ''));
+      videoBadge.textContent = '第' + currentSet + '组';
+
+      showControlsForState();
+      updateDisplay();
+      speak('继续！' + ex.name + '，第 ' + currentSet + ' 组');
+      startTicker();
+    } else {
+      // 当前动作所有组做完 → 下一个动作
+      stats.exercisesCompleted++;
+      loadExercise(currentIndex + 1);
+    }
+  }
+
+  function finishWorkout() {
+    stopTicker();
+    state = STATE.DONE;
+
+    var elapsed = Math.floor((Date.now() - startTime) / 1000);
+    $('tmStatDuration').textContent = formatTime(elapsed);
+    $('tmStatExercises').textContent = stats.exercisesCompleted + '／' + exercises.length;
+    $('tmStatSets').textContent = stats.setCompleted;
+    // 预估消耗热量（粗略估算：每分钟约7-10大卡）
+    var calEst = Math.round(elapsed / 60 * 8);
+    $('tmStatCalories').textContent = calEst + ' kcal';
+    $('tmCompleteSub').textContent = [
+      '太棒了，今天的训练非常出色！',
+      '坚持就是胜利，你做到了！',
+      '每一次付出都在让你更强！'
+    ][Math.floor(Math.random() * 3)];
+
+    document.getElementById('tmExerciseInfo').style.display = 'none';
+    document.getElementById('tmProgressWrap') && (document.getElementById('tmProgressWrap').style.display = 'none'); // fallback
+    progressFill.parentElement.parentElement.style.display = 'none';
+    exercisesList.style.display = 'none';
+    controls.style.display = 'none';
+    completeScreen.classList.add('active');
+
+    speak('恭喜你！全部训练完成！辛苦了！');
+  }
+
+  // --- 定时器 ---
+  function startTicker() {
+    stopTicker();
+    timerInterval = setInterval(tick, 1000);
+  }
+
+  function stopTicker() {
+    if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
+  }
+
+  function tick() {
+    if (state === STATE.PAUSED) return;
+
+    timeLeft--;
+    updateDisplay();
+
+    if (timeLeft <= 0) {
+      if (state === STATE.TRAINING && isTimed) {
+        // 时间型动作倒计时结束
+        speak('时间到！');
+        completeCurrentSet();
+      } else if (state === STATE.REST) {
+        // 休息结束
+        speak('休息结束，开始下一个动作');
+        nextAfterRest();
+      }
+    } else if (timeLeft === 3 && state === STATE.TRAINING) {
+      // 最后3秒倒计时语音
+      speak(timeLeft);
+    } else if (timeLeft <= 30 && timeLeft % 10 === 0 && state === STATE.REST) {
+      // 休息时每10秒报剩余
+      speak('还有 ' + timeLeft + ' 秒');
+    }
+  }
+
+  // --- 控制操作 ---
+  function togglePause() {
+    if (state === STATE.PAUSED) {
+      state = (timeLeft === restTime && currentSet > 1 && currentSet <= totalSets) ? STATE.REST : STATE.TRAINING;
+      btnPause.textContent = '⏸ 暂停';
+      speak('继续');
+      startTicker();
+    } else if (state === STATE.TRAINING || state === STATE.REST) {
+      state = STATE.PAUSED;
+      btnPause.textContent = '▶ 继续';
+      stopTicker();
+      speak('暂停');
+    }
+  }
+
+  function skipExercise() {
+    speak('跳过此动作');
+    stats.exercisesCompleted++;
+    loadExercise(currentIndex + 1);
+  }
+
+  // --- 公开 API ---
+  function start(sessionTitle, startIndex) {
+    // 获取当前激活的面板
+    var activePanel = document.querySelector('.day-panel.active');
+    if (!activePanel) { alert('请先选择一个训练日'); return; }
+
+    // 解析动作数据
+    exercises = parseMoves(activePanel);
+    if (!exercises.length) { alert('当前日期没有可训练的动作'); return; }
+
+    // 初始化DOM引用
+    overlay = $('workoutTimer');
+    timerDisplay = $('tmTimerDisplay');
+    sessionName = $('tmSessionName');
+    exerciseName = $('tmExerciseName');
+    exerciseMeta = $('tmExerciseMeta');
+    setInfo = $('tmSetInfo');
+    videoArea = $('tmVideoArea');
+    videoPlaceholder = $('tmVideoPlaceholder');
+    videoBadge = $('tmVideoBadge');
+    progressFill = $('tmProgressFill');
+    exercisesList = $('tmExercisesList');
+    controls = $('tmControls');
+    btnPause = $('tmBtnPause');
+    btnComplete = $('tmBtnComplete');
+    btnSkip = $('tmBtnSkip');
+    btnClose = $('tmClose');
+    completeScreen = $('tmCompleteScreen');
+
+    // 重置UI
+    document.getElementById('tmExerciseInfo').style.display = '';
+    progressFill.parentElement.parentElement.style.display = '';
+    exercisesList.style.display = '';
+    controls.style.display = '';
+    completeScreen.classList.remove('active');
+    progressFill.style.width = '0%';
+    timerDisplay.classList.remove('warning', 'rest-mode');
+    overlay.classList.remove('rest-mode');
+
+    // 设置标题
+    sessionName.textContent = sessionTitle || '今日训练';
+
+    // 渲染动作列表
+    renderExercisesList();
+
+    // 统计重置
+    stats = { setsCompleted: 0, exercisesCompleted: 0 };
+    startTime = Date.now();
+
+    // 显示弹窗
+    overlay.classList.add('active');
+
+    // 锁定屏幕方向（如果支持）
+    if (screen.orientation && screen.orientation.lock) {
+      screen.orientation.lock('portrait').catch(function(){});
+    }
+
+    // 保持屏幕常亮
+    if (navigator.wakeLock) {
+      navigator.wakeLock.request('screen').catch(function(){});
+    }
+
+    // 初始化语音
+    initVoice();
+    speak('开始训练！加油！');
+
+    // 加载第一个动作（或从指定索引开始）
+    loadExercise(startIndex || 0);
+  }
+
+  function close() {
+    stopTicker();
+    if (synth) synth.cancel();
+    overlay.classList.remove('active');
+    state = STATE.IDLE;
+  }
+
+  // --- 绑定事件 ---
+  document.addEventListener('DOMContentLoaded', function() {
+    // 弹窗内按钮事件委托
+    document.getElementById('tmBtnPause').addEventListener('click', togglePause);
+    document.getElementById('tmBtnComplete').addEventListener('click', completeCurrentSet);
+    document.getElementById('tmBtnSkip').addEventListener('click', skipExercise);
+    document.getElementById('tmClose').addEventListener('click', function() {
+      if (confirm('确定要退出训练吗？当前进度将不会保存。')) close();
+    });
+
+    // 为每个 move-row 添加点击事件（事件委托）
+    document.addEventListener('click', function(e) {
+      var row = e.target.closest('.move-row');
+      if (row) {
+        e.preventDefault();
+        // 找到这是第几个动作
+        var panel = row.closest('.day-panel');
+        if (!panel) return;
+        var rows = panel.querySelectorAll('.move-row');
+        var idx = Array.from(rows).indexOf(row);
+        if (idx >= 0) {
+          var headerInfo = panel.querySelector('.day-info .day-name');
+          var title = headerInfo ? headerInfo.textContent : '今日训练';
+          start(title, idx);
+        }
+      }
+    });
+
+    // 为每个"开始训练"按钮添加事件
+    document.querySelectorAll('.btn-start-training').forEach(function(btn) {
+      btn.addEventListener('click', function(e) {
+        e.preventDefault();
+        var panel = this.closest('.day-section') || this.closest('.day-panel');
+        if (!panel) panel = this.closest('.day-panel');
+        var headerInfo = panel ? panel.querySelector('.day-info .day-name') : null;
+        var title = headerInfo ? headerInfo.textContent : '今日训练';
+        start(title, 0);
+      });
+    });
+  });
+
+  return { start: start, close: close, parseMoves: parseMoves };
+})();
+</script>
 
 <nav class="bottom-nav">
  <a href="今日计划.html">今日</a>
