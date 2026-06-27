@@ -6,8 +6,8 @@
   "scope": "/jf/",
   "display": "standalone",
   "orientation": "portrait",
-  "theme_color": "#0f0f0f",
-  "background_color": "#0f0f0f",
+  "theme_color": "#faf8f5",
+  "background_color": "#faf8f5",
   "icons": [
     {
       "src": "icon-192.png",

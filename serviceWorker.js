@@ -4,7 +4,7 @@
  * 在线时拉最新 → GitHub 更新后用户秒级获取
  * 离线时用缓存 → 页面依然可打开
  */
-const CACHE_NAME = 'jf-v1';
+const CACHE_NAME = 'jf-v4';
 const URLS_TO_CACHE = [
   '/jf/',
   '/jf/今日计划.html',
@@ -12,8 +12,13 @@ const URLS_TO_CACHE = [
   '/jf/减脂训练日跟练_三分化.html',
   '/jf/减脂完整教程_饮食运动作息动作库.html',
   '/jf/每周小结.html',
+  '/jf/每日必做清单.html',
+  '/jf/饮食参考.html',
   '/jf/gist-storage.js',
-  '/jf/manifest.json'
+  '/jf/data.js',
+  '/jf/manifest.json',
+  '/jf/icon-192.png',
+  '/jf/icon-512.png'
 ];
 
 // 安装：预缓存核心文件

@@ -2,73 +2,242 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#0f0f0f">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="theme-color" content="#faf8f5">
 <link rel="manifest" href="/jf/manifest.json">
 <title>每周小结 · 减脂</title>
 <style>
 :root {
-  --bg:#0f0f0f; --card:#1a1a1a; --card-bg:#1a1a1a; --text:#e0e0e0; --sub:#888;
-  --accent:#e07040; --orange:#e07040; --blue:#60a5fa; --green:#4ade80; --red:#f87171; --border:#2a2a2a; --radius:12px;
+  --bg: #faf8f5;
+  --card: #ffffff;
+  --surface: #f3f4f6;
+  --text: #1a1a2e;
+  --sub: #9ca3af;
+  --border: #e5e7eb;
+  --primary: #f97316;
+  --pull: #3b82f6;
+  --push: #f59e0b;
+  --leg: #ef4444;
+  --cardio: #22c55e;
+  --recovery: #a78bfa;
+  --sleep: #6366f1;
+  --danger: #ef4444;
+  --warn: #f59e0b;
+  --info: #60a5fa;
+  --radius: 10px;
+  --radius-sm: 8px;
+  --font: system-ui, -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif;
 }
-*{margin:0;padding:0;box-sizing:border-box}
-body{font-family:system-ui,-apple-system,'PingFang SC','Microsoft YaHei',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding:8px;max-width:500px;margin:0 auto;padding-bottom:30px}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+  font-family: var(--font);
+  background: var(--bg); color: var(--text);
+  min-height: 100vh; max-width: 520px; margin: 0 auto; padding-bottom: 40px;
+}
 
-/* Top Tab Bar */
-.tab-bar{display:flex;gap:0;margin-bottom:10px;background:var(--card);border-radius:var(--radius) var(--radius) 0 0;border:1px solid var(--border);border-bottom:none;overflow:hidden;position:sticky;top:0;z-index:10}
-.tab-bar a{flex:1;text-align:center;padding:8px 4px;font-size:11px;font-weight:600;color:var(--sub);text-decoration:none;transition:.2s;-webkit-tap-highlight-color:transparent;border-bottom:2px solid transparent}
-.tab-bar a.active{color:#fff;border-bottom-color:var(--orange)}
+/* ===== Top Tab Bar ===== */
+.tab-bar {
+  display: flex; gap: 0; background: var(--card);
+  border-radius: 0 0 var(--radius) var(--radius);
+  border: 1px solid var(--border); border-top: none; overflow: hidden;
+  position: sticky; top: 0; z-index: 10; margin-bottom: 12px;
+}
+.tab-bar a {
+  flex: 1; text-align: center; padding: 10px 4px; font-size: 14px; font-weight: 600;
+  color: var(--sub); text-decoration: none; transition: .2s; border-bottom: 3px solid transparent;
+}
+.tab-bar a.active { color: var(--primary); font-weight: 700; border-bottom-color: var(--primary); }
 
-.header{text-align:center;padding:18px 0 10px}
-.header h1{font-size:20px;font-weight:700}
-.header .date{font-size:12px;color:var(--sub);margin-top:3px}
+/* ===== Card ===== */
+.card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 14px 16px; margin: 0 10px 10px;
+}
+.card-title { font-size: 14px; font-weight: 700; margin-bottom: 12px; display: flex; align-items: center; gap: 5px; }
 
-.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;margin-bottom:10px}
-.card-title{font-size:13px;font-weight:700;margin-bottom:10px}
+/* ===== Header ===== */
+.page-header { padding: 18px 20px 6px; }
+.page-header h1 { font-size: 24px; font-weight: 800; letter-spacing: -0.02em; }
+.page-header .sub { font-size: 13px; color: var(--sub); margin-top: 3px; }
 
-.field{margin-bottom:12px}
-.field label{display:block;font-size:12px;color:var(--sub);margin-bottom:6px}
-.qb{display:flex;gap:6px;flex-wrap:wrap}
-.qb-btn{padding:4px 12px;border-radius:8px;font-size:12px;cursor:pointer;background:var(--bg);border:1px solid var(--border);color:var(--text);transition:.2s}
-.qb-btn:hover{border-color:var(--accent)}
-.qb-btn.selected{background:var(--accent);color:#fff;border-color:var(--accent)}
-textarea{width:100%;padding:10px 12px;background:var(--bg);border:1px solid var(--border);border-radius:8px;font-size:13px;font-family:inherit;min-height:60px;resize:vertical;color:var(--text);outline:none}
-.btn{padding:10px 20px;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;background:var(--accent);color:#fff;width:100%;transition:.2s}
-.btn:hover{opacity:.88}
-.saved-msg{text-align:center;font-size:12px;color:var(--green);margin-top:8px;display:none}
-.saved-msg.show{display:block}
+/* ===== Weight stats card ===== */
+.weight-stat {
+  display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1px;
+  background: var(--border); border-radius: 10px; overflow: hidden; margin-bottom: 10px;
+}
+.ws-item {
+  background: var(--card); padding: 12px 8px; text-align: center;
+}
+.ws-item .val { font-size: 22px; font-weight: 800; display: block; line-height: 1.1; }
+.ws-item .lbl { font-size: 11px; color: var(--sub); margin-top: 3px; font-weight: 600; }
+.ws-item .val.down { color: var(--cardio); }
+.ws-item .val.up { color: var(--danger); }
+.ws-item .val.flat { color: var(--sub); }
+.ws-item .val.neutral { color: var(--primary); }
 
-/* Past reviews */
-.past{margin-top:14px;border-top:1px solid var(--border);padding-top:12px}
-.past-item{padding:10px 12px;background:var(--bg);border-radius:8px;margin-bottom:8px;font-size:12px}
-.past-week{font-weight:600;margin-bottom:3px}
-.past-meta{color:var(--sub);font-size:11px}
-.past-notes{color:#aaa;margin-top:4px;font-size:11px}
+/* ===== Weight Log Input ===== */
+.weight-input-row {
+  display: flex; gap: 8px; align-items: center; margin-bottom: 8px;
+}
+.weight-input-row input {
+  flex: 1; padding: 10px 12px; font-size: 18px; font-weight: 700;
+  background: var(--surface); border: 2px solid var(--border); border-radius: var(--radius-sm);
+  color: var(--text); outline: none; text-align: center;
+  font-family: var(--font);
+}
+.weight-input-row input:focus { border-color: var(--primary); }
+.weight-input-row button {
+  padding: 10px 18px; background: var(--primary); color: #fff;
+  border: none; border-radius: var(--radius-sm); font-size: 14px; font-weight: 700; cursor: pointer;
+}
+.weight-input-row button:active { opacity: .85; }
 
+/* Weight log history */
+.weight-log-list { max-height: 140px; overflow-y: auto; }
+.wl-item {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 7px 0; border-bottom: 1px solid rgba(0,0,0,0.04); font-size: 13px;
+}
+.wl-item:last-child { border-bottom: none; }
+.wl-item .wl-date { color: var(--sub); font-size: 12px; }
+.wl-item .wl-kg { font-weight: 700; font-size: 15px; }
+.wl-item .wl-diff { font-size: 12px; font-weight: 600; }
+.wl-diff.down { color: var(--cardio); }
+.wl-diff.up { color: var(--danger); }
+.wl-del { color: var(--sub); background: none; border: none; cursor: pointer; font-size: 16px; padding: 2px 6px; }
+
+/* Week chart bar */
+.week-chart { display: flex; align-items: flex-end; gap: 4px; height: 48px; margin: 10px 0 4px; }
+.wc-day { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 2px; }
+.wc-bar-wrap { flex: 1; width: 100%; display: flex; align-items: flex-end; }
+.wc-bar { width: 100%; border-radius: 3px 3px 0 0; background: var(--border); transition: .3s; min-height: 4px; }
+.wc-bar.filled { background: var(--primary); }
+.wc-label { font-size: 10px; color: var(--sub); letter-spacing: 0; }
+
+/* ===== Review form ===== */
+.field { margin-bottom: 12px; }
+.field label { display: block; font-size: 12px; color: var(--sub); margin-bottom: 6px; font-weight: 600; }
+.qb { display: flex; gap: 6px; flex-wrap: wrap; }
+.qb-btn {
+  padding: 5px 13px; border-radius: 8px; font-size: 12px; cursor: pointer;
+  background: var(--surface); border: 1px solid var(--border); color: var(--text); transition: .2s;
+  font-family: var(--font); font-weight: 600;
+}
+.qb-btn:hover { border-color: var(--primary); }
+.qb-btn.selected { background: var(--primary); color: #fff; border-color: var(--primary); }
+
+textarea {
+  width: 100%; padding: 10px 12px; background: var(--surface);
+  border: 1px solid var(--border); border-radius: 8px;
+  font-size: 13px; font-family: var(--font); min-height: 60px; resize: vertical;
+  color: var(--text); outline: none;
+}
+textarea:focus { border-color: var(--primary); }
+
+.save-btn {
+  width: 100%; padding: 12px; background: var(--primary); color: #fff;
+  border: none; border-radius: var(--radius-sm); font-size: 14px; font-weight: 700;
+  cursor: pointer; font-family: var(--font); transition: .2s;
+}
+.save-btn:active { opacity: .85; }
+
+.saved-msg { text-align: center; font-size: 12px; color: var(--cardio); margin-top: 8px; display: none; }
+.saved-msg.show { display: block; }
+
+/* ===== Past reviews ===== */
+.past-item {
+  padding: 10px 12px; background: var(--surface);
+  border-radius: var(--radius-sm); margin-bottom: 8px;
+  border: 1px solid var(--border);
+}
+.past-week { font-weight: 700; font-size: 13px; margin-bottom: 3px; }
+.past-meta { color: var(--sub); font-size: 12px; line-height: 1.6; }
+.past-notes { color: var(--text); margin-top: 4px; font-size: 12px; line-height: 1.5; }
+
+/* Progress toward goal */
+.goal-bar-wrap { background: var(--surface); border-radius: 6px; height: 10px; overflow: hidden; margin: 6px 0; }
+.goal-bar { height: 100%; border-radius: 6px; background: var(--primary); transition: width .6s ease; }
+
+/* ===== Bottom Nav ===== */
+.bottom-nav {
+  display: flex; gap: 0; background: var(--card); border: 1px solid var(--border);
+  border-radius: 12px; margin: 20px 10px 24px; overflow: hidden;
+}
+.bottom-nav a {
+  flex: 1; text-align: center; padding: 12px 2px; font-size: 13px; font-weight: 600;
+  color: var(--sub); text-decoration: none; transition: .2s;
+}
+.bottom-nav a.active { color: var(--primary); }
 </style>
 </head>
 <body>
 
+<!-- ===== TOP TAB BAR ===== -->
 <nav class="tab-bar">
-  <a href="今日计划.html">📋 今日</a>
-  <a href="减脂全面计划.html">📖 计划</a>
-  <a href="减脂训练日跟练_三分化.html">💪 跟练</a>
-  <a href="减脂完整教程_饮食运动作息动作库.html">📚 教程</a>
-  <a href="饮食参考.html">🍽️ 饮食</a>
+  <a href="今日计划.html">今日</a>
+  <a href="减脂全面计划.html">计划</a>
+  <a href="减脂训练日跟练_三分化.html">跟练</a>
+  <a href="每日必做清单.html">清单</a>
+  <a href="饮食参考.html">饮食</a>
 </nav>
 
-<div class="header">
+<div class="page-header">
   <h1>📝 每周小结</h1>
-  <div class="date" id="dateStr"></div>
+  <div class="sub" id="dateStr"></div>
 </div>
 
+<!-- ===== 减脂进度 ===== -->
 <div class="card">
-  <div class="card-title">📊 本周体重统计</div>
-  <div id="weekWeight" style="text-align:center;padding:10px;font-size:13px;color:var(--sub)">加载中...</div>
+  <div class="card-title"> 减脂进度</div>
+  <div style="font-size:13px;color:var(--sub);margin-bottom:6px">起点 <b style="color:var(--text)">85kg</b> → 目标 <b style="color:var(--text)">63–70kg</b></div>
+  <div class="goal-bar-wrap"><div class="goal-bar" id="goalBar" style="width:0%"></div></div>
+  <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--sub);margin-top:3px">
+    <span>85kg（起点）</span>
+    <span id="progressTxt">加载中...</span>
+    <span>63kg（目标）</span>
+  </div>
 </div>
 
+<!-- ===== 本周体重记录 ===== -->
 <div class="card">
-  <div class="card-title">本周回顾</div>
+  <div class="card-title"> 体重记录</div>
+
+  <!-- 今日输入 -->
+  <div class="weight-input-row">
+    <input type="number" id="weightInput" placeholder="今日体重 kg" step="0.1" min="40" max="200">
+    <button onclick="logWeight()">记录</button>
+  </div>
+  <div style="font-size:11px;color:var(--sub);margin-bottom:10px">每天早上空腹排尿后称 · 看周均值，不看单日波动</div>
+
+  <!-- 本周统计 -->
+  <div class="weight-stat" id="weekStat">
+    <div class="ws-item"><span class="val neutral" id="wStart">--</span><span class="lbl">本周起点</span></div>
+    <div class="ws-item"><span class="val neutral" id="wLatest">--</span><span class="lbl">最新体重</span></div>
+    <div class="ws-item"><span class="val neutral" id="wDiff">--</span><span class="lbl">本周变化</span></div>
+  </div>
+
+  <!-- 7天条形图 -->
+  <div class="week-chart" id="weekChart"></div>
+  <div style="display:flex;gap:4px;">
+    <div style="flex:1;text-align:center;font-size:10px;color:var(--sub)">一</div>
+    <div style="flex:1;text-align:center;font-size:10px;color:var(--sub)">二</div>
+    <div style="flex:1;text-align:center;font-size:10px;color:var(--sub)">三</div>
+    <div style="flex:1;text-align:center;font-size:10px;color:var(--sub)">四</div>
+    <div style="flex:1;text-align:center;font-size:10px;color:var(--sub)">五</div>
+    <div style="flex:1;text-align:center;font-size:10px;color:var(--sub)">六</div>
+    <div style="flex:1;text-align:center;font-size:10px;color:var(--sub)">日</div>
+  </div>
+
+  <!-- 历史记录列表 -->
+  <div style="margin-top:12px;font-size:12px;color:var(--sub);font-weight:600;margin-bottom:6px">最近记录</div>
+  <div class="weight-log-list" id="weightLogList">
+    <div style="color:var(--sub);font-size:13px;text-align:center;padding:12px">还没有记录</div>
+  </div>
+</div>
+
+<!-- ===== 本周回顾 ===== -->
+<div class="card">
+  <div class="card-title"> 本周回顾</div>
 
   <div class="field">
     <label>力量训练完成了几次？（目标 3 次）</label>
@@ -81,12 +250,12 @@ textarea{width:100%;padding:10px 12px;background:var(--bg);border:1px solid var(
   </div>
 
   <div class="field">
-    <label>骑行日完成情况</label>
+    <label>有氧日完成情况</label>
     <div class="qb" id="rdBtns">
-      <button class="qb-btn" onclick="setField('rides','没骑')">没骑</button>
-      <button class="qb-btn" onclick="setField('rides','1次')">1次</button>
-      <button class="qb-btn" onclick="setField('rides','2次')">2次</button>
-      <button class="qb-btn selected" onclick="setField('rides','3次')">3次 ✓</button>
+      <button class="qb-btn" onclick="setField('cardio','没做')">没做</button>
+      <button class="qb-btn" onclick="setField('cardio','1次')">1次</button>
+      <button class="qb-btn" onclick="setField('cardio','2次')">2次 ✓</button>
+      <button class="qb-btn selected" onclick="setField('cardio','2次')">2次 ✓</button>
     </div>
   </div>
 
@@ -111,92 +280,246 @@ textarea{width:100%;padding:10px 12px;background:var(--bg);border:1px solid var(
   </div>
 
   <div class="field">
-    <label>备注（困难？调整想法？）</label>
-    <textarea id="notes" placeholder="比如：这周肩膀不怎么疼了、周三太累跳过了训练..."></textarea>
+    <label>备注（困难？调整想法？下周重点？）</label>
+    <textarea id="notes" placeholder="比如：这周肩膀不怎么疼了、周三太累跳过了训练、下周要加重量..."></textarea>
   </div>
 
-  <button class="btn" onclick="saveReview()">保存本周小结</button>
+  <button class="save-btn" onclick="saveReview()">保存本周小结</button>
   <div class="saved-msg" id="savedMsg">✓ 已保存</div>
 </div>
 
+<!-- ===== 历史小结 ===== -->
 <div class="card">
-  <div class="card-title">📋 历史小结</div>
-  <div class="past" id="pastList">
-    <div style="text-align:center;color:var(--sub);font-size:12px;padding:20px">还没有记录</div>
+  <div class="card-title"> 历史小结</div>
+  <div id="pastList">
+    <div style="text-align:center;color:var(--sub);font-size:13px;padding:20px">还没有记录</div>
   </div>
 </div>
 
 <script>
-const now=new Date();
-document.getElementById('dateStr').textContent=
-  `${now.getFullYear()}.${String(now.getMonth()+1).padStart(2,'0')}.${String(now.getDate()).padStart(2,'0')}`;
+// ========= 初始化 =========
+const now = new Date();
+document.getElementById('dateStr').textContent =
+  `${now.getFullYear()}.${String(now.getMonth()+1).padStart(2,'0')}.${String(now.getDate()).padStart(2,'0')} · 第${getWeekStr()}周`;
 
-let review={exercises:'3次',rides:'3次',diet:'不错',sleep:'不错',notes:''};
-let reviews=JSON.parse(localStorage.getItem('fit_weekly_reviews')||'[]');
-
-function setField(field,value){
-  review[field]=value;
-  const groupId=field==='exercises'?'ex':field==='rides'?'rd':field==='diet'?'dt':'sl';
-  document.querySelectorAll('#'+groupId+'Btns .qb-btn').forEach(b=>b.classList.remove('selected'));
-  // Find the clicked button by text content and highlight it
-  const btns=document.querySelectorAll('#'+groupId+'Btns .qb-btn');
-  btns.forEach(b=>{if(b.textContent.trim().startsWith(value))b.classList.add('selected');});
+function getWeekStr() {
+  const d = new Date(now);
+  const day = d.getDay();
+  const mon = new Date(d);
+  mon.setDate(d.getDate() - (day === 0 ? 6 : day - 1));
+  return mon.toISOString().slice(5, 10).replace('-', '/');
 }
 
-function saveReview(){
-  review.notes=document.getElementById('notes').value;
-  const d=new Date(now);
-  const day=d.getDay();
-  const mon=new Date(d);mon.setDate(d.getDate()-(day===0?6:day-1));
-  const sun=new Date(mon);sun.setDate(mon.getDate()+6);
-  const weekStr=`${mon.toISOString().slice(0,10)} ~ ${sun.toISOString().slice(0,10)}`;
-  const idx=reviews.findIndex(r=>r.week===weekStr);
-  const entry={week:weekStr,...review,savedAt:now.toISOString().slice(0,10)};
-  if(idx>=0)reviews[idx]=entry;else reviews.push(entry);
-  reviews.sort((a,b)=>b.week.localeCompare(a.week));
-  localStorage.setItem('fit_weekly_reviews',JSON.stringify(reviews));
+const todayStr = now.toISOString().slice(0, 10);
+let review = { exercises: '3次', cardio: '2次', diet: '不错', sleep: '不错', notes: '' };
+let reviews = JSON.parse(localStorage.getItem('fit_weekly_reviews') || '[]');
+
+// ========= 减脂进度条 =========
+(function renderGoalBar() {
+  const wLog = JSON.parse(localStorage.getItem('fit_weight_log') || '[]');
+  const start = 85, goal = 63;
+  let latest = start;
+  if (wLog.length) {
+    const sorted = wLog.slice().sort((a, b) => b.date.localeCompare(a.date));
+    latest = sorted[0].weight;
+  }
+  const progress = Math.min(100, Math.max(0, (start - latest) / (start - goal) * 100));
+  document.getElementById('goalBar').style.width = progress.toFixed(1) + '%';
+  const lost = (start - latest).toFixed(1);
+  const remain = (latest - goal).toFixed(1);
+  document.getElementById('progressTxt').textContent =
+    latest + 'kg · 已减' + lost + 'kg · 还差' + remain + 'kg';
+})();
+
+// ========= 体重记录 =========
+let weightLog = JSON.parse(localStorage.getItem('fit_weight_log') || '[]');
+
+function logWeight() {
+  const input = document.getElementById('weightInput');
+  const val = parseFloat(input.value);
+  if (!val || val < 40 || val > 200) {
+    input.style.borderColor = '#ef4444';
+    setTimeout(() => { input.style.borderColor = ''; }, 1000);
+    return;
+  }
+  // 同一天覆盖
+  const idx = weightLog.findIndex(e => e.date === todayStr);
+  if (idx >= 0) weightLog[idx].weight = val;
+  else weightLog.push({ date: todayStr, weight: val });
+  weightLog.sort((a, b) => b.date.localeCompare(a.date));
+  localStorage.setItem('fit_weight_log', JSON.stringify(weightLog));
+  input.value = '';
+  renderWeightLog();
+  renderGoalBarLive(val);
+}
+
+function deleteWeight(date) {
+  weightLog = weightLog.filter(e => e.date !== date);
+  localStorage.setItem('fit_weight_log', JSON.stringify(weightLog));
+  renderWeightLog();
+}
+
+function renderGoalBarLive(latest) {
+  const start = 85, goal = 63;
+  const progress = Math.min(100, Math.max(0, (start - latest) / (start - goal) * 100));
+  document.getElementById('goalBar').style.width = progress.toFixed(1) + '%';
+  const lost = (start - latest).toFixed(1);
+  const remain = (latest - goal).toFixed(1);
+  document.getElementById('progressTxt').textContent =
+    latest + 'kg · 已减' + lost + 'kg · 还差' + remain + 'kg';
+}
+
+function renderWeightLog() {
+  // 本周数据
+  const d = new Date(now);
+  const day = d.getDay();
+  const mon = new Date(d); mon.setDate(d.getDate() - (day === 0 ? 6 : day - 1)); mon.setHours(0, 0, 0, 0);
+  const weekEntries = weightLog.filter(e => {
+    const ed = new Date(e.date); return ed >= mon;
+  }).sort((a, b) => a.date.localeCompare(b.date));
+
+  // 统计卡
+  if (weekEntries.length >= 1) {
+    const first = weekEntries[0], last = weekEntries[weekEntries.length - 1];
+    const diff = (last.weight - first.weight).toFixed(1);
+    const diffNum = parseFloat(diff);
+    document.getElementById('wStart').textContent = first.weight + 'kg';
+    document.getElementById('wLatest').textContent = last.weight + 'kg';
+    const diffEl = document.getElementById('wDiff');
+    diffEl.textContent = (diffNum < 0 ? '↓' : diffNum > 0 ? '↑' : '→') + ' ' + Math.abs(diff) + 'kg';
+    diffEl.className = 'val ' + (diffNum < 0 ? 'down' : diffNum > 0 ? 'up' : 'flat');
+  }
+
+  // 7天条形图（周一到周日）
+  const chart = document.getElementById('weekChart');
+  const dayNames = ['一', '二', '三', '四', '五', '六', '日'];
+  const dayDates = [];
+  for (let i = 0; i < 7; i++) {
+    const d2 = new Date(mon); d2.setDate(mon.getDate() + i);
+    dayDates.push(d2.toISOString().slice(0, 10));
+  }
+  const dayWeights = dayDates.map(date => {
+    const e = weightLog.find(w => w.date === date);
+    return e ? e.weight : null;
+  });
+  const filled = dayWeights.filter(w => w !== null);
+  const minW = filled.length ? Math.min(...filled) - 1 : 80;
+  const maxW = filled.length ? Math.max(...filled) + 1 : 90;
+
+  chart.innerHTML = dayDates.map((date, i) => {
+    const w = dayWeights[i];
+    const heightPct = w ? Math.max(15, ((w - minW) / (maxW - minW)) * 100) : 0;
+    const isToday = date === todayStr;
+    return `<div class="wc-day">
+      <div class="wc-bar-wrap">
+        <div class="wc-bar ${w ? 'filled' : ''}" 
+             style="height:${w ? heightPct + '%' : '4px'};${isToday ? 'background:var(--primary);opacity:1' : (w ? 'background:rgba(249,115,22,0.5)' : '')}"></div>
+      </div>
+      <div class="wc-label" style="color:${isToday ? 'var(--primary)' : 'var(--sub)'}">${w ? w : '—'}</div>
+    </div>`;
+  }).join('');
+
+  // 历史列表（最近10条）
+  const listEl = document.getElementById('weightLogList');
+  if (!weightLog.length) {
+    listEl.innerHTML = '<div style="color:var(--sub);font-size:13px;text-align:center;padding:12px">还没有记录</div>';
+    return;
+  }
+  listEl.innerHTML = weightLog.slice(0, 10).map((e, i) => {
+    let diffHTML = '';
+    if (i < weightLog.length - 1) {
+      const prev = weightLog[i + 1].weight;
+      const d = (e.weight - prev).toFixed(1);
+      const cls = parseFloat(d) < 0 ? 'down' : parseFloat(d) > 0 ? 'up' : '';
+      diffHTML = `<span class="wl-diff ${cls}">${parseFloat(d) < 0 ? '↓' : parseFloat(d) > 0 ? '↑' : '→'}${Math.abs(d)}kg</span>`;
+    }
+    return `<div class="wl-item">
+      <span class="wl-date">${e.date}</span>
+      <span class="wl-kg">${e.weight} kg</span>
+      ${diffHTML}
+      <button class="wl-del" onclick="deleteWeight('${e.date}')">×</button>
+    </div>`;
+  }).join('');
+}
+
+renderWeightLog();
+
+// ========= 周回顾表单 =========
+function setField(field, value) {
+  review[field] = value;
+  const groupMap = { exercises: 'ex', cardio: 'rd', diet: 'dt', sleep: 'sl' };
+  const groupId = groupMap[field] + 'Btns';
+  document.querySelectorAll('#' + groupId + ' .qb-btn').forEach(b => {
+    b.classList.toggle('selected', b.textContent.trim().startsWith(value));
+  });
+}
+
+// 修正有氧按钮逻辑（去掉重复项）
+document.addEventListener('DOMContentLoaded', function() {
+  const rdBtns = document.getElementById('rdBtns');
+  rdBtns.innerHTML = `
+    <button class="qb-btn" onclick="setField('cardio','没做')">没做</button>
+    <button class="qb-btn" onclick="setField('cardio','1次')">1次</button>
+    <button class="qb-btn selected" onclick="setField('cardio','2次')">2次 ✓</button>
+  `;
+});
+
+function saveReview() {
+  review.notes = document.getElementById('notes').value;
+  const d = new Date(now);
+  const day = d.getDay();
+  const mon = new Date(d); mon.setDate(d.getDate() - (day === 0 ? 6 : day - 1));
+  const sun = new Date(mon); sun.setDate(mon.getDate() + 6);
+  const weekStr = `${mon.toISOString().slice(0, 10)} ~ ${sun.toISOString().slice(0, 10)}`;
+
+  // 加入当前体重
+  const latestWeight = weightLog.length ? weightLog[0].weight : null;
+  const entry = { week: weekStr, ...review, weight: latestWeight, savedAt: todayStr };
+
+  const idx = reviews.findIndex(r => r.week === weekStr);
+  if (idx >= 0) reviews[idx] = entry; else reviews.push(entry);
+  reviews.sort((a, b) => b.week.localeCompare(a.week));
+  localStorage.setItem('fit_weekly_reviews', JSON.stringify(reviews));
+
   document.getElementById('savedMsg').classList.add('show');
-  setTimeout(()=>document.getElementById('savedMsg').classList.remove('show'),2000);
-  document.getElementById('notes').value='';
+  setTimeout(() => document.getElementById('savedMsg').classList.remove('show'), 2500);
+  document.getElementById('notes').value = '';
   renderPast();
 }
 
-function renderPast(){
-  const container=document.getElementById('pastList');
-  if(!reviews.length){container.innerHTML='<div style="text-align:center;color:var(--sub);font-size:12px;padding:20px">还没有记录</div>';return;}
-  container.innerHTML=reviews.slice(0,10).map(r=>`
+function renderPast() {
+  const container = document.getElementById('pastList');
+  if (!reviews.length) {
+    container.innerHTML = '<div style="text-align:center;color:var(--sub);font-size:13px;padding:20px">还没有记录</div>';
+    return;
+  }
+  container.innerHTML = reviews.slice(0, 12).map(r => `
     <div class="past-item">
       <div class="past-week">📅 ${r.week}</div>
-      <div class="past-meta">训练 ${r.exercises} · 骑行 ${r.rides} · 饮食 ${r.diet} · 睡眠 ${r.sleep}</div>
-      ${r.notes?`<div class="past-notes">💬 ${r.notes}</div>`:''}
+      <div class="past-meta">
+        训练 ${r.exercises} · 有氧 ${r.cardio || '--'} · 饮食 ${r.diet} · 睡眠 ${r.sleep}
+        ${r.weight ? ` · <b>${r.weight}kg</b>` : ''}
+      </div>
+      ${r.notes ? `<div class="past-notes">💬 ${r.notes}</div>` : ''}
     </div>
   `).join('');
 }
-renderPast();
 
-// ── Weekly Weight Stats ──
-(function showWeekWeight(){
-  const wLog=JSON.parse(localStorage.getItem('fit_weight_log')||'[]');
-  const d=new Date(now);
-  const day=d.getDay();
-  const mon=new Date(d);mon.setDate(d.getDate()-(day===0?6:day-1));mon.setHours(0,0,0,0);
-  const sun=new Date(mon);sun.setDate(mon.getDate()+6);
-  const weekEntries=wLog.filter(e=>{const ed=new Date(e.date);return ed>=mon&&ed<=sun;}).sort((a,b)=>a.date.localeCompare(b.date));
-  const el=document.getElementById('weekWeight');
-  if(weekEntries.length<1){el.innerHTML='本周尚未记录体重';return;}
-  const first=weekEntries[0],last=weekEntries[weekEntries.length-1];
-  const diff=(last.weight-first.weight).toFixed(1);
-  const arrow=diff<0?'↓ 减了':diff>0?'↑ 涨了':'→ 持平';
-  el.innerHTML=`${mon.toISOString().slice(0,10)} ～ ${sun.toISOString().slice(0,10)}<br>
-    <b style="font-size:16px">${first.weight} → ${last.weight} kg</b> 
-    <span style="color:${diff<0?'var(--green)':diff>0?'#f87171':'var(--sub)'};font-weight:600">${arrow} ${Math.abs(diff)} kg</span>
-    ${weekEntries.length>=2?`<br><span style="font-size:11px;color:var(--sub)">${weekEntries.length} 天有记录</span>`:''}`;
-})();
+renderPast();
 </script>
+
 <script>
-if('serviceWorker' in navigator){
-  navigator.serviceWorker.register('/jf/serviceWorker.js').catch(function(){});
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/jf/serviceWorker.js').catch(function() {});
 }
 </script>
+
+<nav class="bottom-nav">
+  <a href="今日计划.html">今日</a>
+  <a href="减脂全面计划.html">计划</a>
+  <a href="减脂训练日跟练_三分化.html">跟练</a>
+  <a href="每日必做清单.html">清单</a>
+  <a href="饮食参考.html">饮食</a>
+</nav>
 </body>
 </html>
