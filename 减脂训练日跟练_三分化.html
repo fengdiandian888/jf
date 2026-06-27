@@ -1784,7 +1784,8 @@ var WorkoutTimer = (function() {
   function updateRemainingEst() {
     if (!remainingEst || !window.TimeEstimator) return;
     if (state === STATE.DONE) { remainingEst.textContent = ''; return; }
-    var remaining = TimeEstimator.calcRemaining(exercises, currentIndex, currentSet);
+    var inRest = (state === STATE.REST);
+    var remaining = TimeEstimator.calcRemaining(exercises, currentIndex, currentSet, inRest);
     remainingEst.textContent = '⏱ 剩余约 ' + TimeEstimator.formatDuration(remaining);
   }
 
@@ -2695,12 +2696,17 @@ var TimeEstimator = (function() {
   }
 
   // --- 计算剩余预估时间（供 WorkoutTimer 调用）---
-  function calcRemaining(exercises, currentIndex, currentSet) {
+  function calcRemaining(exercises, currentIndex, currentSet, inRest) {
     var remaining = 0;
     for (var i = currentIndex; i < exercises.length; i++) {
       var ex = exercises[i];
       var workTime = (ex.timed && ex.duration > 0) ? ex.duration : parseReps(ex.reps) * SECONDS_PER_REP;
-      var setsToCount = (i === currentIndex) ? (ex.sets - currentSet + 1) : ex.sets;
+      var setsToCount;
+      if (i === currentIndex) {
+        setsToCount = inRest ? (ex.sets - currentSet) : (ex.sets - currentSet + 1);
+      } else {
+        setsToCount = ex.sets;
+      }
       if (setsToCount > 0) remaining += setsToCount * (workTime + ex.rest);
     }
     return remaining;
