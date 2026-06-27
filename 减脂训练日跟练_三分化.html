@@ -235,13 +235,16 @@
 
 /* 顶部信息栏 */
 .tm-header {
-  flex: 0 0 auto; display: flex; align-items: center; justify-content: space-between;
-  padding: 14px 100px 14px 18px; background: rgba(255,255,255,.04);
+  flex: 0 0 auto; display: flex; flex-direction: column; align-items: center;
+  padding: 12px 100px 12px 18px; background: rgba(255,255,255,.04);
   border-bottom: 1px solid rgba(255,255,255,.08);
+  position: relative;
 }
+.tm-btn-close { position: absolute; top: 12px; right: 14px; }
 .tm-session-name { font-size: 13px; color: rgba(255,255,255,.5); font-weight: 500; }
+.tm-timer-label { font-size: 11px; color: rgba(255,255,255,.35); font-weight: 600; margin-top: 4px; letter-spacing: .03em; }
 .tm-timer-big { font-size: 38px; font-weight: 800; color: #fff;
-  letter-spacing: -0.02em; font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em; font-variant-numeric: tabular-nums; line-height: 1.1;
 }
 .tm-timer-big.rest-mode { color: #22c55e; }
 .tm-timer-big.warning { color: #f59e0b; animation: tmPulse .8s ease-in-out infinite; }
@@ -1409,8 +1412,9 @@ if('serviceWorker' in navigator){
   <div class="tm-header">
     <button class="tm-btn-close" id="tmClose" title="退出训练">✕ 退出</button>
     <div class="tm-session-name" id="tmSessionName">加载中...</div>
-    <div class="tm-remaining-est" id="tmRemainingEst"></div>
+    <div class="tm-timer-label" id="tmTimerLabel">⏱ 本组用时</div>
     <div class="tm-timer-big" id="tmTimerDisplay">00:00</div>
+    <div class="tm-remaining-est" id="tmRemainingEst"></div>
   </div>
 
   <!-- 视频区域 -->
@@ -1545,7 +1549,7 @@ if('serviceWorker' in navigator){
 var WorkoutTimer = (function() {
   // --- DOM 引用 ---
   var $ = function(id) { return document.getElementById(id); };
-  var overlay, timerDisplay, sessionName;
+  var overlay, timerDisplay, sessionName, timerLabel;
   var exerciseName, exerciseMeta, setInfo;
   var videoArea, videoPlaceholder, videoBadge;
   var progressFill, exercisesList, controls;
@@ -1685,9 +1689,13 @@ var WorkoutTimer = (function() {
   function updateDisplay() {
     timerDisplay.textContent = formatTime(timeLeft);
 
-    // 进度条
-    var pct = totalTime > 0 ? ((totalTime - timeLeft) / totalTime * 100) : 0;
-    progressFill.style.width = Math.min(100, Math.max(0, pct)) + '%';
+    // 进度条（仅时间型和休息有进度条；次数型无总时间概念，隐藏）
+    if (totalTime > 0) {
+      var pct = ((totalTime - timeLeft) / totalTime * 100);
+      progressFill.style.width = Math.min(100, Math.max(0, pct)) + '%';
+    } else {
+      progressFill.style.width = '0%';
+    }
 
     // 休息大屏倒计时
     if (state === STATE.REST) {
@@ -1696,8 +1704,8 @@ var WorkoutTimer = (function() {
       else restCountdown.classList.remove('warning');
     }
 
-    // 时间警告（最后10秒）
-    if (timeLeft <= 10 && state === STATE.TRAINING) {
+    // 时间警告（最后10秒，仅时间型训练）
+    if (timeLeft <= 10 && state === STATE.TRAINING && isTimed) {
       timerDisplay.classList.add('warning');
     } else {
       timerDisplay.classList.remove('warning');
@@ -1786,7 +1794,7 @@ var WorkoutTimer = (function() {
     if (state === STATE.DONE) { remainingEst.textContent = ''; return; }
     var inRest = (state === STATE.REST);
     var remaining = TimeEstimator.calcRemaining(exercises, currentIndex, currentSet, inRest);
-    remainingEst.textContent = '⏱ 剩余约 ' + TimeEstimator.formatDuration(remaining);
+    remainingEst.textContent = '📊 整个训练剩余约 ' + TimeEstimator.formatDuration(remaining);
   }
 
   // --- 核心状态流转 ---
@@ -1801,10 +1809,10 @@ var WorkoutTimer = (function() {
     totalSets = ex.sets;
     restTime = ex.rest;
     isTimed = ex.timed;
-    totalTime = isTimed ? ex.duration : 999; // 次数型用大数值表示"手动完成"
+    totalTime = isTimed ? ex.duration : 0; // 次数型用0表示正计时模式
+    timeLeft = isTimed ? totalTime : 0;    // 次数型从0开始往上数
 
     state = STATE.TRAINING;
-    timeLeft = totalTime;
 
     // 恢复视频显示，隐藏休息大屏
     videoArea.style.display = '';
@@ -1816,6 +1824,7 @@ var WorkoutTimer = (function() {
       ('⏱ ' + formatTime(ex.duration)) :
       ('第 ' + currentSet + '／' + totalSets + ' 组 · ' + (ex.reps ? ex.reps + '次' : ''));
     videoBadge.textContent = isTimed ? '进行中' : ('第' + currentSet + '组');
+    timerLabel.textContent = isTimed ? '⏱ 动作倒计时' : '⏱ 本组用时';
 
     showControlsForState();
     updateDisplay();
@@ -1875,6 +1884,7 @@ var WorkoutTimer = (function() {
     exerciseName.textContent = '☕ 间组休息';
     setInfo.textContent = '休息 ' + restTime + ' 秒';
     videoBadge.textContent = '休息中';
+    timerLabel.textContent = '⏱ 休息倒计时';
 
     // 隐藏视频，显示休息倒计时大屏
     videoArea.style.display = 'none';
@@ -1900,8 +1910,8 @@ var WorkoutTimer = (function() {
     if (currentSet <= totalSets) {
       // 同一动作下一组
       var ex = exercises[currentIndex];
-      totalTime = isTimed ? ex.duration : 999;
-      timeLeft = totalTime;
+      totalTime = isTimed ? ex.duration : 0;
+      timeLeft = isTimed ? totalTime : 0;
       state = STATE.TRAINING;
 
       exerciseName.textContent = ex.name;
@@ -1909,6 +1919,7 @@ var WorkoutTimer = (function() {
         ('⏱ ' + formatTime(ex.duration)) :
         ('第 ' + currentSet + '／' + totalSets + ' 组 · ' + (ex.reps ? ex.reps + '次' : ''));
       videoBadge.textContent = '第' + currentSet + '组';
+      timerLabel.textContent = isTimed ? '⏱ 动作倒计时' : '⏱ 本组用时';
 
       showControlsForState();
       updateDisplay();
@@ -1964,7 +1975,12 @@ var WorkoutTimer = (function() {
   function tick() {
     if (state === STATE.PAUSED) return;
 
-    timeLeft--;
+    // 次数型训练: 正计时(往上数); 时间型训练/休息: 倒计时(往下数)
+    if (state === STATE.TRAINING && !isTimed) {
+      timeLeft++;
+    } else {
+      timeLeft--;
+    }
     updateDisplay();
 
     if (timeLeft <= 0) {
@@ -1977,8 +1993,8 @@ var WorkoutTimer = (function() {
         speak('休息结束，开始下一个动作');
         nextAfterRest();
       }
-    } else if (timeLeft === 3 && state === STATE.TRAINING) {
-      // 最后3秒倒计时语音
+    } else if (timeLeft === 3 && state === STATE.TRAINING && isTimed) {
+      // 最后3秒倒计时语音（仅时间型）
       speak(timeLeft);
     } else if (timeLeft <= 30 && timeLeft % 10 === 0 && state === STATE.REST) {
       // 休息时每10秒报剩余
@@ -2030,12 +2046,13 @@ var WorkoutTimer = (function() {
     // 计算总预估时间
     var totalEst = window.TimeEstimator ? TimeEstimator.estimateTotal(exercises) : 0;
     if (remainingEst && totalEst > 0) {
-      remainingEst.textContent = '⏱ 总计约 ' + TimeEstimator.formatDuration(totalEst);
+      remainingEst.textContent = '📊 整个训练总计约 ' + TimeEstimator.formatDuration(totalEst);
     }
 
     // 初始化DOM引用
     overlay = $('workoutTimer');
     timerDisplay = $('tmTimerDisplay');
+    timerLabel = $('tmTimerLabel');
     sessionName = $('tmSessionName');
     exerciseName = $('tmExerciseName');
     exerciseMeta = $('tmExerciseMeta');
