@@ -1604,7 +1604,8 @@ var WorkoutTimer = (function() {
     switch(state) {
       case STATE.TRAINING:
         btnPause.style.display = '';
-        btnComplete.style.display = isTimed ? 'none' : '';
+        btnComplete.style.display = '';
+        btnComplete.textContent = isTimed ? '✅ 完成动作' : '✅ 完成本组';
         btnSkip.style.display = '';
         btnSkip.textContent = '跳过 →';
         break;
