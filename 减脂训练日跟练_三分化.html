@@ -247,16 +247,17 @@
 
 /* 中央视频区域 */
 .tm-video-area {
-  flex: 0 0 auto; width: 100%; aspect-ratio: 16/9; max-height: 40vh;
-  background: #000; display: flex; align-items: center; justify-content: center;
-  position: relative; overflow: hidden;
+  flex: 0 0 auto; width: auto; max-width: 60%; aspect-ratio: 3/4; max-height: 55vh;
+  margin: 0 auto; background: #000; display: flex; align-items: center;
+  justify-content: center; position: relative; overflow: hidden;
+  border-radius: 12px;
 }
 .tm-video-placeholder {
   color: rgba(255,255,255,.25); font-size: 16px; font-weight: 600;
   display: flex; flex-direction: column; align-items: center; gap: 8px;
 }
 .tm-video-placeholder svg { width: 48px; height: 48px; opacity: .3; }
-.tm-video-area video, .tm-video-area img { width: 100%; height: 100%; object-fit: cover; }
+.tm-video-area video, .tm-video-area img { width: 100%; height: 100%; object-fit: contain; }
 .tm-video-badge {
   position: absolute; top: 10px; left: 10px;
   background: rgba(0,0,0,.55); color: #f97316;
@@ -1655,7 +1656,7 @@ var WorkoutTimer = (function() {
       vid.loop = true;
       vid.muted = true;
       vid.playsInline = true;
-      vid.style.cssText = 'width:100%;height:100%;object-fit:cover;';
+      vid.style.cssText = 'width:100%;height:100%;object-fit:contain;';
       videoArea.appendChild(vid);
     }
   }
