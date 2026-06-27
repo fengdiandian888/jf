@@ -264,6 +264,22 @@
   padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 700;
 }
 
+/* 休息倒计时大屏 */
+.tm-rest-screen {
+  display: none; flex-direction: column; align-items: center; justify-content: center;
+  flex: 1 1 auto; gap: 12px;
+}
+.tm-rest-screen.active { display: flex; }
+.tm-rest-icon { font-size: 56px; opacity: .6; }
+.tm-rest-label { font-size: 18px; font-weight: 600; color: rgba(255,255,255,.5); }
+.tm-rest-countdown {
+  font-size: 120px; font-weight: 800; line-height: 1;
+  color: #f97316; font-variant-numeric: tabular-nums;
+  text-shadow: 0 0 40px rgba(249,115,22,.3);
+}
+.tm-rest-countdown.warning { color: #ef4444; animation: tmPulse .8s ease-in-out infinite; }
+.tm-rest-hint { font-size: 14px; color: rgba(255,255,255,.35); }
+
 /* 动作标题区 */
 .tm-exercise-info {
   flex: 0 0 auto; padding: 16px 20px 12px;
@@ -1303,6 +1319,14 @@ if('serviceWorker' in navigator){
     <div class="tm-video-badge" id="tmVideoBadge">第1组</div>
   </div>
 
+  <!-- 休息倒计时大屏 -->
+  <div class="tm-rest-screen" id="tmRestScreen">
+    <div class="tm-rest-icon">☕</div>
+    <div class="tm-rest-label">间组休息</div>
+    <div class="tm-rest-countdown" id="tmRestCountdown">90</div>
+    <div class="tm-rest-hint">放松肌肉，调整呼吸</div>
+  </div>
+
   <!-- 动作信息（训练中/休息中） -->
   <div class="tm-exercise-info" id="tmExerciseInfo">
     <div class="tm-exercise-name" id="tmExerciseName">准备开始</div>
@@ -1395,6 +1419,7 @@ var WorkoutTimer = (function() {
   var progressFill, exercisesList, controls;
   var btnPause, btnComplete, btnSkip, btnClose;
   var completeScreen;
+  var restScreen, restCountdown;
 
   // --- 状态 ---
   var STATE = { IDLE: 'idle', TRAINING: 'training', REST: 'rest', DONE: 'done', PAUSED: 'paused' };
@@ -1409,6 +1434,8 @@ var WorkoutTimer = (function() {
   var isTimed = false;     // 是否为时间型动作（自动倒计时）
   var timerInterval = null;
   var startTime = 0;       // 开始时间戳
+  var totalPausedTime = 0; // 累计暂停时长（毫秒）
+  var pausedAt = 0;        // 暂停时刻
   var prevState = STATE.IDLE; // 暂停前的状态（用于恢复）
 
   // 统计
@@ -1529,6 +1556,13 @@ var WorkoutTimer = (function() {
     var pct = totalTime > 0 ? ((totalTime - timeLeft) / totalTime * 100) : 0;
     progressFill.style.width = Math.min(100, Math.max(0, pct)) + '%';
 
+    // 休息大屏倒计时
+    if (state === STATE.REST) {
+      restCountdown.textContent = timeLeft;
+      if (timeLeft <= 5) restCountdown.classList.add('warning');
+      else restCountdown.classList.remove('warning');
+    }
+
     // 时间警告（最后10秒）
     if (timeLeft <= 10 && state === STATE.TRAINING) {
       timerDisplay.classList.add('warning');
@@ -1629,6 +1663,10 @@ var WorkoutTimer = (function() {
     state = STATE.TRAINING;
     timeLeft = totalTime;
 
+    // 恢复视频显示，隐藏休息大屏
+    videoArea.style.display = '';
+    restScreen.classList.remove('active');
+
     // UI更新
     exerciseName.textContent = ex.name;
     setInfo.textContent = isTimed ?
@@ -1694,6 +1732,12 @@ var WorkoutTimer = (function() {
     setInfo.textContent = '休息 ' + restTime + ' 秒';
     videoBadge.textContent = '休息中';
 
+    // 隐藏视频，显示休息倒计时大屏
+    videoArea.style.display = 'none';
+    restScreen.classList.add('active');
+    restCountdown.textContent = restTime;
+    restCountdown.classList.remove('warning');
+
     showControlsForState();
     updateDisplay();
 
@@ -1703,6 +1747,10 @@ var WorkoutTimer = (function() {
   }
 
   function nextAfterRest() {
+    // 恢复视频显示，隐藏休息大屏
+    videoArea.style.display = '';
+    restScreen.classList.remove('active');
+
     currentSet++;
     if (currentSet <= totalSets) {
       // 同一动作下一组
@@ -1732,7 +1780,7 @@ var WorkoutTimer = (function() {
     stopTicker();
     state = STATE.DONE;
 
-    var elapsed = Math.floor((Date.now() - startTime) / 1000);
+    var elapsed = Math.floor((Date.now() - startTime - totalPausedTime) / 1000);
     $('tmStatDuration').textContent = formatTime(elapsed);
     $('tmStatExercises').textContent = stats.exercisesCompleted + '／' + exercises.length;
     $('tmStatSets').textContent = stats.setsCompleted;
@@ -1793,12 +1841,14 @@ var WorkoutTimer = (function() {
   function togglePause() {
     if (state === STATE.PAUSED) {
       state = prevState; // 恢复暂停前的状态
+      totalPausedTime += Date.now() - pausedAt; // 累加暂停时长
       btnPause.textContent = '⏸ 暂停';
       speak('继续');
       startTicker();
     } else if (state === STATE.TRAINING || state === STATE.REST) {
       prevState = state; // 保存当前状态
       state = STATE.PAUSED;
+      pausedAt = Date.now(); // 记录暂停时刻
       btnPause.textContent = '▶ 继续';
       stopTicker();
       speak('暂停');
@@ -1846,6 +1896,8 @@ var WorkoutTimer = (function() {
     btnSkip = $('tmBtnSkip');
     btnClose = $('tmClose');
     completeScreen = $('tmCompleteScreen');
+    restScreen = $('tmRestScreen');
+    restCountdown = $('tmRestCountdown');
 
     // 重置UI
     document.getElementById('tmExerciseInfo').style.display = '';
@@ -1856,6 +1908,9 @@ var WorkoutTimer = (function() {
     progressFill.style.width = '0%';
     timerDisplay.classList.remove('warning', 'rest-mode');
     overlay.classList.remove('rest-mode');
+    // 重置休息屏
+    restScreen.classList.remove('active');
+    videoArea.style.display = '';
 
     // 设置标题
     sessionName.textContent = sessionTitle || '今日训练';
@@ -1866,6 +1921,8 @@ var WorkoutTimer = (function() {
     // 统计重置
     stats = { setsCompleted: 0, exercisesCompleted: 0 };
     startTime = Date.now();
+    totalPausedTime = 0;
+    pausedAt = 0;
 
     // 显示弹窗
     overlay.classList.add('active');
