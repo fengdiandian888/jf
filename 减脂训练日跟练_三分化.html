@@ -869,11 +869,11 @@
  <div class="day-body">
  <button class="btn-start-training" data-day="sat-evening"><span class="btn-icon">▶</span> 开始维持日计时训练（轻量·不求力竭）</button>
 <div class="moves-title"> 轻量全身力量（前30′）— 每组留5个余力就停·哑铃用轻量</div>
- <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:8px;">
- <div style="background:rgba(74,222,128,0.05);border:1px solid rgba(74,222,128,0.2);border-radius:8px;padding:8px;"><b style="color:#4ade80;">① 高脚杯深蹲（轻量哑铃）</b><br><span style="font-size:12px;color:#888;">2×10 | 5-8KG哑铃 | 膝盖不内扣</span></div>
- <div style="background:rgba(74,222,128,0.05);border:1px solid rgba(74,222,128,0.2);border-radius:8px;padding:8px;"><b style="color:#4ade80;">② 哑铃地板卧推（轻量）</b><br><span style="font-size:12px;color:#888;">2×10 | 5-8KG/手 | 肩安全版</span></div>
- <div style="background:rgba(74,222,128,0.05);border:1px solid rgba(74,222,128,0.2);border-radius:8px;padding:8px;"><b style="color:#4ade80;">③ 哑铃俯身划船</b><br><span style="font-size:12px;color:#888;">2×10 | 8-10KG | 肘贴身</span></div>
- <div style="background:rgba(74,222,128,0.05);border:1px solid rgba(74,222,128,0.2);border-radius:8px;padding:8px;"><b style="color:#4ade80;">④ 哑铃臀桥（负重）</b><br><span style="font-size:12px;color:#888;">2×12 | 哑铃放髋部 | 顶峰停顿1s</span></div>
+ <div class="moves-grid">
+ <div class="move-row"><span class="move-num">1</span><span class="move-name">高脚杯深蹲（轻量哑铃）</span><span class="move-sets">2×10</span><span class="move-rest">休 60s</span><span class="move-note" style="grid-column:2/5;">5-8KG哑铃 | 膝盖不内扣</span></div>
+ <div class="move-row"><span class="move-num">2</span><span class="move-name">哑铃地板卧推（轻量）</span><span class="move-sets">2×10</span><span class="move-rest">休 60s</span><span class="move-note" style="grid-column:2/5;">5-8KG/手 | 肩安全版</span></div>
+ <div class="move-row"><span class="move-num">3</span><span class="move-name">哑铃俯身划船</span><span class="move-sets">2×10</span><span class="move-rest">休 60s</span><span class="move-note" style="grid-column:2/5;">8-10KG | 肘贴身</span></div>
+ <div class="move-row"><span class="move-num">4</span><span class="move-name">哑铃臀桥（负重）</span><span class="move-sets">2×12</span><span class="move-rest">休 60s</span><span class="move-note" style="grid-column:2/5;">哑铃放髋部 | 顶峰停顿1s</span></div>
  </div>
 
  <div class="video-box">
@@ -1277,6 +1277,7 @@ var WorkoutTimer = (function() {
   var isTimed = false;     // 是否为时间型动作（自动倒计时）
   var timerInterval = null;
   var startTime = 0;       // 开始时间戳
+  var prevState = STATE.IDLE; // 暂停前的状态（用于恢复）
 
   // 统计
   var stats = { setsCompleted: 0, exercisesCompleted: 0 };
@@ -1338,10 +1339,13 @@ var WorkoutTimer = (function() {
       var setsStr = setsEl ? setsEl.textContent.trim() : '';
       var restStr = restEl ? restEl.textContent.trim() : '';
 
-      // 解析组数和次数: "3×12–15" 或 "3×10–12"
-      var setsMatch = setsStr.match(/(\d+)\s*[×x]\s*(\d+)/);
+      // 跳过空组数的非训练行（如日程安排：起床、通勤等）
+      if (!setsStr) return;
+
+      // 解析组数和次数: "3×12–15" 或 "3×10–12" 或 "2×10" 或 "3×10/侧"
+      var setsMatch = setsStr.match(/(\d+)\s*[×x]\s*(.+)/);
       var numSets = setsMatch ? parseInt(setsMatch[1]) : 1;
-      var reps = setsMatch ? setsMatch[2] : '';
+      var reps = setsMatch ? setsMatch[2].trim() : '';
 
       // 解析休息时间: "休 90s" 或 "休 120s"
       var restMatch = restStr.match(/(\d+)/);
@@ -1446,11 +1450,13 @@ var WorkoutTimer = (function() {
         btnPause.style.display = '';
         btnComplete.style.display = isTimed ? 'none' : '';
         btnSkip.style.display = '';
+        btnSkip.textContent = '跳过 →';
         break;
       case STATE.REST:
         btnPause.style.display = '';
         btnComplete.style.display = 'none';
         btnSkip.style.display = '';
+        btnSkip.textContent = '跳过休息 →';
         break;
       default:
         controls.style.display = 'none';
@@ -1492,7 +1498,7 @@ var WorkoutTimer = (function() {
   }
 
   function completeCurrentSet() {
-    stats.setCompleted++;
+    stats.setsCompleted++;
     speak('完成！休息 ' + restTime + ' 秒');
     startRest();
   }
@@ -1547,7 +1553,7 @@ var WorkoutTimer = (function() {
     var elapsed = Math.floor((Date.now() - startTime) / 1000);
     $('tmStatDuration').textContent = formatTime(elapsed);
     $('tmStatExercises').textContent = stats.exercisesCompleted + '／' + exercises.length;
-    $('tmStatSets').textContent = stats.setCompleted;
+    $('tmStatSets').textContent = stats.setsCompleted;
     // 预估消耗热量（粗略估算：每分钟约7-10大卡）
     var calEst = Math.round(elapsed / 60 * 8);
     $('tmStatCalories').textContent = calEst + ' kcal';
@@ -1558,7 +1564,6 @@ var WorkoutTimer = (function() {
     ][Math.floor(Math.random() * 3)];
 
     document.getElementById('tmExerciseInfo').style.display = 'none';
-    document.getElementById('tmProgressWrap') && (document.getElementById('tmProgressWrap').style.display = 'none'); // fallback
     progressFill.parentElement.parentElement.style.display = 'none';
     exercisesList.style.display = 'none';
     controls.style.display = 'none';
@@ -1605,11 +1610,12 @@ var WorkoutTimer = (function() {
   // --- 控制操作 ---
   function togglePause() {
     if (state === STATE.PAUSED) {
-      state = (timeLeft === restTime && currentSet > 1 && currentSet <= totalSets) ? STATE.REST : STATE.TRAINING;
+      state = prevState; // 恢复暂停前的状态
       btnPause.textContent = '⏸ 暂停';
       speak('继续');
       startTicker();
     } else if (state === STATE.TRAINING || state === STATE.REST) {
+      prevState = state; // 保存当前状态
       state = STATE.PAUSED;
       btnPause.textContent = '▶ 继续';
       stopTicker();
@@ -1618,9 +1624,16 @@ var WorkoutTimer = (function() {
   }
 
   function skipExercise() {
-    speak('跳过此动作');
-    stats.exercisesCompleted++;
-    loadExercise(currentIndex + 1);
+    if (state === STATE.REST) {
+      // 休息时点跳过 = 跳过剩余休息时间，直接进入下一组/动作
+      speak('跳过休息');
+      nextAfterRest();
+    } else {
+      // 训练时点跳过 = 跳过整个动作
+      speak('跳过此动作');
+      stats.exercisesCompleted++;
+      loadExercise(currentIndex + 1);
+    }
   }
 
   // --- 公开 API ---
