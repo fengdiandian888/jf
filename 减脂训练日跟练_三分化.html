@@ -1934,6 +1934,45 @@ var VideoManager = (function() {
   var db = null;
   var currentExercise = '';
 
+  // --- MuscleWiki 默认视频库（按动作名归一化匹配）---
+  var DEFAULT_URLS = {
+    '弹力带高位下拉': 'https://musclewiki.com/zh-cn/exercise/band-seated-single-arm-pulldown',
+    '哑铃俯身划船': 'https://musclewiki.com/exercise/dumbbell-row-bilateral',
+    '弹力带面拉': 'https://musclewiki.com/zh-cn/exercise/band-face-pull',
+    '哑铃弯举': 'https://musclewiki.com/exercise/dumbbell-curl',
+    '哑铃地板卧推': 'https://musclewiki.com/exercise/dumbbell-floor-press',
+    '前平举': 'https://musclewiki.com/zh-cn/exercise/dumbbell-front-raise',
+    '哑铃仰卧臂屈伸': 'https://musclewiki.com/exercise/dumbbell-skullcrusher',
+    '弹力带肩外旋': 'https://musclewiki.com/zh-cn/exercise/band-face-pull',
+    '高脚杯深蹲': 'https://musclewiki.com/exercise/dumbbell-goblet-squat',
+    '哑铃罗马尼亚硬拉': 'https://musclewiki.com/exercise/dumbbell-romanian-deadlift',
+    '哑铃弓步蹲': 'https://musclewiki.com/exercise/dumbbell-forward-lunge',
+    '杠铃深蹲': 'https://musclewiki.com/exercise/barbell-squat',
+    '臀桥': 'https://musclewiki.com/exercise/dumbbell-glute-bridge',
+    '卷腹': 'https://musclewiki.com/zh-cn/exercise/crunch'
+  };
+
+  // --- 动作名归一化（去掉🆕🔥等标签，提取核心名）---
+  function normalizeName(name) {
+    // 去掉 emoji 标签和括号内的轻量描述
+    var n = name.replace(/[🆕🔥]\s*[^\s）)]*/g, '').trim();
+    // 去掉尾部的「（轻量）」「（轻量哑铃）」「（负重）」等修饰
+    n = n.replace(/[（(]\s*(轻量[^）)]*|负重)\s*[）)]\s*$/g, '').trim();
+    return n;
+  }
+
+  // --- 查找默认视频URL ---
+  function getDefaultUrl(name) {
+    var norm = normalizeName(name);
+    // 精确匹配
+    if (DEFAULT_URLS[norm]) return DEFAULT_URLS[norm];
+    // 模糊匹配：遍历默认库，看哪个key是norm的子串
+    for (var key in DEFAULT_URLS) {
+      if (norm.indexOf(key) >= 0 || key.indexOf(norm) >= 0) return DEFAULT_URLS[key];
+    }
+    return '';
+  }
+
   // --- IndexedDB 初始化 ---
   function initDB() {
     return new Promise(function(resolve, reject) {
@@ -1995,9 +2034,9 @@ var VideoManager = (function() {
     return el.textContent.trim().replace(/\s+/g, ' ');
   }
 
-  // --- 检查是否有视频 ---
+  // --- 检查是否有视频（含默认库）---
   function hasVideo(name) {
-    return !!(getUrl(name) || getFileCache(name));
+    return !!(getUrl(name) || getFileCache(name) || getDefaultUrl(name));
   }
   var fileCache = {}; // 内存缓存 blob URL
   function getFileCache(name) { return fileCache[name] || null; }
@@ -2014,6 +2053,8 @@ var VideoManager = (function() {
     // B站 av号
     var av = url.match(/bilibili\.com\/video\/av(\d+)/i);
     if (av) return { type: 'iframe', src: 'https://player.bilibili.com/player.html?aid=' + av[1] + '&high_quality=1&autoplay=1' };
+    // MuscleWiki（嵌入完整页面）
+    if (/musclewiki\.com/.test(url)) return { type: 'iframe', src: url };
     // 直接视频文件
     if (/\.(mp4|webm|ogg|mov|m4v)(\?|$)/i.test(url)) return { type: 'video', src: url };
     // 其他链接尝试 iframe 嵌入
@@ -2029,8 +2070,19 @@ var VideoManager = (function() {
     // 检查是否有已配置视频
     var hasUrl = !!getUrl(exerciseName);
     var hasFile = !!getFileCache(exerciseName);
-    $('vcCurrentInfo').style.display = (hasUrl || hasFile) ? 'flex' : 'none';
-    $('vcCurrentText').textContent = hasFile ? '已配置本地视频文件' : (hasUrl ? '已配置链接视频' : '');
+    var defaultUrl = getDefaultUrl(exerciseName);
+    var hasDefault = !!defaultUrl;
+
+    if (hasUrl || hasFile) {
+      $('vcCurrentInfo').style.display = 'flex';
+      $('vcCurrentText').textContent = hasFile ? '已配置本地视频文件' : '已配置链接视频';
+    } else if (hasDefault) {
+      $('vcCurrentInfo').style.display = 'flex';
+      $('vcCurrentText').textContent = '默认视频（MuscleWiki），可替换';
+    } else {
+      $('vcCurrentInfo').style.display = 'none';
+    }
+
     $('vcPreview').style.display = 'none';
     $('vcPreview').innerHTML = '';
 
@@ -2086,7 +2138,7 @@ var VideoManager = (function() {
     }
   }
 
-  // --- 清除视频 ---
+  // --- 清除视频（仅清除用户配置，恢复默认）---
   async function clearVideo() {
     if (getUrl(currentExercise)) delUrl(currentExercise);
     if (getFileCache(currentExercise)) {
@@ -2095,9 +2147,16 @@ var VideoManager = (function() {
       await delFile(currentExercise);
     }
     $('vcUrlInput').value = '';
-    $('vcCurrentInfo').style.display = 'none';
     $('vcPreview').style.display = 'none';
     $('vcPreview').innerHTML = '';
+    // 检查是否有默认视频
+    var defaultUrl = getDefaultUrl(currentExercise);
+    if (defaultUrl) {
+      $('vcCurrentInfo').style.display = 'flex';
+      $('vcCurrentText').textContent = '默认视频（MuscleWiki），可替换';
+    } else {
+      $('vcCurrentInfo').style.display = 'none';
+    }
     refreshRowIndicator(currentExercise);
   }
 
@@ -2166,10 +2225,13 @@ var VideoManager = (function() {
 
   // --- 获取视频播放信息（供 WorkoutTimer 调用）---
   function getVideoForExercise(name) {
+    // 优先级: 用户URL > 用户文件 > 默认库
     var url = getUrl(name);
     if (url) return parseUrl(url);
     var blobUrl = getFileCache(name);
     if (blobUrl) return { type: 'video', src: blobUrl };
+    var defaultUrl = getDefaultUrl(name);
+    if (defaultUrl) return parseUrl(defaultUrl);
     return null;
   }
 
