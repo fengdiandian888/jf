@@ -354,6 +354,97 @@
 .tm-stat-card { background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.08); border-radius: 12px; padding: 14px; }
 .tm-stat-val { font-size: 26px; font-weight: 800; color: #f97316; }
 .tm-stat-label { font-size: 12px; color: rgba(255,255,255,.4); margin-top: 2px; }
+
+/* ===== 视频配置入口按钮 ===== */
+.move-video-btn {
+  position: absolute; right: 28px; top: 50%; transform: translateY(-50%);
+  background: none; border: none; cursor: pointer; font-size: 16px;
+  opacity: 0; transition: opacity .15s; z-index: 5; line-height: 1;
+  padding: 4px 6px; border-radius: 6px;
+}
+.move-row:hover .move-video-btn { opacity: .7; }
+.move-video-btn:hover { opacity: 1 !important; background: rgba(96,165,250,.12); }
+.move-video-btn.has-video { opacity: 1 !important; }
+.move-video-btn.has-video::after {
+  content: ''; position: absolute; top: 2px; right: 2px;
+  width: 7px; height: 7px; background: #22c55e; border-radius: 50%;
+  border: 1.5px solid var(--surface);
+}
+
+/* ===== 视频配置弹窗 ===== */
+.vc-overlay {
+  position: fixed; inset: 0; z-index: 10000;
+  background: rgba(0,0,0,.55); display: none;
+  align-items: center; justify-content: center;
+  animation: tmIn .2s ease-out;
+}
+.vc-overlay.active { display: flex; }
+.vc-modal {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 16px; width: 92%; max-width: 460px; max-height: 90vh;
+  overflow-y: auto; box-shadow: 0 20px 60px rgba(0,0,0,.2);
+}
+.vc-modal-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 18px 20px 14px; border-bottom: 1px solid var(--border);
+}
+.vc-modal-title { font-size: 17px; font-weight: 700; color: var(--text); }
+.vc-modal-close {
+  background: none; border: none; font-size: 22px; cursor: pointer;
+  color: var(--sub); line-height: 1; padding: 2px 6px; border-radius: 6px;
+}
+.vc-modal-close:hover { background: rgba(0,0,0,.06); color: var(--text); }
+.vc-modal-body { padding: 18px 20px; }
+.vc-label { font-size: 13px; font-weight: 600; color: var(--sub); margin-bottom: 8px; }
+.vc-url-row { display: flex; gap: 8px; margin-bottom: 18px; }
+.vc-url-input {
+  flex: 1; padding: 10px 12px; border: 1px solid var(--border);
+  border-radius: 8px; font-size: 14px; color: var(--text); background: var(--bg);
+  outline: none; transition: border-color .15s;
+}
+.vc-url-input:focus { border-color: var(--primary); }
+.vc-url-input::placeholder { color: var(--sub); opacity: .6; }
+.vc-btn {
+  padding: 10px 16px; border: none; border-radius: 8px; font-size: 14px;
+  font-weight: 600; cursor: pointer; transition: all .15s;
+}
+.vc-btn-save { background: var(--primary); color: #fff; }
+.vc-btn-save:hover { opacity: .85; }
+.vc-btn-clear { background: rgba(239,68,68,.08); color: #ef4444; border: 1px solid rgba(239,68,68,.2); }
+.vc-btn-clear:hover { background: rgba(239,68,68,.15); }
+.vc-btn-cancel { background: rgba(0,0,0,.05); color: var(--sub); }
+
+.vc-dropzone {
+  border: 2px dashed var(--border); border-radius: 12px;
+  padding: 28px 20px; text-align: center; transition: all .2s;
+  cursor: pointer; margin-bottom: 14px;
+}
+.vc-dropzone:hover { border-color: var(--primary); background: rgba(214,167,106,.04); }
+.vc-dropzone.drag-over { border-color: var(--primary); background: rgba(214,167,106,.1); }
+.vc-dropzone-icon { font-size: 32px; margin-bottom: 8px; opacity: .5; }
+.vc-dropzone-text { font-size: 14px; color: var(--sub); font-weight: 500; }
+.vc-dropzone-hint { font-size: 12px; color: var(--sub); opacity: .7; margin-top: 4px; }
+
+.vc-preview { margin-bottom: 14px; }
+.vc-preview video { width: 100%; border-radius: 8px; max-height: 200px; background: #000; }
+.vc-preview iframe { width: 100%; border-radius: 8px; height: 200px; border: none; }
+.vc-current-info {
+  display: flex; align-items: center; gap: 8px; padding: 10px 12px;
+  background: rgba(34,197,94,.06); border: 1px solid rgba(34,197,94,.2);
+  border-radius: 8px; margin-bottom: 14px; font-size: 13px; color: #16a34a;
+}
+.vc-current-info .vc-clear-link { margin-left: auto; color: #ef4444; cursor: pointer; text-decoration: underline; }
+.vc-actions { display: flex; gap: 10px; justify-content: flex-end; }
+.vc-divider {
+  text-align: center; font-size: 12px; color: var(--sub);
+  margin: 14px 0; position: relative; opacity: .6;
+}
+.vc-divider::before, .vc-divider::after {
+  content: ''; position: absolute; top: 50%; width: 35%; height: 1px;
+  background: var(--border);
+}
+.vc-divider::before { left: 0; }
+.vc-divider::after { right: 0; }
 </style>
 <script src="data.js"></script>
 </head>
@@ -1247,6 +1338,45 @@ if('serviceWorker' in navigator){
   </div>
 </div>
 
+<!-- 视频配置弹窗 -->
+<div class="vc-overlay" id="videoConfigOverlay">
+  <div class="vc-modal">
+    <div class="vc-modal-header">
+      <div class="vc-modal-title" id="vcTitle">配置视频</div>
+      <button class="vc-modal-close" id="vcClose">✕</button>
+    </div>
+    <div class="vc-modal-body">
+      <div id="vcCurrentInfo" style="display:none;" class="vc-current-info">
+        <span>✅</span>
+        <span id="vcCurrentText">已配置视频</span>
+        <span class="vc-clear-link" id="vcClearLink">清除</span>
+      </div>
+      <div id="vcPreview" class="vc-preview" style="display:none;"></div>
+
+      <div class="vc-label">📎 方式一：粘贴视频链接</div>
+      <div class="vc-url-row">
+        <input type="text" class="vc-url-input" id="vcUrlInput"
+          placeholder="粘贴 B站/YouTube/MP4 链接…" />
+        <button class="vc-btn vc-btn-save" id="vcUrlSave">保存</button>
+      </div>
+
+      <div class="vc-divider">或</div>
+
+      <div class="vc-label">📁 方式二：拖入本地视频文件</div>
+      <div class="vc-dropzone" id="vcDropzone">
+        <div class="vc-dropzone-icon">🎬</div>
+        <div class="vc-dropzone-text">将视频文件拖到此处</div>
+        <div class="vc-dropzone-hint">支持 MP4 / WebM / MOV，也可点击选择文件</div>
+        <input type="file" id="vcFileInput" accept="video/*" style="display:none;" />
+      </div>
+
+      <div class="vc-actions">
+        <button class="vc-btn vc-btn-cancel" id="vcCancel">关闭</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- 训练计时弹窗 JS 核心逻辑 -->
 <script>
 // ============================================================
@@ -1491,10 +1621,43 @@ var WorkoutTimer = (function() {
     updateDisplay();
     updateExerciseCard();
 
+    // 加载视频
+    loadVideo(ex.name);
+
     // 语音播报
     speak('下一个动作：' + ex.name + (isTimed ? '，时长 ' + formatTime(ex.duration) : '，第 ' + currentSet + ' 组，' + ex.reps + ' 次'));
 
     startTicker();
+  }
+
+  // --- 视频加载到训练弹窗 ---
+  function loadVideo(exName) {
+    // 清除旧视频
+    var oldVid = videoArea.querySelector('video, iframe');
+    if (oldVid) oldVid.remove();
+    videoPlaceholder.style.display = '';
+
+    var info = VideoManager ? VideoManager.getVideoForExercise(exName) : null;
+    if (!info) return;
+
+    videoPlaceholder.style.display = 'none';
+    if (info.type === 'iframe') {
+      var ifr = document.createElement('iframe');
+      ifr.src = info.src;
+      ifr.allow = 'autoplay; encrypted-media; fullscreen';
+      ifr.allowFullscreen = true;
+      ifr.style.cssText = 'width:100%;height:100%;border:none;';
+      videoArea.appendChild(ifr);
+    } else {
+      var vid = document.createElement('video');
+      vid.src = info.src;
+      vid.autoplay = true;
+      vid.loop = true;
+      vid.muted = true;
+      vid.playsInline = true;
+      vid.style.cssText = 'width:100%;height:100%;object-fit:cover;';
+      videoArea.appendChild(vid);
+    }
   }
 
   function completeCurrentSet() {
@@ -1755,6 +1918,300 @@ var WorkoutTimer = (function() {
   });
 
   return { start: start, close: close, parseMoves: parseMoves };
+})();
+</script>
+
+<!-- 视频配置管理模块 -->
+<script>
+// ============================================================
+// VideoManager — 动作视频配置系统
+// 支持: URL粘贴(B站/YouTube/MP4) + 本地文件拖拽(IndexedDB存储)
+// ============================================================
+var VideoManager = (function() {
+  var DB_NAME = 'jf_videos';
+  var STORE = 'files';
+  var URL_KEY = 'jf_video_urls';
+  var db = null;
+  var currentExercise = '';
+
+  // --- IndexedDB 初始化 ---
+  function initDB() {
+    return new Promise(function(resolve, reject) {
+      var req = indexedDB.open(DB_NAME, 1);
+      req.onupgradeneeded = function(e) {
+        var d = e.target.result;
+        if (!d.objectStoreNames.contains(STORE)) d.createObjectStore(STORE);
+      };
+      req.onsuccess = function(e) { db = e.target.result; resolve(db); };
+      req.onerror = function(e) { reject(e); };
+    });
+  }
+
+  // --- IndexedDB 读写 ---
+  function putFile(name, blob) {
+    return new Promise(function(resolve, reject) {
+      var tx = db.transaction(STORE, 'readwrite');
+      tx.objectStore(STORE).put(blob, name);
+      tx.oncomplete = function() { resolve(); };
+      tx.onerror = function(e) { reject(e); };
+    });
+  }
+  function getFile(name) {
+    return new Promise(function(resolve, reject) {
+      var tx = db.transaction(STORE, 'readonly');
+      var req = tx.objectStore(STORE).get(name);
+      req.onsuccess = function() { resolve(req.result || null); };
+      req.onerror = function(e) { reject(e); };
+    });
+  }
+  function delFile(name) {
+    return new Promise(function(resolve, reject) {
+      var tx = db.transaction(STORE, 'readwrite');
+      tx.objectStore(STORE).delete(name);
+      tx.oncomplete = function() { resolve(); };
+      tx.onerror = function(e) { reject(e); };
+    });
+  }
+
+  // --- localStorage URL 管理 ---
+  function getUrlMap() {
+    try { return JSON.parse(localStorage.getItem(URL_KEY) || '{}'); }
+    catch(e) { return {}; }
+  }
+  function setUrl(name, url) {
+    var m = getUrlMap(); m[name] = url;
+    localStorage.setItem(URL_KEY, JSON.stringify(m));
+  }
+  function delUrl(name) {
+    var m = getUrlMap(); delete m[name];
+    localStorage.setItem(URL_KEY, JSON.stringify(m));
+  }
+  function getUrl(name) { return getUrlMap()[name] || ''; }
+
+  // --- 提取动作名 ---
+  function getMoveName(row) {
+    var el = row.querySelector('.move-name');
+    if (!el) return '';
+    return el.textContent.trim().replace(/\s+/g, ' ');
+  }
+
+  // --- 检查是否有视频 ---
+  function hasVideo(name) {
+    return !!(getUrl(name) || getFileCache(name));
+  }
+  var fileCache = {}; // 内存缓存 blob URL
+  function getFileCache(name) { return fileCache[name] || null; }
+
+  // --- URL 解析 → embed 或 video src ---
+  function parseUrl(url) {
+    url = url.trim();
+    // YouTube
+    var yt = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([\w-]{6,})/);
+    if (yt) return { type: 'iframe', src: 'https://www.youtube.com/embed/' + yt[1] };
+    // B站 BV号
+    var bv = url.match(/bilibili\.com\/video\/(BV[\w]+)/);
+    if (bv) return { type: 'iframe', src: 'https://player.bilibili.com/player.html?bvid=' + bv[1] + '&high_quality=1&autoplay=1' };
+    // B站 av号
+    var av = url.match(/bilibili\.com\/video\/av(\d+)/i);
+    if (av) return { type: 'iframe', src: 'https://player.bilibili.com/player.html?aid=' + av[1] + '&high_quality=1&autoplay=1' };
+    // 直接视频文件
+    if (/\.(mp4|webm|ogg|mov|m4v)(\?|$)/i.test(url)) return { type: 'video', src: url };
+    // 其他链接尝试 iframe 嵌入
+    return { type: 'iframe', src: url };
+  }
+
+  // --- 打开配置弹窗 ---
+  function open(exerciseName) {
+    currentExercise = exerciseName;
+    $('vcTitle').textContent = '🎬 ' + exerciseName;
+    $('vcUrlInput').value = getUrl(exerciseName) || '';
+
+    // 检查是否有已配置视频
+    var hasUrl = !!getUrl(exerciseName);
+    var hasFile = !!getFileCache(exerciseName);
+    $('vcCurrentInfo').style.display = (hasUrl || hasFile) ? 'flex' : 'none';
+    $('vcCurrentText').textContent = hasFile ? '已配置本地视频文件' : (hasUrl ? '已配置链接视频' : '');
+    $('vcPreview').style.display = 'none';
+    $('vcPreview').innerHTML = '';
+
+    $('videoConfigOverlay').classList.add('active');
+  }
+
+  function close() {
+    $('videoConfigOverlay').classList.remove('active');
+    currentExercise = '';
+  }
+
+  function $(id) { return document.getElementById(id); }
+
+  // --- 保存URL ---
+  async function saveUrl() {
+    var url = $('vcUrlInput').value.trim();
+    if (!url) { alert('请输入视频链接'); return; }
+    // 如果之前有文件，清除文件
+    if (getFileCache(currentExercise)) {
+      await delFile(currentExercise);
+      delete fileCache[currentExercise];
+    }
+    setUrl(currentExercise, url);
+    refreshRowIndicator(currentExercise);
+    showPreview(parseUrl(url));
+    $('vcCurrentInfo').style.display = 'flex';
+    $('vcCurrentText').textContent = '已配置链接视频';
+  }
+
+  // --- 保存文件 ---
+  async function saveFile(file) {
+    if (!file || !file.type.startsWith('video/')) {
+      alert('请选择视频文件（MP4 / WebM 等）');
+      return;
+    }
+    try {
+      // 如果之前有URL，清除URL
+      if (getUrl(currentExercise)) {
+        delUrl(currentExercise);
+        $('vcUrlInput').value = '';
+      }
+      await putFile(currentExercise, file);
+      var blobUrl = URL.createObjectURL(file);
+      // 释放旧的
+      if (fileCache[currentExercise]) URL.revokeObjectURL(fileCache[currentExercise]);
+      fileCache[currentExercise] = blobUrl;
+      refreshRowIndicator(currentExercise);
+      showPreview({ type: 'video', src: blobUrl });
+      $('vcCurrentInfo').style.display = 'flex';
+      $('vcCurrentText').textContent = '已配置本地视频文件';
+    } catch(e) {
+      alert('文件保存失败，请重试');
+    }
+  }
+
+  // --- 清除视频 ---
+  async function clearVideo() {
+    if (getUrl(currentExercise)) delUrl(currentExercise);
+    if (getFileCache(currentExercise)) {
+      URL.revokeObjectURL(fileCache[currentExercise]);
+      delete fileCache[currentExercise];
+      await delFile(currentExercise);
+    }
+    $('vcUrlInput').value = '';
+    $('vcCurrentInfo').style.display = 'none';
+    $('vcPreview').style.display = 'none';
+    $('vcPreview').innerHTML = '';
+    refreshRowIndicator(currentExercise);
+  }
+
+  // --- 预览 ---
+  function showPreview(info) {
+    var p = $('vcPreview');
+    p.style.display = 'block';
+    if (info.type === 'iframe') {
+      p.innerHTML = '<iframe src="' + info.src + '" allowfullscreen allow="autoplay;encrypted-media"></iframe>';
+    } else {
+      p.innerHTML = '<video src="' + info.src + '" controls playsinline></video>';
+    }
+  }
+
+  // --- 刷新行指示器 ---
+  function refreshRowIndicator(name) {
+    document.querySelectorAll('.move-row').forEach(function(row) {
+      if (getMoveName(row) === name) {
+        var btn = row.querySelector('.move-video-btn');
+        if (btn) {
+          if (hasVideo(name)) btn.classList.add('has-video');
+          else btn.classList.remove('has-video');
+        }
+      }
+    });
+  }
+
+  // --- 为所有 move-row 注入 🎬 按钮 ---
+  function injectButtons() {
+    document.querySelectorAll('.move-row').forEach(function(row) {
+      if (row.querySelector('.move-video-btn')) return;
+      var name = getMoveName(row);
+      if (!name) return;
+      var btn = document.createElement('button');
+      btn.className = 'move-video-btn';
+      btn.textContent = '🎬';
+      btn.title = '配置视频';
+      btn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        e.preventDefault();
+        open(name);
+      });
+      row.appendChild(btn);
+      // 初始检查
+      if (hasVideo(name)) btn.classList.add('has-video');
+    });
+  }
+
+  // --- 启动时从 IndexedDB 加载文件缓存 ---
+  async function loadFileCache() {
+    try {
+      await initDB();
+      var tx = db.transaction(STORE, 'readonly');
+      var req = tx.objectStore(STORE).getAllKeys();
+      req.onsuccess = function() {
+        var keys = req.result || [];
+        keys.forEach(function(name) {
+          getFile(name).then(function(blob) {
+            if (blob) fileCache[name] = URL.createObjectURL(blob);
+            refreshRowIndicator(name);
+          });
+        });
+      };
+    } catch(e) { console.warn('IndexedDB init failed:', e); }
+  }
+
+  // --- 获取视频播放信息（供 WorkoutTimer 调用）---
+  function getVideoForExercise(name) {
+    var url = getUrl(name);
+    if (url) return parseUrl(url);
+    var blobUrl = getFileCache(name);
+    if (blobUrl) return { type: 'video', src: blobUrl };
+    return null;
+  }
+
+  // --- 初始化 ---
+  document.addEventListener('DOMContentLoaded', function() {
+    loadFileCache().then(function() {
+      injectButtons();
+    });
+
+    // 弹窗事件
+    $('vcClose').addEventListener('click', close);
+    $('vcCancel').addEventListener('click', close);
+    $('vcUrlSave').addEventListener('click', saveUrl);
+    $('vcClearLink').addEventListener('click', clearVideo);
+
+    // 点击遮罩关闭
+    $('videoConfigOverlay').addEventListener('click', function(e) {
+      if (e.target === this) close();
+    });
+
+    // URL 输入框回车保存
+    $('vcUrlInput').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') { e.preventDefault(); saveUrl(); }
+    });
+
+    // 文件拖拽
+    var dz = $('vcDropzone');
+    dz.addEventListener('click', function() { $('vcFileInput').click(); });
+    $('vcFileInput').addEventListener('change', function(e) {
+      if (e.target.files[0]) saveFile(e.target.files[0]);
+      e.target.value = '';
+    });
+    dz.addEventListener('dragover', function(e) { e.preventDefault(); dz.classList.add('drag-over'); });
+    dz.addEventListener('dragleave', function(e) { dz.classList.remove('drag-over'); });
+    dz.addEventListener('drop', function(e) {
+      e.preventDefault();
+      dz.classList.remove('drag-over');
+      if (e.dataTransfer.files[0]) saveFile(e.dataTransfer.files[0]);
+    });
+  });
+
+  return { getVideoForExercise: getVideoForExercise, hasVideo: hasVideo };
 })();
 </script>
 
