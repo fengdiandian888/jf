@@ -1934,22 +1934,22 @@ var VideoManager = (function() {
   var db = null;
   var currentExercise = '';
 
-  // --- MuscleWiki 默认视频库（按动作名归一化匹配）---
+  // --- 本地视频库（从 MuscleWiki 下载的男性正面示范视频）---
   var DEFAULT_URLS = {
-    '弹力带高位下拉': 'https://musclewiki.com/zh-cn/exercise/band-seated-single-arm-pulldown',
-    '哑铃俯身划船': 'https://musclewiki.com/exercise/dumbbell-row-bilateral',
-    '弹力带面拉': 'https://musclewiki.com/zh-cn/exercise/band-face-pull',
-    '哑铃弯举': 'https://musclewiki.com/exercise/dumbbell-curl',
-    '哑铃地板卧推': 'https://musclewiki.com/exercise/dumbbell-floor-press',
-    '前平举': 'https://musclewiki.com/zh-cn/exercise/dumbbell-front-raise',
-    '哑铃仰卧臂屈伸': 'https://musclewiki.com/exercise/dumbbell-skullcrusher',
-    '弹力带肩外旋': 'https://musclewiki.com/zh-cn/exercise/band-face-pull',
-    '高脚杯深蹲': 'https://musclewiki.com/exercise/dumbbell-goblet-squat',
-    '哑铃罗马尼亚硬拉': 'https://musclewiki.com/exercise/dumbbell-romanian-deadlift',
-    '哑铃弓步蹲': 'https://musclewiki.com/exercise/dumbbell-forward-lunge',
-    '杠铃深蹲': 'https://musclewiki.com/exercise/barbell-squat',
-    '臀桥': 'https://musclewiki.com/exercise/dumbbell-glute-bridge',
-    '卷腹': 'https://musclewiki.com/zh-cn/exercise/crunch'
+    '弹力带高位下拉': 'videos/band_lat_pulldown.mp4',
+    '哑铃俯身划船': 'videos/db_row.mp4',
+    '弹力带面拉': 'videos/band_face_pull.mp4',
+    '哑铃弯举': 'videos/db_curl.mp4',
+    '哑铃地板卧推': 'videos/floor_press.mp4',
+    '前平举': 'videos/front_raise.mp4',
+    '哑铃仰卧臂屈伸': 'videos/skullcrusher.mp4',
+    '弹力带肩外旋': 'videos/band_face_pull.mp4',
+    '高脚杯深蹲': 'videos/goblet_squat.mp4',
+    '哑铃罗马尼亚硬拉': 'videos/rdl.mp4',
+    '哑铃弓步蹲': 'videos/lunge.mp4',
+    '杠铃深蹲': 'videos/barbell_squat.mp4',
+    '臀桥': 'videos/glute_bridge.mp4',
+    '卷腹': 'videos/crunch.mp4'
   };
 
   // --- 动作名归一化（去掉🆕🔥等标签，提取核心名）---
@@ -2078,7 +2078,7 @@ var VideoManager = (function() {
       $('vcCurrentText').textContent = hasFile ? '已配置本地视频文件' : '已配置链接视频';
     } else if (hasDefault) {
       $('vcCurrentInfo').style.display = 'flex';
-      $('vcCurrentText').textContent = '默认视频（MuscleWiki），可替换';
+      $('vcCurrentText').textContent = '默认示范视频，可替换';
     } else {
       $('vcCurrentInfo').style.display = 'none';
     }
@@ -2153,7 +2153,7 @@ var VideoManager = (function() {
     var defaultUrl = getDefaultUrl(currentExercise);
     if (defaultUrl) {
       $('vcCurrentInfo').style.display = 'flex';
-      $('vcCurrentText').textContent = '默认视频（MuscleWiki），可替换';
+      $('vcCurrentText').textContent = '默认示范视频，可替换';
     } else {
       $('vcCurrentInfo').style.display = 'none';
     }
