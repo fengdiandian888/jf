@@ -298,8 +298,9 @@
   flex: 0 0 120px; scroll-snap-align: start;
   background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.08);
   border-radius: 10px; padding: 10px; text-align: center;
-  transition: all .25s; cursor: default;
+  transition: all .25s; cursor: pointer;
 }
+.tm-ex-card:hover { background: rgba(255,255,255,.1); border-color: rgba(255,255,255,.2); }
 .tm-ex-card.current { border-color: #f97316; background: rgba(249,115,22,.1);
   box-shadow: 0 0 16px rgba(249,115,22,.15); }
 .tm-ex-card.done { opacity: .35; }
@@ -1570,6 +1571,23 @@ var WorkoutTimer = (function() {
         '<div class="ex-num">' + (i + 1) + '</div>' +
         '<div class="ex-name">' + ex.name + '</div>' +
         (detailText ? '<div class="ex-detail">' + detailText + '</div>' : '');
+
+      // 点击卡片切换到该动作
+      (function(idx) {
+        card.addEventListener('click', function() {
+          if (idx === currentIndex) return; // 已是当前动作，不处理
+          if (idx < currentIndex) {
+            // 回退到之前的动作
+            currentIndex = idx;
+            // 重置后续动作的完成状态
+            for (var j = idx; j < exercises.length; j++) {
+              var c = exercisesList.children[j];
+              if (c) c.classList.remove('done');
+            }
+          }
+          loadExercise(idx);
+        });
+      })(i);
 
       exercisesList.appendChild(card);
     });
