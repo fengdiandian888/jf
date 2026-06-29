@@ -113,9 +113,9 @@
  .moves-title { font-size: 20px; font-weight: 700; color: var(--text); margin: 16px 0 10px; padding-bottom: 8px; border-bottom: 1px solid var(--border); letter-spacing: -0.01em; }
  .moves-grid { display: grid; grid-template-columns: 1fr; gap: 2px; }
  .move-row {
- display: grid; grid-template-columns: 24px 1fr 48px 48px 52px;
+ display: grid; grid-template-columns: 24px 1fr 58px 46px 56px;
  align-items: center; gap: 6px; padding: 7px 8px; border-radius: 6px; font-size: 15px; font-weight: 500;
- transition: background .15s;
+ transition: background .15s; position: relative;
  }
  .move-row:hover { background: rgba(0,0,0,0.03); }
  .move-row .move-num { color: var(--sub); font-size: 12px; font-weight: 600; text-align: center; }
@@ -123,7 +123,7 @@
  .move-row .move-sets { color: var(--sub); text-align: center; font-size: 13px; font-weight: 600; }
  .move-row .move-rest { color: var(--sub); text-align: center; font-size: 13px; }
 .move-row .move-note { font-size: 12px; color: var(--warn); grid-column: 2/5; margin-top: -1px; font-weight: 400; }
-.move-row .move-time { text-align: center; font-size: 11px; font-weight: 700; color: var(--primary); font-variant-numeric: tabular-nums; white-space: nowrap; grid-column: 5; grid-row: 1; }
+.move-row .move-time { text-align: center; font-size: 11px; font-weight: 700; color: var(--primary); font-variant-numeric: tabular-nums; white-space: nowrap; grid-column: 5 !important; grid-row: 1 !important; }
  .move-row .move-time.adjusted { color: var(--info); }
 
  /* Caution & Rehab */
@@ -216,7 +216,7 @@
 .btn-start-training .btn-icon { font-size: 18px; }
 
 /* move-row 加可点击提示 */
-.move-row { cursor: pointer; position: relative; }
+.move-row { cursor: pointer; }
 .move-row::after {
   content: '▶'; position: absolute; right: 8px; top: 10px; transform: none;
   color: var(--primary); font-size: 11px; opacity: 0; transition: opacity .15s;
@@ -380,17 +380,18 @@
 
 /* ===== 视频配置入口按钮 ===== */
 .move-video-btn {
-  position: absolute; right: 22px; top: 7px; transform: none;
-  background: none; border: none; cursor: pointer; font-size: 16px;
+  position: absolute; right: 34px; top: 9px; transform: none;
+  background: none; border: none; cursor: pointer; font-size: 15px;
   opacity: 0; transition: opacity .15s; z-index: 5; line-height: 1;
-  padding: 4px 6px; border-radius: 6px;
+  padding: 2px 5px; border-radius: 5px;
+  grid-row: 1; grid-column: auto;
 }
 .move-row:hover .move-video-btn { opacity: .7; }
 .move-video-btn:hover { opacity: 1 !important; background: rgba(96,165,250,.12); }
-.move-video-btn.has-video { opacity: 1 !important; }
+.move-video-btn.has-video { opacity: 1 !important; background: rgba(34,197,94,.08); }
 .move-video-btn.has-video::after {
-  content: ''; position: absolute; top: 2px; right: 2px;
-  width: 7px; height: 7px; background: #22c55e; border-radius: 50%;
+  content: ''; position: absolute; top: 1px; right: 1px;
+  width: 6px; height: 6px; background: #22c55e; border-radius: 50%;
   border: 1.5px solid var(--surface);
 }
 
