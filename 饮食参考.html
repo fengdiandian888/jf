@@ -193,7 +193,7 @@ h1 { font-size: 20px; text-align: center; padding: 12px 0 0; color: var(--primar
 </nav>
 
 <h1>一周饮食搭配</h1>
-<div class="subtitle">全天目标：<b style="color:var(--primary)">1800 kcal</b> · 蛋白质 <b style="color:var(--pull)">&#8805;100g</b> · 碳水 <b style="color:var(--warn)">100-150g</b> · 脂肪 <b style="color:var(--cardio)">45-60g</b></div>
+<div class="subtitle">全天目标：<b style="color:var(--primary)">1700-2000 kcal</b> · 蛋白质 <b style="color:var(--pull)">&#8805;98g</b> · 碳水 <b style="color:var(--warn)">150-200g</b> · 脂肪 <b style="color:var(--cardio)">50-65g</b></div>
 
 <div class="goal-card">
   <div class="goal-row">
@@ -227,7 +227,7 @@ h1 { font-size: 20px; text-align: center; padding: 12px 0 0; color: var(--primar
   <div id="shoppingContent"></div>
 </div>
 
-<div class="footer">减脂计划 · 饮食搭配 v6.1 · 2026-06-30<br>自动保存 · 关掉页面不丢失 · 数据参考：中国营养学会</div>
+<div class="footer">减脂计划 · 饮食搭配 v6.2 · 2026-06-30<br>热量预算控份 · 自动保存 · 关掉不丢</div>
 
 <nav class="bottom-nav">
   <a href="今日计划.html">今日</a>
@@ -279,9 +279,9 @@ h1 { font-size: 20px; text-align: center; padding: 12px 0 0; color: var(--primar
   var MEALS = ['breakfast','lunch','dinner'];
   var MEAL_LABELS = { breakfast:'早餐', lunch:'午餐', dinner:'晚餐' };
   var MEAL_TARGETS = {
-    breakfast: { cal: '400-450', pro: '25-30g', carb: '50-60g' },
-    lunch:     { cal: '600-650', pro: '35-40g', carb: '60-70g' },
-    dinner:    { cal: '500-550', pro: '30-35g', carb: '40-50g' }
+    breakfast: { cal: '450-500', pro: '25-30g', carb: '40-50g' },
+    lunch:     { cal: '600-700', pro: '55-70g', carb: '60-75g' },
+    dinner:    { cal: '600-700', pro: '55-70g', carb: '55-70g' }
   };
   var CAT_ORDER = ['meat','soy','veg','staple'];
   var CAT_LABELS = { meat:'&#129385; 蛋白质（选1样）', soy:'&#129656; 豆制品（可选）', veg:'&#129388; 蔬菜（可选1-2样）', staple:'&#127834; 主食（选1样）' };
@@ -304,11 +304,13 @@ h1 { font-size: 20px; text-align: center; padding: 12px 0 0; color: var(--primar
   function calcPortion(food, meal) {
     var f = FOODS[food];
     if (f.cat === 'meat') {
-      if (food === '鸡蛋') return { g:100, note:'2个蛋&#8776;26g蛋白' };
-      if (food === '牛奶') return { g:250, note:'全脂牛奶&#8776;135kcal' };
-      if (food === '无糖酸奶') return { g:200, note:'200ml&#8776;126kcal' };
-      var raw = Math.round(35/f.pro*100/5)*5;
-      if (raw>250) raw=250; if (raw<100) raw=100;
+      if (food === '鸡蛋') return { g:100, note:'2个蛋≈26g蛋白' };
+      if (food === '牛奶') return { g:250, note:'全脂牛奶≈135kcal' };
+      if (food === '无糖酸奶') return { g:200, note:'200ml≈126kcal' };
+      // 午餐肉 ≈250kcal，晚餐肉 ≈200kcal
+      var calTarget = (meal === 'lunch') ? 250 : 200;
+      var raw = Math.round(calTarget / f.cal * 100 / 5) * 5;
+      if (raw > 250) raw = 250; if (raw < 100) raw = 100;
       return { g:raw };
     }
     if (f.cat === 'soy') {
@@ -320,10 +322,12 @@ h1 { font-size: 20px; text-align: center; padding: 12px 0 0; color: var(--primar
     if (f.cat === 'veg') return { g:f.portion };
     if (f.cat === 'staple') {
       if (food === '燕麦片') return { g:50, note:'50g干重≈一碗粥' };
-      if (food === '南瓜') return { g:300, note:'碳水低·搭其他主食' };
-      var ct = meal==='breakfast'?45:50;
-      var raw = Math.round(ct/f.carb*100/5)*5;
-      if (raw>300) raw=300; if (raw<30) raw=30;
+      if (food === '全麦面包') return { g:80, note:'≈2~3片' };
+      if (food === '南瓜') return { g:300, note:'碳水偏低·搭配其他' };
+      // 午餐主食 ≈280kcal，晚餐主食 ≈230kcal
+      var calTarget = (meal === 'lunch') ? 280 : 230;
+      var raw = Math.round(calTarget / f.cal * 100 / 5) * 5;
+      if (raw > 350) raw = 350; if (raw < 50) raw = 50;
       return { g:raw };
     }
     return { g:150 };
