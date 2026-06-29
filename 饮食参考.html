@@ -173,6 +173,53 @@ h1 { font-size: 20px; text-align: center; padding: 12px 0 0; color: var(--primar
 .shop-total { font-weight: 700; font-size: 12px; color: var(--primary); text-align: right; min-width: 55px; }
 .shop-empty { text-align: center; font-size: 12px; color: var(--sub); padding: 12px; }
 
+/* 补剂提醒 */
+.supp-card {
+  margin: 0 10px 10px; padding: 14px;
+  background: linear-gradient(135deg, #fffbeb 0%, #fefce8 100%);
+  border: 2px solid #fde68a; border-radius: 12px;
+  box-shadow: 0 1px 4px rgba(0,0,0,.04);
+}
+.supp-title-row { display: flex; justify-content: space-between; align-items: baseline; }
+.supp-title { font-size: 16px; font-weight: 800; color: #92400e; }
+.supp-date { font-size: 11px; color: var(--sub); }
+.supp-list { display: flex; flex-direction: column; gap: 8px; margin-top: 10px; }
+.supp-item {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 10px 12px; background: rgba(255,255,255,.75);
+  border: 1px solid #fde68a; border-radius: 10px;
+  transition: all .2s; cursor: pointer; user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.supp-item:active { transform: scale(.98); }
+.supp-item.done { background: #f0fdf4; border-color: #bbf7d0; }
+.supp-check {
+  flex-shrink: 0; width: 24px; height: 24px; margin-top: 1px;
+  border: 2px solid #d6d3cd; border-radius: 7px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 800; color: transparent;
+  transition: all .15s;
+}
+.supp-item.done .supp-check { background: #22c55e; border-color: #22c55e; color: #fff; }
+.supp-info { flex: 1; min-width: 0; }
+.supp-name-row { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin-bottom: 3px; }
+.supp-name { font-size: 13px; font-weight: 800; color: var(--text); }
+.supp-item.done .supp-name { text-decoration: line-through; color: var(--sub); }
+.supp-dose {
+  padding: 1px 8px; font-size: 11px; font-weight: 700; border-radius: 4px;
+  background: rgba(96,165,250,.12); color: var(--pull);
+}
+.supp-item.done .supp-dose { opacity: .5; }
+.supp-time { font-size: 11px; color: #78716c; line-height: 1.5; }
+.supp-tip { font-size: 10px; color: var(--sub); line-height: 1.5; margin-top: 2px; }
+.supp-progress { margin-top: 10px; display: flex; align-items: center; gap: 8px; }
+.supp-progress-track { flex: 1; height: 6px; background: rgba(0,0,0,.06); border-radius: 3px; overflow: hidden; }
+.supp-progress-fill {
+  height: 100%; background: linear-gradient(90deg, #f59e0b 0%, #22c55e 100%);
+  border-radius: 3px; transition: width .3s ease; width: 0%;
+}
+.supp-progress-text { font-size: 11px; font-weight: 700; color: #92400e; white-space: nowrap; }
+
 .footer { padding: 12px 0 8px; text-align: center; font-size: 11px; color: var(--sub); }
 
 @media(max-width:360px) {
@@ -213,6 +260,19 @@ h1 { font-size: 20px; text-align: center; padding: 12px 0 0; color: var(--primar
   <div id="dsContent"><div class="ds-empty">在三餐中各选蛋白质 + 主食即可看到汇总</div></div>
 </div>
 
+<!-- 补剂提醒 -->
+<div class="supp-card" id="suppCard">
+  <div class="supp-title-row">
+    <span class="supp-title">💊 每日补剂提醒</span>
+    <span class="supp-date" id="suppDate"></span>
+  </div>
+  <div class="supp-list" id="suppList"></div>
+  <div class="supp-progress">
+    <div class="supp-progress-track"><div class="supp-progress-fill" id="suppFill"></div></div>
+    <span class="supp-progress-text" id="suppText">0/3</span>
+  </div>
+</div>
+
 <div class="save-status-bar" id="saveStatus">
   <span class="save-status-icon">✅</span>
   <span id="saveStatusText">已自动保存</span>
@@ -227,7 +287,7 @@ h1 { font-size: 20px; text-align: center; padding: 12px 0 0; color: var(--primar
   <div id="shoppingContent"></div>
 </div>
 
-<div class="footer">减脂计划 · 饮食搭配 v6.2 · 2026-06-30<br>热量预算控份 · 自动保存 · 关掉不丢</div>
+<div class="footer">减脂计划 · 饮食搭配 v6.3 · 2026-06-30<br>热量预算控份 · 自动保存 · 补剂提醒 · 关掉不丢</div>
 
 <nav class="bottom-nav">
   <a href="今日计划.html">今日</a>
@@ -388,6 +448,7 @@ h1 { font-size: 20px; text-align: center; padding: 12px 0 0; color: var(--primar
 
     switchDay(todayId);
     renderShopList();
+    renderSuppCard();
 
     // 初始化时如果已有存储数据，显示上次保存状态
     if (saved) { updateSaveStatus(); }
@@ -711,6 +772,79 @@ h1 { font-size: 20px; text-align: center; padding: 12px 0 0; color: var(--primar
     });
 
     content.innerHTML = html;
+  }
+
+  // ========== 补剂提醒 ==========
+  var SUPPS = [
+    { id:'protein', icon:'\uD83D\uDCAA', name:'乳清蛋白粉', dose:'30g\uFF081\u52FA\uFF09',
+      time:'\u8BAD\u7EC3\u65E5\uFF1A\u8BAD\u7EC3\u540E30\u5206\u949F\u5185 \xB7 \u4F11\u606F\u65E5\uFF1A\u4E0B\u534815:00-16:00\u52A0\u9910',
+      tip:'\u8BAD\u7EC3\u540E\u808C\u8089\u5438\u6536\u7387\u6700\u9AD8\uFF1B\u4F11\u606F\u65E5\u4E0B\u5348\u8865\u86CB\u767D\u5408\u6210\u4F4E\u8C37' },
+    { id:'fishoil', icon:'\uD83D\uDC1F', name:'\u9C7C\u6CB9', dose:'2\u9897',
+      time:'\u5348\u99101\u9897 + \u665A\u99101\u9897',
+      tip:'\u968F\u9910\u670D\u7528\u5438\u6536\u597D\uFF0C\u5206\u4E24\u6B21\u51CF\u5C11\u9C7C\u817B\u6253\u55DD' },
+    { id:'vd3', icon:'\u2600\uFE0F', name:'\u7EF4\u751F\u7D20D3', dose:'1\u9897',
+      time:'\u968F\u65E9\u9910\u670D\u7528\uFF08\u725B\u5976+\u9E21\u86CB\u542B\u8102\u80AA\uFF0C\u5E2E\u52A9\u5438\u6536\uFF09',
+      tip:'\u8102\u6EB6\u6027\u7EF4\u751F\u7D20\uFF0C\u5FC5\u987B\u968F\u542B\u8102\u80AA\u7684\u9910\u98DF\u5403' }
+  ];
+
+  function getTodayKey() {
+    var d = new Date();
+    return d.getFullYear()+'-'+(d.getMonth()+1).toString().padStart(2,'0')+'-'+d.getDate().toString().padStart(2,'0');
+  }
+
+  function getSuppState() {
+    var key = 'jf_supp_' + getTodayKey();
+    var raw = localStorage.getItem(key);
+    if (raw) { try { return JSON.parse(raw); } catch(e){} }
+    return { protein:false, fishoil:false, vd3:false };
+  }
+
+  function saveSuppState(state) {
+    localStorage.setItem('jf_supp_' + getTodayKey(), JSON.stringify(state));
+  }
+
+  function renderSuppCard() {
+    var state = getSuppState();
+    var list = document.getElementById('suppList');
+    if (!list) return;
+
+    var d = new Date();
+    var weekDay = ['\u65E5','\u4E00','\u4E8C','\u4E09','\u56DB','\u4E94','\u516D'][d.getDay()];
+    document.getElementById('suppDate').textContent = (d.getMonth()+1)+'\u6708'+d.getDate()+'\u65E5 \u5468'+weekDay;
+
+    list.innerHTML = '';
+    SUPPS.forEach(function(s) {
+      var done = state[s.id];
+      var item = document.createElement('div');
+      item.className = 'supp-item' + (done ? ' done' : '');
+      item.innerHTML =
+        '<div class="supp-check">'+(done?'\u2713':'')+'</div>'+
+        '<div class="supp-info">'+
+          '<div class="supp-name-row">'+
+            '<span style="font-size:16px">'+s.icon+'</span>'+
+            '<span class="supp-name">'+s.name+'</span>'+
+            '<span class="supp-dose">'+s.dose+'</span>'+
+          '</div>'+
+          '<div class="supp-time">\u23F0 '+s.time+'</div>'+
+          '<div class="supp-tip">\uD83D\uDCA1 '+s.tip+'</div>'+
+        '</div>';
+      (function(sid) {
+        item.addEventListener('click', function(e){ e.preventDefault(); toggleSupp(sid); });
+        item.addEventListener('touchend', function(e){ e.preventDefault(); toggleSupp(sid); });
+      })(s.id);
+      list.appendChild(item);
+    });
+
+    var doneCount = SUPPS.filter(function(s){ return state[s.id]; }).length;
+    document.getElementById('suppFill').style.width = (doneCount/SUPPS.length*100)+'%';
+    document.getElementById('suppText').textContent = doneCount+'/'+SUPPS.length + (doneCount===3 ? ' \u2705' : '');
+  }
+
+  function toggleSupp(id) {
+    var state = getSuppState();
+    state[id] = !state[id];
+    saveSuppState(state);
+    renderSuppCard();
   }
 
   init();
