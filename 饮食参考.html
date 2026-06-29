@@ -267,13 +267,14 @@ h1 { font-size: 20px; text-align: center; padding: 12px 0 0; color: var(--primar
   };
   var CAT_ORDER = ['meat','soy','veg','staple'];
   var CAT_LABELS = { meat:'&#129385; 蛋白质（选1样）', soy:'&#129656; 豆制品（可选）', veg:'&#129388; 蔬菜（可选1-2样）', staple:'&#127834; 主食（选1样）' };
-  // 早餐主食为可选，午晚餐必选
+  // 早餐主食为可选，午晚餐必选；早餐蛋白质可选1-2样（如鸡蛋+牛奶）
   function stapleRequired(meal) { return meal !== 'breakfast'; }
 
   var selections = {};
   MEALS.forEach(function(m) { selections[m] = { meat:null, soy:null, veg:[], staple:null }; });
-  selections.breakfast.meat = '鸡蛋';
-  selections.breakfast.soy = '无糖豆浆';
+  // 早餐蛋白质支持多选(最多2样)，初始化用数组
+  selections.breakfast.meat = ['鸡蛋', '牛奶'];
+  selections.breakfast.staple = '燕麦片';
   selections.lunch.meat = '鸡胸肉';
   selections.lunch.staple = '杂粮饭';
   selections.lunch.veg = ['丝瓜'];
@@ -335,7 +336,10 @@ h1 { font-size: 20px; text-align: center; padding: 12px 0 0; color: var(--primar
 
     for (var ci = 0; ci < CAT_ORDER.length; ci++) {
       var cat = CAT_ORDER[ci];
-      var label = (cat==='staple' && !stapleRequired(meal)) ? '&#127834; 主食（可不选）' : CAT_LABELS[cat];
+      var label;
+      if (cat==='staple' && !stapleRequired(meal)) { label = '&#127834; 主食（可不选）'; }
+      else if (cat==='meat' && meal==='breakfast') { label = '&#129385; 蛋白质（可选1-2样）'; }
+      else { label = CAT_LABELS[cat]; }
       headHTML += '<div class="food-section"><h3>' + label + '</h3><div class="food-chips" id="' + getChipId(meal,cat) + '"></div></div>';
     }
     headHTML += '</div>';
@@ -377,7 +381,21 @@ h1 { font-size: 20px; text-align: center; padding: 12px 0 0; color: var(--primar
   function handleChipClick(chipEl, name, meal, cat) {
     var sel = selections[meal];
 
-    if (cat === 'meat' || cat === 'soy' || cat === 'staple') {
+    if (cat === 'meat' && meal === 'breakfast') {
+      // 早餐蛋白质支持多选，最多2样
+      var idx = sel.meat.indexOf(name);
+      if (idx >= 0) { sel.meat.splice(idx, 1); chipEl.classList.remove('selected'); }
+      else {
+        if (sel.meat.length >= 2) {
+          var removed = sel.meat.shift();
+          var allMeat = document.getElementById(getChipId(meal, 'meat')).querySelectorAll('.food-chip');
+          for (var k = 0; k < allMeat.length; k++) {
+            if (allMeat[k].getAttribute('data-food') === removed) { allMeat[k].classList.remove('selected'); break; }
+          }
+        }
+        sel.meat.push(name); chipEl.classList.add('selected');
+      }
+    } else if (cat === 'meat' || cat === 'soy' || cat === 'staple') {
       var allInGroup = document.getElementById(getChipId(meal, cat)).querySelectorAll('.food-chip');
       for (var i=0;i<allInGroup.length;i++) allInGroup[i].classList.remove('selected');
       if (sel[cat]===name) { sel[cat]=null; }
@@ -407,7 +425,11 @@ h1 { font-size: 20px; text-align: center; padding: 12px 0 0; color: var(--primar
       var chips=document.getElementById(getChipId(meal,cat)).querySelectorAll('.food-chip');
       for (var i=0;i<chips.length;i++) chips[i].classList.remove('selected');
     }
-    if (sel.meat)  highlightChip(getChipId(meal,'meat'), sel.meat);
+    if (meal==='breakfast' && Array.isArray(sel.meat)) {
+      for (var bm=0;bm<sel.meat.length;bm++) highlightChip(getChipId(meal,'meat'), sel.meat[bm]);
+    } else if (sel.meat) {
+      highlightChip(getChipId(meal,'meat'), sel.meat);
+    }
     if (sel.soy)   highlightChip(getChipId(meal,'soy'), sel.soy);
     for (var v=0;v<sel.veg.length;v++) highlightChip(getChipId(meal,'veg'), sel.veg[v]);
     if (sel.staple) highlightChip(getChipId(meal,'staple'), sel.staple);
@@ -425,14 +447,20 @@ h1 { font-size: 20px; text-align: center; padding: 12px 0 0; color: var(--primar
     var div = document.getElementById('result_' + meal);
     if (!div) return;
 
-    if (!sel.meat || (stapleRequired(meal) && !sel.staple)) {
-      var msg = !sel.meat?'再选一样蛋白质' : '再选一样主食';
-      if (!sel.meat && (!stapleRequired(meal) || !sel.staple)) msg = '选蛋白质' + (stapleRequired(meal)?'+主食':'（可选主食）') + '即可看搭配';
+    var hasMeat = (meal==='breakfast' && Array.isArray(sel.meat)) ? (sel.meat.length > 0) : !!sel.meat;
+    if (!hasMeat || (stapleRequired(meal) && !sel.staple)) {
+      var msg = !hasMeat?'再选一样蛋白质' : '再选一样主食';
+      if (!hasMeat && (!stapleRequired(meal) || !sel.staple)) msg = '选蛋白质' + (stapleRequired(meal)?'+主食':'（可选主食）') + '即可看搭配';
       div.innerHTML = '<div class="meal-result-empty">'+msg+'</div>';
       return;
     }
 
-    var allFoods = [{ name:sel.meat, cat:'meat' }];
+    var allFoods;
+    if (meal==='breakfast' && Array.isArray(sel.meat)) {
+      allFoods = sel.meat.map(function(mn) { return {name:mn, cat:'meat'}; });
+    } else {
+      allFoods = [{ name:sel.meat, cat:'meat' }];
+    }
     if (sel.soy) allFoods.push({ name:sel.soy, cat:'soy' });
     for (var v=0;v<sel.veg.length;v++) allFoods.push({ name:sel.veg[v], cat:'veg' });
     if (sel.staple) allFoods.push({ name:sel.staple, cat:'staple' });
@@ -472,7 +500,8 @@ h1 { font-size: 20px; text-align: center; padding: 12px 0 0; color: var(--primar
     var allSet = true;
     for (var i=0;i<MEALS.length;i++) {
       var m=MEALS[i];
-      if (!selections[m].meat || (stapleRequired(m) && !selections[m].staple)) { allSet=false; break; }
+      var hasMeatCheck = (m==='breakfast' && Array.isArray(selections[m].meat)) ? (selections[m].meat.length > 0) : !!selections[m].meat;
+      if (!hasMeatCheck || (stapleRequired(m) && !selections[m].staple)) { allSet=false; break; }
     }
     if (!allSet) { ds.innerHTML='<div class="ds-empty">三餐各选蛋白质（早餐可不选主食）即可看到汇总</div>'; return; }
 
@@ -481,7 +510,12 @@ h1 { font-size: 20px; text-align: center; padding: 12px 0 0; color: var(--primar
 
     for (var m=0;m<MEALS.length;m++) {
       var meal=MEALS[m], sel=selections[meal];
-      var allFoods=[{name:sel.meat,cat:'meat'}];
+      var allFoods;
+      if (meal==='breakfast' && Array.isArray(sel.meat)) {
+        allFoods = sel.meat.map(function(mn) { return {name:mn, cat:'meat'}; });
+      } else {
+        allFoods = [{name:sel.meat, cat:'meat'}];
+      }
       if(sel.soy)allFoods.push({name:sel.soy,cat:'soy'});
       for(var v=0;v<sel.veg.length;v++)allFoods.push({name:sel.veg[v],cat:'veg'});
       if(sel.staple)allFoods.push({name:sel.staple,cat:'staple'});
@@ -529,6 +563,11 @@ h1 { font-size: 20px; text-align: center; padding: 12px 0 0; color: var(--primar
       if (!weeklySel[d]) weeklySel[d] = {};
       MEALS.forEach(function(m) {
         if (!weeklySel[d][m]) weeklySel[d][m] = {meat:null,soy:null,veg:[],staple:null};
+        // 早餐蛋白质初始化为数组（迁移旧数据 + 新初始化）
+        if (m==='breakfast') {
+          if (typeof weeklySel[d][m].meat === 'string') weeklySel[d][m].meat = [weeklySel[d][m].meat];
+          if (!Array.isArray(weeklySel[d][m].meat)) weeklySel[d][m].meat = [];
+        }
       });
     });
 
@@ -573,7 +612,10 @@ h1 { font-size: 20px; text-align: center; padding: 12px 0 0; color: var(--primar
       h += '<div class="meal-chips">';
 
       CAT_ORDER.forEach(function(cat) {
-        var label = (cat==='staple' && !stapleRequired(meal)) ? '&#127834; 主食（可不选）' : CAT_LABELS[cat];
+        var label;
+        if (cat==='staple' && !stapleRequired(meal)) { label = '&#127834; 主食（可不选）'; }
+        else if (cat==='meat' && meal==='breakfast') { label = '&#129385; 蛋白质（可选1-2样）'; }
+        else { label = CAT_LABELS[cat]; }
         h += '<div class="food-section"><h3>'+label+'</h3><div class="food-chips" id="'+getWPanelId(day,meal,cat)+'"></div></div>';
       });
 
@@ -603,7 +645,15 @@ h1 { font-size: 20px; text-align: center; padding: 12px 0 0; color: var(--primar
   function wChipClick(name, meal, cat) {
     var sel = weeklySel[currentWDay][meal];
 
-    if (cat==='meat'||cat==='soy'||cat==='staple') {
+    if (cat==='meat' && meal==='breakfast') {
+      // 早餐蛋白质支持多选，最多2样
+      var idx = sel.meat.indexOf(name);
+      if (idx >= 0) { sel.meat.splice(idx, 1); }
+      else {
+        if (sel.meat.length >= 2) sel.meat.shift();
+        sel.meat.push(name);
+      }
+    } else if (cat==='meat'||cat==='soy'||cat==='staple') {
       var chipContainer = document.getElementById(getWPanelId(currentWDay,meal,cat));
       if (!chipContainer) return;
       var chips = chipContainer.querySelectorAll('.food-chip');
@@ -630,7 +680,11 @@ h1 { font-size: 20px; text-align: center; padding: 12px 0 0; color: var(--primar
       var chips = container.querySelectorAll('.food-chip');
       for (var i=0;i<chips.length;i++) chips[i].classList.remove('selected');
     });
-    if (sel.meat) highlightWChip(day,meal,'meat',sel.meat);
+    if (meal==='breakfast' && Array.isArray(sel.meat)) {
+      for (var bm=0;bm<sel.meat.length;bm++) highlightWChip(day,meal,'meat',sel.meat[bm]);
+    } else if (sel.meat) {
+      highlightWChip(day,meal,'meat',sel.meat);
+    }
     if (sel.soy) highlightWChip(day,meal,'soy',sel.soy);
     sel.veg.forEach(function(v){ highlightWChip(day,meal,'veg',v); });
     if (sel.staple) highlightWChip(day,meal,'staple',sel.staple);
@@ -650,12 +704,18 @@ h1 { font-size: 20px; text-align: center; padding: 12px 0 0; color: var(--primar
     var div = document.getElementById(getWResultId(day,meal));
     if (!div) return;
 
-    if (!sel.meat || (stapleRequired(meal) && !sel.staple)) {
+    var hasMeatW = (meal==='breakfast' && Array.isArray(sel.meat)) ? (sel.meat.length > 0) : !!sel.meat;
+    if (!hasMeatW || (stapleRequired(meal) && !sel.staple)) {
       div.innerHTML = '<div class="meal-result-empty">选蛋白质'+(stapleRequired(meal)?'+主食':'')+'即可看搭配</div>';
       return;
     }
 
-    var items = [{name:sel.meat,cat:'meat'}];
+    var items;
+    if (meal==='breakfast' && Array.isArray(sel.meat)) {
+      items = sel.meat.map(function(mn) { return {name:mn, cat:'meat'}; });
+    } else {
+      items = [{name:sel.meat, cat:'meat'}];
+    }
     if (sel.soy) items.push({name:sel.soy,cat:'soy'});
     sel.veg.forEach(function(v){ items.push({name:v,cat:'veg'}); });
     if (sel.staple) items.push({name:sel.staple,cat:'staple'});
@@ -714,10 +774,16 @@ h1 { font-size: 20px; text-align: center; padding: 12px 0 0; color: var(--primar
       if (!sel) return;
       MEALS.forEach(function(meal) {
         var msel = sel[meal];
-        if (!msel || !msel.meat) return;
+        var hasMeatS = (meal==='breakfast' && Array.isArray(msel.meat)) ? (msel.meat.length > 0) : !!msel.meat;
+        if (!msel || !hasMeatS) return;
         hasData = true;
 
-        var items = [{name:msel.meat,cat:'meat',ml:meal}];
+        var items;
+        if (meal==='breakfast' && Array.isArray(msel.meat)) {
+          items = msel.meat.map(function(mn) { return {name:mn, cat:'meat', ml:meal}; });
+        } else {
+          items = [{name:msel.meat, cat:'meat', ml:meal}];
+        }
         if (msel.soy) items.push({name:msel.soy,cat:'soy',ml:meal});
         msel.veg.forEach(function(v){ items.push({name:v,cat:'veg',ml:meal}); });
         if (msel.staple) items.push({name:msel.staple,cat:'staple',ml:meal});
