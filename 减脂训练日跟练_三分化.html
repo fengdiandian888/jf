@@ -1563,7 +1563,7 @@ var WorkoutTimer = (function() {
   var totalDuration;
 
   // --- 状态 ---
-  var STATE = { IDLE: 'idle', TRAINING: 'training', REST: 'rest', DONE: 'done', PAUSED: 'paused' };
+  var STATE = { IDLE: 'idle', WARMUP: 'warmup', TRAINING: 'training', REST: 'rest', DONE: 'done', PAUSED: 'paused' };
   var state = STATE.IDLE;
   var exercises = [];      // 解析后的动作列表
   var currentIndex = 0;    // 当前动作索引
@@ -1578,9 +1578,20 @@ var WorkoutTimer = (function() {
   var totalPausedTime = 0; // 累计暂停时长（毫秒）
   var pausedAt = 0;        // 暂停时刻
   var prevState = STATE.IDLE; // 暂停前的状态（用于恢复）
+  var sessionDayType = ''; // 训练日类型（pull/push/leg/cardio/recovery）
+  var sessionPanelId = ''; // 面板ID
 
   // 统计
   var stats = { setsCompleted: 0, exercisesCompleted: 0 };
+
+  // 热身
+  var warmupStage = 0;
+  var warmupExercises = [
+    { name: '肩绕环', duration: 30, icon: '🔄' },
+    { name: '扩胸', duration: 30, icon: '🤲' },
+    { name: '原地踏步', duration: 60, icon: '🚶' },
+    { name: '手腕脚踝', duration: 60, icon: '🤲' },
+  ];
 
   // --- 语音合成 ---
   var synth = window.speechSynthesis;
@@ -1691,6 +1702,7 @@ var WorkoutTimer = (function() {
   }
 
   function updateDisplay() {
+    if (state === STATE.WARMUP) return; // 热身态用 updateWarmupDisplay
     timerDisplay.textContent = formatTime(timeLeft);
 
     // 当前总耗时（实时刷新，扣除暂停时间）
@@ -1956,6 +1968,24 @@ var WorkoutTimer = (function() {
     // 预估消耗热量（粗略估算：每分钟约7-10大卡）
     var calEst = Math.round(elapsed / 60 * 8);
     $('tmStatCalories').textContent = calEst + ' kcal';
+
+    // 保存训练完成记录到 localStorage（供每周小结使用）
+    try {
+      var logs = JSON.parse(localStorage.getItem('jf_training_logs') || '[]');
+      logs.push({
+        date: new Date().toISOString().slice(0, 10),
+        time: new Date().toISOString(),
+        dayType: sessionDayType,
+        duration: elapsed,
+        exercisesCompleted: stats.exercisesCompleted,
+        totalExercises: exercises.length,
+        setsCompleted: stats.setsCompleted,
+        calories: calEst
+      });
+      if (logs.length > 200) logs = logs.slice(-200);
+      localStorage.setItem('jf_training_logs', JSON.stringify(logs));
+    } catch(e) { /* ignore quota errors */ }
+
     var totalEst = window.TimeEstimator ? TimeEstimator.estimateTotal(exercises) : 0;
     var estStr = totalEst > 0 ? '（预估 ' + TimeEstimator.formatDuration(totalEst) + '）' : '';
     $('tmCompleteSub').textContent = [
@@ -1985,6 +2015,12 @@ var WorkoutTimer = (function() {
 
   function tick() {
     if (state === STATE.PAUSED) return;
+
+    // 热身态
+    if (state === STATE.WARMUP) {
+      handleWarmupTick();
+      return;
+    }
 
     // 次数型训练: 正计时(往上数); 时间型训练/休息: 倒计时(往下数)
     if (state === STATE.TRAINING && !isTimed) {
@@ -2021,7 +2057,7 @@ var WorkoutTimer = (function() {
       btnPause.textContent = '⏸ 暂停';
       speak('继续');
       startTicker();
-    } else if (state === STATE.TRAINING || state === STATE.REST) {
+    } else if (state === STATE.TRAINING || state === STATE.REST || state === STATE.WARMUP) {
       prevState = state; // 保存当前状态
       state = STATE.PAUSED;
       pausedAt = Date.now(); // 记录暂停时刻
@@ -2032,6 +2068,13 @@ var WorkoutTimer = (function() {
   }
 
   function skipExercise() {
+    if (state === STATE.WARMUP) {
+      // 跳过热身
+      speak('跳过热身，直接开始训练');
+      stopTicker();
+      finishWarmup();
+      return;
+    }
     if (state === STATE.REST) {
       // 休息时点跳过 = 跳过剩余休息时间，直接进入下一组/动作
       speak('跳过休息');
@@ -2099,6 +2142,10 @@ var WorkoutTimer = (function() {
 
     // 设置标题
     sessionName.textContent = sessionTitle || '今日训练';
+    // 存储训练日类型，用于finishWorkout记录
+    var dayTypeMap = { 'panel-0': 'pull', 'panel-1': 'cardio', 'panel-2': 'push', 'panel-3': 'cardio', 'panel-4': 'leg', 'panel-5': 'recovery', 'panel-6': 'recovery' };
+    sessionDayType = dayTypeMap[activePanel.id] || '';
+    sessionPanelId = activePanel ? activePanel.id : '';
 
     // 渲染动作列表
     renderExercisesList();
@@ -2124,10 +2171,81 @@ var WorkoutTimer = (function() {
 
     // 初始化语音
     initVoice();
-    speak('开始训练！加油！');
 
-    // 加载第一个动作（或从指定索引开始）
-    loadExercise(startIndex || 0);
+    // 热身（仅从第一个动作开始时）
+    if ((startIndex || 0) === 0) {
+      startWarmup();
+    } else {
+      speak('开始训练！加油！');
+      loadExercise(startIndex);
+    }
+  }
+
+  // --- 热身 ---
+  function startWarmup() {
+    warmupStage = 0;
+    state = STATE.WARMUP;
+    var wEx = warmupExercises[0];
+    timeLeft = wEx.duration;
+
+    // 显示热身UI
+    exerciseName.textContent = '🔥 热身准备';
+    exerciseMeta.textContent = '';
+    setInfo.textContent = '总时长 3分钟';
+    timerLabel.textContent = '⏱ 热身倒计时';
+    timerDisplay.classList.remove('warning', 'rest-mode');
+    overlay.classList.remove('rest-mode');
+
+    // 隐藏视频、进度条
+    document.getElementById('tmExerciseInfo').style.display = '';
+    videoArea.style.display = 'none';
+    restScreen.classList.remove('active');
+    progressFill.parentElement.parentElement.style.display = 'none';
+    controls.style.display = 'none';
+
+    updateWarmupDisplay();
+    speak('先热身3分钟，保护关节！');
+    startTicker();
+  }
+
+  function updateWarmupDisplay() {
+    var wEx = warmupExercises[warmupStage];
+    exerciseName.textContent = '🔥 ' + wEx.name + ' ' + wEx.icon;
+    exerciseMeta.textContent = '热身 ' + (warmupStage + 1) + '／' + warmupExercises.length;
+    setInfo.textContent = '还剩 ' + formatTime(timeLeft);
+    timerDisplay.textContent = formatTime(timeLeft);
+    timerLabel.textContent = '⏱ 热身倒计时';
+
+    if (totalDuration && startTime) {
+      var elapsed = Math.floor((Date.now() - startTime - totalPausedTime) / 1000);
+      totalDuration.textContent = '⏱ 已训练 ' + formatTime(elapsed);
+    }
+  }
+
+  function handleWarmupTick() {
+    timeLeft--;
+    updateWarmupDisplay();
+
+    if (timeLeft <= 0) {
+      warmupStage++;
+      if (warmupStage >= warmupExercises.length) {
+        finishWarmup();
+      } else {
+        var wEx = warmupExercises[warmupStage];
+        timeLeft = wEx.duration;
+        updateWarmupDisplay();
+        speak(wEx.name);
+      }
+    }
+  }
+
+  function finishWarmup() {
+    state = STATE.TRAINING;
+    progressFill.parentElement.parentElement.style.display = '';
+    controls.style.display = '';
+    videoArea.style.display = '';
+    speak('热身完毕！开始正式训练！加油！');
+    loadExercise(0);
   }
 
   function close() {

@@ -107,6 +107,23 @@ textarea:focus { border-color: var(--primary); }
   border-radius: var(--radius-sm); margin-bottom: 8px;
   border: 1px solid var(--border);
 }
+
+/* 训练详情网格 */
+.training-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px; margin-bottom: 4px; }
+.tg-day { text-align: center; }
+.tg-day-label { font-size: 10px; color: var(--sub); margin-bottom: 3px; }
+.tg-day-dot {
+  width: 22px; height: 22px; border-radius: 50%; margin: 0 auto 2px;
+  display: flex; align-items: center; justify-content: center; font-size: 11px;
+  background: var(--surface); border: 1px solid var(--border); color: var(--sub);
+}
+.tg-day-dot.pull { background: rgba(59,130,246,0.15); border-color: rgba(59,130,246,0.3); color: var(--pull); font-weight: 700; }
+.tg-day-dot.push { background: rgba(245,158,11,0.15); border-color: rgba(245,158,11,0.3); color: var(--push); font-weight: 700; }
+.tg-day-dot.leg { background: rgba(239,68,68,0.15); border-color: rgba(239,68,68,0.3); color: var(--leg); font-weight: 700; }
+.tg-day-dot.cardio { background: rgba(34,197,94,0.12); border-color: rgba(34,197,94,0.3); color: var(--cardio); font-weight: 700; }
+.tg-day-dot.recovery { background: rgba(167,139,250,0.12); border-color: rgba(167,139,250,0.3); color: var(--recovery); font-weight: 700; }
+.tg-day-dot.today { box-shadow: 0 0 0 2px var(--primary); }
+.tg-day-mins { font-size: 9px; color: var(--sub); }
 .past-week { font-weight: 700; font-size: 13px; margin-bottom: 3px; }
 .past-meta { color: var(--sub); font-size: 12px; line-height: 1.6; }
 .past-notes { color: var(--text); margin-top: 4px; font-size: 12px; line-height: 1.5; }
@@ -179,6 +196,13 @@ textarea:focus { border-color: var(--primary); }
   <div class="weight-log-list" id="weightLogList">
     <div style="color:var(--sub);font-size:13px;text-align:center;padding:12px">还没有记录</div>
   </div>
+</div>
+
+<!-- ===== 本周训练详情（自动从跟练页面读取） ===== -->
+<div class="card" id="trainingCard" style="display:none">
+  <div class="card-title"> 本周训练详情 <span style="font-size:11px;color:var(--sub);font-weight:400;margin-left:6px">（数据来自跟练完成记录）</span></div>
+  <div class="training-grid" id="trainingGrid"></div>
+  <div style="text-align:center;margin-top:8px;font-size:12px;color:var(--sub)" id="trainingSummary"></div>
 </div>
 
 <!-- ===== 本周回顾 ===== -->
@@ -389,6 +413,129 @@ function renderWeightLog() {
 }
 
 renderWeightLog();
+
+// ========= 本周训练详情（读取跟练完成记录） =========
+(function renderTrainingStats() {
+  var logs = JSON.parse(localStorage.getItem('jf_training_logs') || '[]');
+  if (!logs.length) return;
+
+  // 计算本周范围（周一到周日）
+  var d = new Date(now);
+  var day = d.getDay();
+  var mon = new Date(d);
+  mon.setDate(d.getDate() - (day === 0 ? 6 : day - 1));
+  mon.setHours(0, 0, 0, 0);
+  var sun = new Date(mon);
+  sun.setDate(mon.getDate() + 7);
+
+  var weekLogs = logs.filter(function(l) {
+    var ld = new Date(l.date);
+    return ld >= mon && ld < sun;
+  });
+
+  if (!weekLogs.length) return;
+
+  // 统计
+  var strengthCount = 0, cardioCount = 0, totalTime = 0, totalCal = 0, totalSets = 0;
+  var dayMap = {}; // { '2026-06-30': { type: 'pull', mins: 45 } }
+  weekLogs.forEach(function(l) {
+    var mins = Math.round(l.duration / 60);
+    totalTime += l.duration;
+    totalCal += l.calories || 0;
+    totalSets += l.setsCompleted || 0;
+    if (l.dayType === 'pull' || l.dayType === 'push' || l.dayType === 'leg') {
+      strengthCount++;
+    } else if (l.dayType === 'cardio') {
+      cardioCount++;
+    }
+    if (!dayMap[l.date]) dayMap[l.date] = { type: l.dayType, mins: 0 };
+    dayMap[l.date].mins += mins;
+    // 优先记录力量训练天
+    if (l.dayType !== 'cardio' && l.dayType !== 'recovery') dayMap[l.date].type = l.dayType;
+    else if (l.dayType === 'cardio' && dayMap[l.date].type !== 'pull' && dayMap[l.date].type !== 'push' && dayMap[l.date].type !== 'leg') dayMap[l.date].type = l.dayType;
+  });
+
+  // 渲染7天网格
+  var dayDates = [];
+  var dayNames = ['一', '二', '三', '四', '五', '六', '日'];
+  var typeIcons = { pull: '🔵', push: '🟠', leg: '🔴', cardio: '🟢', recovery: '🟣' };
+  for (var i = 0; i < 7; i++) {
+    var d2 = new Date(mon);
+    d2.setDate(mon.getDate() + i);
+    dayDates.push(d2.toISOString().slice(0, 10));
+  }
+
+  var gridHTML = dayDates.map(function(date, i) {
+    var info = dayMap[date];
+    var dotClass = info ? info.type : '';
+    var icon = info ? (typeIcons[info.type] || '') : '';
+    var isToday = date === todayStr;
+    var minsText = info ? info.mins + '′' : '';
+    return '<div class="tg-day">' +
+      '<div class="tg-day-label">' + dayNames[i] + '</div>' +
+      '<div class="tg-day-dot' + (dotClass ? ' ' + dotClass : '') + (isToday ? ' today' : '') + '">' + (info ? icon : '—') + '</div>' +
+      '<div class="tg-day-mins">' + minsText + '</div>' +
+    '</div>';
+  }).join('');
+
+  document.getElementById('trainingGrid').innerHTML = gridHTML;
+  document.getElementById('trainingSummary').textContent =
+    '力量 ' + strengthCount + '次  ·  有氧 ' + cardioCount + '次  ·  共 ' + Math.round(totalTime / 60) + '分钟  ·  ' + totalSets + '组  ·  ≈' + totalCal + ' kcal';
+
+  // 显示卡片
+  var card = document.getElementById('trainingCard');
+  if (card) card.style.display = '';
+
+  // 自动填充周回顾表单的力量训练次数
+  if (strengthCount > 0) {
+    var countText = strengthCount + '次';
+    var fieldSet = false;
+    document.querySelectorAll('#exBtns .qb-btn').forEach(function(b) {
+      b.classList.toggle('selected', b.textContent.trim().startsWith(countText));
+      if (b.textContent.trim().startsWith(countText)) fieldSet = true;
+    });
+    if (fieldSet) review.exercises = countText;
+    // 如果按钮中没有匹配的数量，动态添加一个
+    if (!fieldSet) {
+      var exBtns = document.getElementById('exBtns');
+      var existing = exBtns.querySelectorAll('.qb-btn');
+      for (var ei = 0; ei < existing.length; ei++) {
+        existing[ei].classList.remove('selected');
+      }
+      var newBtn = document.createElement('button');
+      newBtn.className = 'qb-btn selected';
+      newBtn.textContent = countText + ' ✓';
+      newBtn.onclick = function() { setField('exercises', countText); };
+      exBtns.appendChild(newBtn);
+      review.exercises = countText;
+    }
+  }
+  // 自动填充有氧次数
+  if (cardioCount > 0) {
+    var cardioText = cardioCount + '次';
+    var cf = false;
+    document.querySelectorAll('#rdBtns .qb-btn').forEach(function(b) {
+      b.classList.toggle('selected', b.textContent.trim().startsWith(cardioText));
+      if (b.textContent.trim().startsWith(cardioText)) cf = true;
+    });
+    if (cf) review.cardio = cardioText;
+    else {
+      var rdBtns = document.getElementById('rdBtns');
+      if (rdBtns) {
+        var existing2 = rdBtns.querySelectorAll('.qb-btn');
+        for (var ei = 0; ei < existing2.length; ei++) {
+          existing2[ei].classList.remove('selected');
+        }
+        var nb = document.createElement('button');
+        nb.className = 'qb-btn selected';
+        nb.textContent = cardioText + ' ✓';
+        nb.onclick = function() { setField('cardio', cardioText); };
+        rdBtns.appendChild(nb);
+        review.cardio = cardioText;
+      }
+    }
+  }
+})();
 
 // ========= 周回顾表单 =========
 function setField(field, value) {
