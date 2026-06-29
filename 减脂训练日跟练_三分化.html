@@ -2183,24 +2183,24 @@ var VideoManager = (function() {
   var db = null;
   var currentExercise = '';
 
-  // --- 本地视频库（从 MuscleWiki 下载的男性正面示范视频）---
+  // --- 默认视频库（本地MuscleWiki视频 + B站教学视频）---
   var DEFAULT_URLS = {
-    '哑铃单臂划船': 'videos/db_row.mp4',
+    '哑铃单臂划船': 'https://www.bilibili.com/video/BV1Vh411775b',
     '哑铃俯身划船': 'videos/db_row.mp4',
-    '哑铃俯身反向飞鸟': 'videos/band_face_pull.mp4',
+    '哑铃俯身反向飞鸟': 'https://www.bilibili.com/video/BV1M53TzjEgX',
     '哑铃弯举': 'videos/db_curl.mp4',
     '哑铃地板卧推': 'videos/floor_press.mp4',
     '哑铃前平举': 'videos/front_raise.mp4',
     '前平举': 'videos/front_raise.mp4',
     '哑铃仰卧臂屈伸': 'videos/skullcrusher.mp4',
-    '轻哑铃肩外旋': 'videos/band_face_pull.mp4',
+    '轻哑铃肩外旋': 'https://www.bilibili.com/video/BV1ei4y1v7sK',
     '高脚杯深蹲': 'videos/goblet_squat.mp4',
     '哑铃罗马尼亚硬拉': 'videos/rdl.mp4',
     '哑铃弓步蹲': 'videos/lunge.mp4',
     '杠铃深蹲': 'videos/barbell_squat.mp4',
     '臀桥': 'videos/glute_bridge.mp4',
     '卷腹': 'videos/crunch.mp4',
-    '哑铃直立划船': 'videos/db_row.mp4'
+    '哑铃直立划船': 'https://www.bilibili.com/video/BV1YA411n7Mt'
   };
 
   // --- 动作名归一化（去掉🆕🔥等标签，提取核心名）---
