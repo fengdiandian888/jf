@@ -160,7 +160,7 @@ h1 { font-size: 20px; text-align: center; padding: 12px 0 0; color: var(--primar
   <div id="dsDailyContent"><div class="ds-empty">在三餐中各选蛋白质 + 主食即可看到汇总</div></div>
 </div>
 
-<div class="footer">减脂计划 · 饮食参考 v5.0 · 2026-06-30<br>数据参考：中国营养学会</div>
+<div class="footer">减脂计划 · 饮食参考 v5.1 · 2026-06-30<br>数据参考：中国营养学会</div>
 
 <nav class="bottom-nav">
   <a href="今日计划.html">今日</a>
@@ -175,10 +175,10 @@ h1 { font-size: 20px; text-align: center; padding: 12px 0 0; color: var(--primar
   'use strict';
 
   var FOODS = {
-    '鸡蛋':         { cat:'meat', cal:144,pro:13,  carb:1.5, fat:9,   portion:100, unit:'g&#8776;2个', tip:'全蛋营养', meals:['breakfast'] },
+    '鸡蛋':         { cat:'meat', cal:144,pro:13,  carb:1.5, fat:9,   portion:100, unit:'g&#8776;2个', tip:'全蛋营养', meals:['breakfast','lunch','dinner'] },
     '牛奶':         { cat:'meat', cal:54, pro:3,   carb:3.4, fat:3.2, portion:250, unit:'ml',         tip:'补钙·全脂', meals:['breakfast'] },
+    '无糖酸奶':     { cat:'meat', cal:63, pro:3.5, carb:4.5, fat:3.2, portion:200, unit:'ml',         tip:'补钙·益生菌', meals:['breakfast'] },
     '鸡胸肉':       { cat:'meat', cal:133,pro:30,  carb:0,   fat:1.5, portion:150, unit:'g生重',       tip:'高蛋白低脂', meals:['lunch','dinner'] },
-    '鸡腿肉(去皮)': { cat:'meat', cal:150,pro:20,  carb:0,   fat:7,   portion:170, unit:'g生重',       tip:'比鸡胸嫩',   meals:['lunch','dinner'] },
     '瘦猪肉':       { cat:'meat', cal:143,pro:20,  carb:1,   fat:7,   portion:180, unit:'g生重',       tip:'里脊/后腿',  meals:['lunch','dinner'] },
     '瘦牛肉':       { cat:'meat', cal:125,pro:22,  carb:0,   fat:4,   portion:180, unit:'g生重',       tip:'补铁最佳',   meals:['lunch','dinner'] },
     '虾仁':         { cat:'meat', cal:99, pro:20,  carb:0,   fat:1,   portion:180, unit:'g生重',       tip:'几乎零脂肪', meals:['lunch','dinner'] },
@@ -188,21 +188,20 @@ h1 { font-size: 20px; text-align: center; padding: 12px 0 0; color: var(--primar
     '老豆腐':       { cat:'soy',  cal:81, pro:8.1, carb:2.8, fat:3.7, portion:180, unit:'g',           tip:'炒/煎不散',   meals:['lunch','dinner'] },
     '豆干':         { cat:'soy',  cal:142,pro:16.2,carb:2.8, fat:7,   portion:100, unit:'g',           tip:'蛋白密度高',  meals:['lunch','dinner'] },
     '千张':         { cat:'soy',  cal:260,pro:24.5,carb:5.5, fat:16,  portion:70,  unit:'g',           tip:'热量偏高',    meals:['lunch','dinner'] },
-    '番茄':     { cat:'veg',cal:20, pro:0.9,carb:4,  fat:0.2,portion:200,unit:'g', tip:'炒蛋/煮汤',     meals:['breakfast','lunch','dinner'] },
+    '番茄':     { cat:'veg',cal:20, pro:0.9,carb:4,  fat:0.2,portion:200,unit:'g', tip:'炒蛋/煮汤',     meals:['lunch','dinner'] },
     '丝瓜':     { cat:'veg',cal:20, pro:1,  carb:3,  fat:0.2,portion:250,unit:'g', tip:'当季·清炒',     meals:['lunch','dinner'] },
     '空心菜':   { cat:'veg',cal:23, pro:2.2,carb:2.2,fat:0.3,portion:250,unit:'g', tip:'株洲天天有',    meals:['lunch','dinner'] },
     '苋菜':     { cat:'veg',cal:25, pro:2.8,carb:3,  fat:0.3,portion:250,unit:'g', tip:'红苋菜·补铁',   meals:['lunch','dinner'] },
     '茄子':     { cat:'veg',cal:25, pro:1.1,carb:4.9,fat:0.2,portion:250,unit:'g', tip:'少油蒸拌',      meals:['lunch','dinner'] },
     '豆角':     { cat:'veg',cal:34, pro:2.5,carb:6,  fat:0.3,portion:200,unit:'g', tip:'务必炒熟',      meals:['lunch','dinner'] },
     '黄瓜':     { cat:'veg',cal:16, pro:0.8,carb:2.9,fat:0.2,portion:250,unit:'g', tip:'生吃凉拌',      meals:['lunch','dinner'] },
-    '辣椒':     { cat:'veg',cal:22, pro:1,  carb:4,  fat:0.3,portion:150,unit:'g', tip:'提味不占胃',    meals:['lunch','dinner'] },
     '冬瓜':     { cat:'veg',cal:12, pro:0.4,carb:2.6,fat:0.1,portion:300,unit:'g', tip:'热量最低',      meals:['lunch','dinner'] },
     '韭菜':     { cat:'veg',cal:26, pro:2.4,carb:3.2,fat:0.4,portion:150,unit:'g', tip:'炒蛋经典',      meals:['lunch','dinner'] },
     '蘑菇类':   { cat:'veg',cal:25, pro:2.5,carb:2,  fat:0.3,portion:200,unit:'g', tip:'热量极低',      meals:['lunch','dinner'] },
     '玉米':       { cat:'staple',cal:112,pro:4,   carb:22.8,fat:1.2,portion:200,unit:'g&#8776;1根', tip:'优质粗粮', meals:['breakfast','lunch','dinner'] },
-    '红薯':       { cat:'staple',cal:102,pro:1.6, carb:23.1,fat:0.2,portion:200,unit:'g生重', tip:'慢碳水',     meals:['breakfast','lunch','dinner'] },
+    '红薯':       { cat:'staple',cal:102,pro:1.6, carb:23.1,fat:0.2,portion:200,unit:'g生重', tip:'慢碳水',     meals:['lunch','dinner'] },
     '全麦面包':   { cat:'staple',cal:265,pro:10.5,carb:47,  fat:4,  portion:80, unit:'g&#8776;2~3片',tip:'膳食纤维', meals:['breakfast'] },
-    '南瓜':       { cat:'staple',cal:26, pro:1,   carb:6,   fat:0.1,portion:300,unit:'g',     tip:'碳水偏低',   meals:['breakfast','lunch','dinner'] },
+    '南瓜':       { cat:'staple',cal:26, pro:1,   carb:6,   fat:0.1,portion:300,unit:'g',     tip:'碳水偏低',   meals:['lunch','dinner'] },
     '杂粮饭':     { cat:'staple',cal:140,pro:3.5, carb:28,  fat:0.8,portion:150,unit:'g熟重', tip:'大米小米糙米', meals:['lunch','dinner'] },
     '米饭':       { cat:'staple',cal:116,pro:2.6, carb:25.9,fat:0.3,portion:150,unit:'g熟重', tip:'优先杂粮饭', meals:['lunch','dinner'] },
     '土豆':       { cat:'staple',cal:81, pro:2,   carb:17.5,fat:0.2,portion:250,unit:'g',     tip:'蒸煮最好',   meals:['lunch','dinner'] },
@@ -218,11 +217,12 @@ h1 { font-size: 20px; text-align: center; padding: 12px 0 0; color: var(--primar
   };
   var CAT_ORDER = ['meat','soy','veg','staple'];
   var CAT_LABELS = { meat:'&#129385; 蛋白质（选1样）', soy:'&#129656; 豆制品（可选）', veg:'&#129388; 蔬菜（可选1-2样）', staple:'&#127834; 主食（选1样）' };
+  // 早餐主食为可选，午晚餐必选
+  function stapleRequired(meal) { return meal !== 'breakfast'; }
 
   var selections = {};
   MEALS.forEach(function(m) { selections[m] = { meat:null, soy:null, veg:[], staple:null }; });
   selections.breakfast.meat = '鸡蛋';
-  selections.breakfast.staple = '玉米';
   selections.breakfast.soy = '无糖豆浆';
   selections.lunch.meat = '鸡胸肉';
   selections.lunch.staple = '杂粮饭';
@@ -244,6 +244,7 @@ h1 { font-size: 20px; text-align: center; padding: 12px 0 0; color: var(--primar
     if (f.cat === 'meat') {
       if (food === '鸡蛋') return { g:100, note:'2个蛋&#8776;26g蛋白' };
       if (food === '牛奶') return { g:250, note:'全脂牛奶&#8776;135kcal' };
+      if (food === '无糖酸奶') return { g:200, note:'200ml&#8776;126kcal' };
       var raw = Math.round(35/f.pro*100/5)*5;
       if (raw>250) raw=250; if (raw<100) raw=100;
       return { g:raw };
@@ -283,7 +284,8 @@ h1 { font-size: 20px; text-align: center; padding: 12px 0 0; color: var(--primar
 
     for (var ci = 0; ci < CAT_ORDER.length; ci++) {
       var cat = CAT_ORDER[ci];
-      headHTML += '<div class="food-section"><h3>' + CAT_LABELS[cat] + '</h3><div class="food-chips" id="' + getChipId(meal,cat) + '"></div></div>';
+      var label = (cat==='staple' && !stapleRequired(meal)) ? '&#127834; 主食（可不选）' : CAT_LABELS[cat];
+      headHTML += '<div class="food-section"><h3>' + label + '</h3><div class="food-chips" id="' + getChipId(meal,cat) + '"></div></div>';
     }
     headHTML += '</div>';
     headHTML += '<div class="meal-result" id="result_' + meal + '"></div>';
@@ -372,8 +374,9 @@ h1 { font-size: 20px; text-align: center; padding: 12px 0 0; color: var(--primar
     var div = document.getElementById('result_' + meal);
     if (!div) return;
 
-    if (!sel.meat || !sel.staple) {
-      var msg = !sel.meat&&!sel.staple?'选蛋白质+主食即可看搭配' : !sel.meat?'再选一样蛋白质' : '再选一样主食';
+    if (!sel.meat || (stapleRequired(meal) && !sel.staple)) {
+      var msg = !sel.meat?'再选一样蛋白质' : '再选一样主食';
+      if (!sel.meat && (!stapleRequired(meal) || !sel.staple)) msg = '选蛋白质' + (stapleRequired(meal)?'+主食':'（可选主食）') + '即可看搭配';
       div.innerHTML = '<div class="meal-result-empty">'+msg+'</div>';
       return;
     }
@@ -381,7 +384,7 @@ h1 { font-size: 20px; text-align: center; padding: 12px 0 0; color: var(--primar
     var allFoods = [{ name:sel.meat, cat:'meat' }];
     if (sel.soy) allFoods.push({ name:sel.soy, cat:'soy' });
     for (var v=0;v<sel.veg.length;v++) allFoods.push({ name:sel.veg[v], cat:'veg' });
-    allFoods.push({ name:sel.staple, cat:'staple' });
+    if (sel.staple) allFoods.push({ name:sel.staple, cat:'staple' });
 
     var mc=0,mp=0,mcb=0,mf=0, rows=[];
     for (var a=0;a<allFoods.length;a++) {
@@ -417,9 +420,10 @@ h1 { font-size: 20px; text-align: center; padding: 12px 0 0; color: var(--primar
     var ds = document.getElementById('dsDailyContent');
     var allSet = true;
     for (var i=0;i<MEALS.length;i++) {
-      if (!selections[MEALS[i]].meat||!selections[MEALS[i]].staple) { allSet=false; break; }
+      var m=MEALS[i];
+      if (!selections[m].meat || (stapleRequired(m) && !selections[m].staple)) { allSet=false; break; }
     }
-    if (!allSet) { ds.innerHTML='<div class="ds-empty">在三餐中各选蛋白质 + 主食即可看到汇总</div>'; return; }
+    if (!allSet) { ds.innerHTML='<div class="ds-empty">三餐各选蛋白质（早餐可不选主食）即可看到汇总</div>'; return; }
 
     var dc=0,dp=0,dcb=0,df=0;
     var rows=[];
@@ -429,7 +433,7 @@ h1 { font-size: 20px; text-align: center; padding: 12px 0 0; color: var(--primar
       var allFoods=[{name:sel.meat,cat:'meat'}];
       if(sel.soy)allFoods.push({name:sel.soy,cat:'soy'});
       for(var v=0;v<sel.veg.length;v++)allFoods.push({name:sel.veg[v],cat:'veg'});
-      allFoods.push({name:sel.staple,cat:'staple'});
+      if(sel.staple)allFoods.push({name:sel.staple,cat:'staple'});
 
       var mc=0, items=[];
       for(var a=0;a<allFoods.length;a++) {
