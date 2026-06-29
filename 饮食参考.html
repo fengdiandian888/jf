@@ -138,15 +138,30 @@ h1 { font-size: 20px; text-align: center; padding: 12px 0 0; color: var(--primar
 .ds-warn { color: var(--warn); font-size: 12px; font-weight: 800; }
 .ds-empty { text-align: center; font-size: 12px; color: var(--sub); padding: 8px; }
 
-/* 保存按钮 */
-.actions-row { text-align: center; margin: 12px 0 6px; }
+/* 保存状态栏 */
+.save-status-bar {
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+  margin: 10px 10px 2px; padding: 8px 12px;
+  background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px;
+  font-size: 12px; font-weight: 600; color: #166534;
+  transition: all .3s;
+}
+.save-status-bar.unsaved {
+  background: #fffbeb; border-color: #fde68a; color: #92400e;
+  animation: pulse-save 1.2s ease-in-out;
+}
+@keyframes pulse-save {
+  0%,100% { background: #f0fdf4; border-color: #bbf7d0; color: #166534; }
+  50% { background: #fffbeb; border-color: #fde68a; color: #92400e; }
+}
+.save-status-icon { font-size: 15px; line-height: 1; }
+.save-status-time { font-size: 10px; color: #6b7280; margin-left: 4px; }
+.actions-row { text-align: center; margin: 2px 0 6px; }
 .save-btn {
-  padding: 10px 40px; background: var(--primary); color: #fff; border: none;
-  border-radius: 10px; font-size: 14px; font-weight: 700; cursor: pointer;
+  padding: 8px 32px; background: #e5e7eb; color: #6b7280; border: 1px solid #d1d5db;
+  border-radius: 10px; font-size: 13px; font-weight: 600; cursor: default;
   transition: all .15s; user-select: none;
 }
-.save-btn:active { transform: scale(.95); }
-.save-btn.done { background: var(--cardio); }
 
 /* 采购清单 */
 .shopping-list { margin: 0 10px 16px; background: #fff; border: 2px solid var(--cardio); border-radius: 12px; padding: 14px; }
@@ -198,8 +213,13 @@ h1 { font-size: 20px; text-align: center; padding: 12px 0 0; color: var(--primar
   <div id="dsContent"><div class="ds-empty">在三餐中各选蛋白质 + 主食即可看到汇总</div></div>
 </div>
 
+<div class="save-status-bar" id="saveStatus">
+  <span class="save-status-icon">✅</span>
+  <span id="saveStatusText">已自动保存</span>
+  <span class="save-status-time" id="saveStatusTime"></span>
+</div>
 <div class="actions-row">
-  <button class="save-btn" id="saveBtn" onclick="saveWeek()">&#128190; 保存本周计划</button>
+  <button class="save-btn" id="saveBtn">无需手动保存</button>
 </div>
 
 <div class="shopping-list" id="shoppingList">
@@ -207,7 +227,7 @@ h1 { font-size: 20px; text-align: center; padding: 12px 0 0; color: var(--primar
   <div id="shoppingContent"></div>
 </div>
 
-<div class="footer">减脂计划 · 饮食参考 v6.0 · 2026-06-30<br>周计划统一界面 · 数据参考：中国营养学会</div>
+<div class="footer">减脂计划 · 饮食搭配 v6.1 · 2026-06-30<br>自动保存 · 关掉页面不丢失 · 数据参考：中国营养学会</div>
 
 <nav class="bottom-nav">
   <a href="今日计划.html">今日</a>
@@ -364,6 +384,9 @@ h1 { font-size: 20px; text-align: center; padding: 12px 0 0; color: var(--primar
 
     switchDay(todayId);
     renderShopList();
+
+    // 初始化时如果已有存储数据，显示上次保存状态
+    if (saved) { updateSaveStatus(); }
   }
 
   // ========== 切换天 ==========
@@ -455,6 +478,7 @@ h1 { font-size: 20px; text-align: center; padding: 12px 0 0; color: var(--primar
     refreshChips(meal);
     renderMealResult(meal);
     renderDaySummary();
+    doAutoSave(); // 自动保存
   }
 
   function refreshChips(meal) {
@@ -582,15 +606,43 @@ h1 { font-size: 20px; text-align: center; padding: 12px 0 0; color: var(--primar
       (calOk?'<span class="ds-ok">热量在目标范围(1700-2000)</span>':'<span class="ds-warn">热量偏离目标范围</span>')+'</div>';
   }
 
-  // ========== 保存 ==========
+  // ========== 自动保存（每次选食材后自动触发） ==========
+  var autoSaveTimer = null;
+  function doAutoSave() {
+    clearTimeout(autoSaveTimer);
+    autoSaveTimer = setTimeout(function() {
+      localStorage.setItem('jf_weekly_plan_v3', JSON.stringify(weeklySel));
+      renderShopList();
+      updateSaveStatus();
+    }, 400); // 400ms 防抖：连续快速点击只存一次
+  }
+
+  function updateSaveStatus() {
+    var bar = document.getElementById('saveStatus');
+    var txt = document.getElementById('saveStatusText');
+    var time = document.getElementById('saveStatusTime');
+    if (!bar || !txt) return;
+
+    var now = new Date();
+    var h = now.getHours().toString().padStart(2,'0');
+    var m = now.getMinutes().toString().padStart(2,'0');
+    var s = now.getSeconds().toString().padStart(2,'0');
+    time.textContent = h+':'+m+':'+s;
+
+    bar.classList.remove('unsaved');
+    setTimeout(function() {
+      bar.classList.add('unsaved');
+    }, 20);
+    setTimeout(function() {
+      bar.classList.remove('unsaved');
+    }, 1500);
+  }
+
+  // ========== 保存（保留手动触发入口） ==========
   window.saveWeek = function() {
     localStorage.setItem('jf_weekly_plan_v3', JSON.stringify(weeklySel));
     renderShopList();
-    var btn = document.getElementById('saveBtn');
-    var orig = btn.innerHTML;
-    btn.innerHTML = '&#10003; 已保存';
-    btn.classList.add('done');
-    setTimeout(function(){ btn.innerHTML = orig; btn.classList.remove('done'); }, 1800);
+    updateSaveStatus();
   };
 
   // ========== 采购清单 ==========
