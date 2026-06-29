@@ -4,7 +4,7 @@
  * 在线时拉最新 → GitHub 更新后用户秒级获取
  * 离线时用缓存 → 页面依然可打开
  */
-const CACHE_NAME = 'jf-v17';
+const CACHE_NAME = 'jf-v18';
 const URLS_TO_CACHE = [
   '/jf/',
   '/jf/shared.css',
