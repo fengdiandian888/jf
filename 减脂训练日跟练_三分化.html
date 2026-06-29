@@ -242,7 +242,8 @@
 }
 .tm-btn-close { position: absolute; top: 12px; right: 14px; }
 .tm-session-name { font-size: 13px; color: rgba(255,255,255,.5); font-weight: 500; }
-.tm-timer-label { font-size: 11px; color: rgba(255,255,255,.35); font-weight: 600; margin-top: 4px; letter-spacing: .03em; }
+.tm-total-duration { font-size: 13px; color: rgba(255,255,255,.55); font-weight: 600; margin-top: 3px; font-variant-numeric: tabular-nums; letter-spacing: .02em; }
+.tm-timer-label { font-size: 11px; color: rgba(255,255,255,.35); font-weight: 600; margin-top: 2px; letter-spacing: .03em; }
 .tm-timer-big { font-size: 38px; font-weight: 800; color: #fff;
   letter-spacing: -0.02em; font-variant-numeric: tabular-nums; line-height: 1.1;
 }
@@ -1413,6 +1414,7 @@ if('serviceWorker' in navigator){
   <div class="tm-header">
     <button class="tm-btn-close" id="tmClose" title="退出训练">✕ 退出</button>
     <div class="tm-session-name" id="tmSessionName">加载中...</div>
+    <div class="tm-total-duration" id="tmTotalDuration">⏱ 已训练 00:00</div>
     <div class="tm-timer-label" id="tmTimerLabel">⏱ 本组用时</div>
     <div class="tm-timer-big" id="tmTimerDisplay">00:00</div>
     <div class="tm-remaining-est" id="tmRemainingEst"></div>
@@ -1558,6 +1560,7 @@ var WorkoutTimer = (function() {
   var completeScreen;
   var restScreen, restCountdown;
   var remainingEst;
+  var totalDuration;
 
   // --- 状态 ---
   var STATE = { IDLE: 'idle', TRAINING: 'training', REST: 'rest', DONE: 'done', PAUSED: 'paused' };
@@ -1689,6 +1692,12 @@ var WorkoutTimer = (function() {
 
   function updateDisplay() {
     timerDisplay.textContent = formatTime(timeLeft);
+
+    // 当前总耗时（实时刷新，扣除暂停时间）
+    if (totalDuration && startTime) {
+      var elapsed = Math.floor((Date.now() - startTime - totalPausedTime) / 1000);
+      totalDuration.textContent = '⏱ 已训练 ' + formatTime(elapsed);
+    }
 
     // 进度条（仅时间型和休息有进度条；次数型无总时间概念，隐藏）
     if (totalTime > 0) {
@@ -1940,6 +1949,7 @@ var WorkoutTimer = (function() {
     if (remainingEst) remainingEst.textContent = '';
 
     var elapsed = Math.floor((Date.now() - startTime - totalPausedTime) / 1000);
+    if (totalDuration) totalDuration.textContent = '⏱ 已训练 ' + formatTime(elapsed);
     $('tmStatDuration').textContent = formatTime(elapsed);
     $('tmStatExercises').textContent = stats.exercisesCompleted + '／' + exercises.length;
     $('tmStatSets').textContent = stats.setsCompleted;
@@ -2072,6 +2082,7 @@ var WorkoutTimer = (function() {
     restScreen = $('tmRestScreen');
     restCountdown = $('tmRestCountdown');
     remainingEst = $('tmRemainingEst');
+    totalDuration = $('tmTotalDuration');
 
     // 重置UI
     document.getElementById('tmExerciseInfo').style.display = '';
