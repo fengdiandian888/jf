@@ -4,9 +4,10 @@
  * 在线时拉最新 → GitHub 更新后用户秒级获取
  * 离线时用缓存 → 页面依然可打开
  */
-const CACHE_NAME = 'jf-v11';
+const CACHE_NAME = 'jf-v12';
 const URLS_TO_CACHE = [
   '/jf/',
+  '/jf/shared.css',
   '/jf/今日计划.html',
   '/jf/减脂全面计划.html',
   '/jf/减脂训练日跟练_三分化.html',

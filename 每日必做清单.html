@@ -5,51 +5,10 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <meta name="theme-color" content="#faf8f5">
 <link rel="manifest" href="/jf/manifest.json">
+<link rel="stylesheet" href="shared.css">
 <title>减脂每日必做清单</title>
 <style>
-:root {
- --bg: #faf8f5;
- --card: #ffffff;
- --surface: #f3f4f6;
- --text: #1a1a2e;
- --sub: #9ca3af;
- --border: #e5e7eb;
- --primary: #f97316;
- --primary-text: #ffedd5;
- --pull: #3b82f6;
- --push: #f59e0b;
- --leg: #ef4444;
- --cardio: #22c55e;
- --recovery: #a78bfa;
- --morning: #fbbf24;
- --evening: #818cf8;
- --sleep: #6366f1;
- --danger: #ef4444;
- --warn: #f59e0b;
- --info: #60a5fa;
- --radius: 10px;
- --radius-sm: 8px;
- --font: system-ui, -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif;
-}
-* { margin:0; padding:0; box-sizing:border-box; }
-body {
- background: var(--bg); color: var(--text); font-family: var(--font);
- max-width: 520px; margin: 0 auto; padding: 0 0 40px; line-height: 1.6;
-}
-
-/* Tab Bar */
-.tab-bar {
- display: flex; gap: 0; background: var(--card); border-radius: 0 0 var(--radius) var(--radius);
- border: 1px solid var(--border); border-top: none; overflow: hidden; position: sticky;
- top: 0; z-index: 10; margin-bottom: 12px;
-}
-.tab-bar a {
- flex: 1; text-align: center; padding: 10px 4px; font-size: 15px; font-weight: 600;
- color: var(--sub); text-decoration: none; transition: .2s; border-bottom: 3px solid transparent;
-}
-.tab-bar a.active { color: var(--primary); font-weight: 700; border-bottom-color: var(--primary); }
-
-/* Content area */
+/* ===== 必做清单页专属样式 ===== */
 .content { padding: 0 14px; }
 h1 { color: var(--text); font-size: 28px; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
 h2 {
@@ -59,10 +18,7 @@ h2 {
 h3 { color: var(--sub); font-size: 14px; font-weight: 600; margin: 14px 0 6px; }
 
 /* Cards */
-.card {
- background: var(--card); border-radius: 10px; padding: 14px; margin-bottom: 10px;
- border: 1px solid var(--border);
-}
+.card { border-radius: 10px; padding: 14px; margin-bottom: 10px; }
 .card.warn { border-left: 3px solid var(--warn); }
 .card.green { border-left: 3px solid var(--cardio); }
 .card.blue { border-left: 3px solid var(--pull); }
@@ -80,7 +36,7 @@ h3 { color: var(--sub); font-size: 14px; font-weight: 600; margin: 14px 0 6px; }
 .num-box.orange .val { color: var(--primary); }
 .num-box.blue .val { color: var(--pull); }
 
-/* Day Card (expanded) */
+/* Day Card */
 .day-full {
  background: var(--card); border: 1px solid var(--border); border-radius: 10px;
  margin-bottom: 8px; overflow: hidden;
@@ -162,19 +118,8 @@ h3 { color: var(--sub); font-size: 14px; font-weight: 600; margin: 14px 0 6px; }
  .warn-box { background: #fff8e1; border-color: #ffc107; }
  .shoulder-col { background: #fff; }
  h2 { border-bottom-color: #333; }
+ .bottom-nav { display: none; }
 }
-
-/* Bottom Nav */
-.bottom-nav {
- display: flex; gap: 0; background: var(--card); border: 1px solid var(--border);
- border-radius: 12px; margin: 20px 14px 24px; overflow: hidden;
-}
-.bottom-nav a {
- flex: 1; text-align: center; padding: 12px 2px; font-size: 14px; font-weight: 600;
- color: var(--sub); text-decoration: none; transition: .2s;
-}
-.bottom-nav a.active { color: var(--primary); }
-@media print { .bottom-nav { display: none; } }
 </style>
 <script src="data.js"></script>
 </head>

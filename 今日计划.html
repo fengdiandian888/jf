@@ -6,60 +6,11 @@
 <meta name="theme-color" content="#faf8f5">
 <link rel="manifest" href="/jf/manifest.json">
 <title>今日计划 · 减脂</title>
+<link rel="stylesheet" href="shared.css">
 <style>
-/* ===== Unified CSS Variables ===== */
-:root {
- --bg: #faf8f5;
- --card: #ffffff;
- --surface: #f3f4f6;
- --text: #1a1a2e;
- --sub: #9ca3af;
- --border: #e5e7eb;
+/* ===== 今日计划页专属样式 ===== */
 
- /* Functional */
- --primary: #f97316;
- --primary-text: #ffedd5;
- --pull: #3b82f6;
- --push: #f59e0b;
- --leg: #ef4444;
- --cardio: #22c55e;
- --recovery: #a78bfa;
- --morning: #fbbf24;
- --evening: #818cf8;
- --sleep: #6366f1;
- --danger: #ef4444;
- --warn: #f59e0b;
- --info: #60a5fa;
-
- --radius: 10px;
- --radius-sm: 8px;
- --font: system-ui, -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif;
-}
-* { margin:0; padding:0; box-sizing:border-box; }
-body {
- font-family: var(--font); background: var(--bg); color: var(--text);
- min-height: 100vh; padding: 0; max-width: 520px; margin: 0 auto; padding-bottom: 40px;
-}
-
-/* ===== Top Tab Bar ===== */
-.tab-bar {
- display: flex; gap: 0; background: var(--card); border-radius: 0 0 var(--radius) var(--radius);
- border: 1px solid var(--border); border-top: none; overflow: hidden; position: sticky;
- top: 0; z-index: 10; margin-bottom: 12px;
-}
-.tab-bar a {
- flex: 1; text-align: center; padding: 10px 4px; font-size: 15px; font-weight: 600;
- color: var(--sub); text-decoration: none; transition: .2s; border-bottom: 3px solid transparent;
-}
-.tab-bar a.active { color: var(--primary); font-weight: 700; border-bottom-color: var(--primary); }
-
-/* ===== Shared Card ===== */
-.card {
- background: var(--card); border: 1px solid var(--border);
- border-radius: var(--radius); padding: 14px; margin: 0 10px 10px;
-}
-
-/* ===== Today Card (Hero) ===== */
+/* Today Card (Hero) */
 .today-hero {
  margin: 0 10px 10px; background: var(--card);
  border: 1px solid rgba(249,115,22,0.3); border-radius: var(--radius); overflow: hidden;
@@ -118,6 +69,7 @@ body {
 
 .th-block b { font-weight: 800; color: var(--text); }
 .th-block .sub { font-size: 13px; color: var(--sub); display: block; margin-top: 2px; font-weight: 400; }
+
 .move-row {
  display: flex; align-items: center; gap: 8px; padding: 5px 0;
  border-bottom: 1px solid rgba(0,0,0,0.03); font-size: 14px; font-weight: 500;
@@ -193,17 +145,6 @@ body {
 /* Detail toggle */
 details summary { cursor: pointer; color: var(--primary); font-size: 13px; font-weight: 600; padding: 2px 0; }
 details .inner { padding: 6px 0; }
-
-/* Bottom Nav */
-.bottom-nav {
- display: flex; gap: 0; background: var(--card); border: 1px solid var(--border);
- border-radius: 12px; margin: 20px 14px 24px; overflow: hidden;
-}
-.bottom-nav a {
- flex: 1; text-align: center; padding: 12px 2px; font-size: 14px; font-weight: 600;
- color: var(--sub); text-decoration: none; transition: .2s;
-}
-.bottom-nav a.active { color: var(--primary); }
 </style>
 <script src="data.js"></script>
 </head>

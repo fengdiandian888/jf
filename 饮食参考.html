@@ -5,100 +5,88 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <meta name="theme-color" content="#faf8f5">
 <link rel="manifest" href="manifest.json">
+<link rel="stylesheet" href="shared.css">
 <title>饮食参考 · 减脂计划</title>
 <style>
-:root {
-  --bg: #faf8f5; --card: #ffffff; --card2: #f3f4f6; --border: #e5e7eb; --radius: 12px;
-  --text: #1a1a2e; --sub: #9ca3af; --orange: #f97316; --blue: #3b82f6;
-  --green: #22c55e; --red: #ef4444; --warn: #f59e0b; --purple: #a78bfa;
-}
-*{margin:0;padding:0;box-sizing:border-box}
-body{font-family:system-ui,'PingFang SC','Microsoft YaHei',sans-serif;background:var(--bg);color:var(--text);line-height:1.65;padding:8px;max-width:500px;margin:0 auto;font-size:14px}
-.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:14px;margin:0 10px 10px}
-h1{font-size:19px;text-align:center;padding:10px 0 2px;color:var(--orange)}
-.subtitle{text-align:center;font-size:12px;color:var(--sub);margin-bottom:10px}
-h2{font-size:15px;margin:12px 0 6px;padding-bottom:5px;border-bottom:2px solid var(--border);color:var(--orange)}
-h3{font-size:13px;margin:8px 0 4px;color:var(--blue)}
-h4{font-size:12px;margin:6px 0 3px;color:var(--green)}
-
-/* 顶部导航 */
-.top-nav{display:flex;gap:4px;overflow-x:auto;padding:6px 0;margin-bottom:8px;-webkit-overflow-scrolling:touch}
-.top-nav a{flex:0 0 auto;padding:5px 10px;border-radius:16px;font-size:11px;font-weight:600;text-decoration:none;white-space:nowrap;background:rgba(0,0,0,.06);color:var(--sub)}
-.top-nav a.active{background:var(--orange);color:#fff}
+/* ===== 饮食参考页专属样式 ===== */
+body { line-height: 1.65; font-size: 14px; }
+.card { padding: 14px; margin: 0 10px 10px; }
+h1 { font-size: 19px; text-align: center; padding: 10px 0 2px; color: var(--primary); }
+.subtitle { text-align: center; font-size: 12px; color: var(--sub); margin-bottom: 10px; }
+h2 { font-size: 15px; margin: 12px 0 6px; padding-bottom: 5px; border-bottom: 2px solid var(--border); color: var(--primary); }
+h3 { font-size: 13px; margin: 8px 0 4px; color: var(--pull); }
+h4 { font-size: 12px; margin: 6px 0 3px; color: var(--cardio); }
 
 /* 食物卡片 */
-.food-card{background:var(--card2);border-radius:8px;padding:10px;margin:6px 0;border-left:3px solid var(--green)}
-.food-card.bad{border-left-color:var(--red)}
-.food-card.warn{border-left-color:var(--warn)}
-.food-name{font-size:14px;font-weight:700;color:var(--text);margin-bottom:2px}
-.food-meta{font-size:11px;color:var(--sub);margin-bottom:4px}
-.food-meta span{margin-right:8px}
-.food-desc{font-size:12px;color:var(--sub);line-height:1.5}
+.food-card { background: var(--surface); border-radius: 8px; padding: 10px; margin: 6px 0; border-left: 3px solid var(--cardio); }
+.food-card.bad { border-left-color: var(--danger); }
+.food-card.warn { border-left-color: var(--warn); }
+.food-name { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 2px; }
+.food-meta { font-size: 11px; color: var(--sub); margin-bottom: 4px; }
+.food-meta span { margin-right: 8px; }
+.food-desc { font-size: 12px; color: var(--sub); line-height: 1.5; }
 
 /* 食谱卡片 */
-.recipe-card{background:var(--card2);border-radius:10px;padding:12px;margin:8px 0;position:relative;overflow:hidden}
-.recipe-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;border-radius:4px 0 0 4px}
-.recipe-card.breakfast::before{background:var(--warn)}
-.recipe-card.lunch::before{background:var(--blue)}
-.recipe-card.dinner::before{background:var(--purple)}
-.recipe-card.snack::before{background:var(--green)}
-.recipe-title{font-size:14px;font-weight:700;margin-bottom:2px}
-.recipe-title span{font-size:11px;font-weight:400;color:var(--sub);margin-left:6px}
-.recipe-stats{display:flex;gap:10px;margin:6px 0;flex-wrap:wrap}
-.recipe-stat{font-size:11px;padding:3px 8px;border-radius:6px;font-weight:600}
-.rs-cal{background:rgba(224,112,64,.12);color:var(--orange)}
-.rs-pro{background:rgba(96,165,250,.12);color:var(--blue)}
-.rs-carb{background:rgba(245,158,11,.12);color:var(--warn)}
-.rs-fat{background:rgba(74,222,128,.12);color:var(--green)}
-.rs-time{background:rgba(167,139,250,.12);color:var(--purple)}
-.recipe-ingredients{font-size:12px;color:var(--sub);margin:6px 0;line-height:1.8}
-.recipe-ingredients b{color:var(--text)}
-.recipe-steps{font-size:12px;color:var(--sub);line-height:1.7;margin-top:4px}
-.recipe-steps div{padding:2px 0 2px 12px;text-indent:-12px}
-.recipe-steps div::before{content:'➤ ';color:var(--green);font-size:10px}
+.recipe-card { background: var(--surface); border-radius: 10px; padding: 12px; margin: 8px 0; position: relative; overflow: hidden; }
+.recipe-card::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; border-radius: 4px 0 0 4px; }
+.recipe-card.breakfast::before { background: var(--warn); }
+.recipe-card.lunch::before { background: var(--pull); }
+.recipe-card.dinner::before { background: var(--recovery); }
+.recipe-card.snack::before { background: var(--cardio); }
+.recipe-title { font-size: 14px; font-weight: 700; margin-bottom: 2px; }
+.recipe-title span { font-size: 11px; font-weight: 400; color: var(--sub); margin-left: 6px; }
+.recipe-stats { display: flex; gap: 10px; margin: 6px 0; flex-wrap: wrap; }
+.recipe-stat { font-size: 11px; padding: 3px 8px; border-radius: 6px; font-weight: 600; }
+.rs-cal { background: rgba(224,112,64,.12); color: var(--primary); }
+.rs-pro { background: rgba(96,165,250,.12); color: var(--pull); }
+.rs-carb { background: rgba(245,158,11,.12); color: var(--warn); }
+.rs-fat { background: rgba(74,222,128,.12); color: var(--cardio); }
+.rs-time { background: rgba(167,139,250,.12); color: var(--recovery); }
+.recipe-ingredients { font-size: 12px; color: var(--sub); margin: 6px 0; line-height: 1.8; }
+.recipe-ingredients b { color: var(--text); }
+.recipe-steps { font-size: 12px; color: var(--sub); line-height: 1.7; margin-top: 4px; }
+.recipe-steps div { padding: 2px 0 2px 12px; text-indent: -12px; }
+.recipe-steps div::before { content: '➤ '; color: var(--cardio); font-size: 10px; }
 
 /* 营养素表格 */
-.nutr-table{width:100%;border-collapse:collapse;font-size:12px;margin:6px 0}
-.nutr-table th{background:rgba(0,0,0,.04);padding:5px 6px;font-size:11px;color:var(--sub)}
-.nutr-table td{padding:5px 6px;border-bottom:1px solid var(--border);font-size:12px}
-.nutr-table tr:last-child td{border-bottom:none}
+.nutr-table { width: 100%; border-collapse: collapse; font-size: 12px; margin: 6px 0; }
+.nutr-table th { background: rgba(0,0,0,.04); padding: 5px 6px; font-size: 11px; color: var(--sub); }
+.nutr-table td { padding: 5px 6px; border-bottom: 1px solid var(--border); font-size: 12px; }
+.nutr-table tr:last-child td { border-bottom: none; }
 
 /* 标签 */
-.tag{display:inline-block;padding:2px 7px;border-radius:6px;font-size:10px;font-weight:600;margin:1px 2px}
-.tag-g{background:rgba(74,222,128,.1);color:var(--green)}
-.tag-r{background:rgba(239,68,68,.1);color:var(--red)}
-.tag-w{background:rgba(245,158,11,.1);color:var(--warn)}
-.tag-b{background:rgba(96,165,250,.1);color:var(--blue)}
+.tag { display: inline-block; padding: 2px 7px; border-radius: 6px; font-size: 10px; font-weight: 600; margin: 1px 2px; }
+.tag-g { background: rgba(74,222,128,.1); color: var(--cardio); }
+.tag-r { background: rgba(239,68,68,.1); color: var(--danger); }
+.tag-w { background: rgba(245,158,11,.1); color: var(--warn); }
+.tag-b { background: rgba(96,165,250,.1); color: var(--pull); }
 
 /* 小提示 */
-.tip-box{background:rgba(74,222,128,.12);border:1px solid rgba(74,222,128,.3);border-radius:8px;padding:8px 10px;margin:6px 0;font-size:12px;color:#166534;line-height:1.6}
-.warn-box{background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.3);border-radius:8px;padding:8px 10px;margin:6px 0;font-size:12px;color:#92400e;line-height:1.6}
-.danger-box{background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.3);border-radius:8px;padding:8px 10px;margin:6px 0;font-size:12px;color:#991b1b;line-height:1.6}
+.tip-box { background: rgba(74,222,128,.12); border: 1px solid rgba(74,222,128,.3); border-radius: 8px; padding: 8px 10px; margin: 6px 0; font-size: 12px; color: #166534; line-height: 1.6; }
+.warn-box { background: rgba(245,158,11,.12); border: 1px solid rgba(245,158,11,.3); border-radius: 8px; padding: 8px 10px; margin: 6px 0; font-size: 12px; color: #92400e; line-height: 1.6; }
+.danger-box { background: rgba(239,68,68,.12); border: 1px solid rgba(239,68,68,.3); border-radius: 8px; padding: 8px 10px; margin: 6px 0; font-size: 12px; color: #991b1b; line-height: 1.6; }
 
 /* 折叠 */
-.collapse-header{cursor:pointer;user-select:none;display:flex;align-items:center;gap:6px}
-.collapse-header::before{content:'▶';font-size:10px;color:var(--sub);transition:transform .2s}
-.collapse-header.open::before{transform:rotate(90deg)}
-.collapse-body{overflow:hidden;transition:max-height .3s;max-height:0}
-.collapse-body.open{max-height:2000px}
+.collapse-header { cursor: pointer; user-select: none; display: flex; align-items: center; gap: 6px; }
+.collapse-header::before { content: '▶'; font-size: 10px; color: var(--sub); transition: transform .2s; }
+.collapse-header.open::before { transform: rotate(90deg); }
+.collapse-body { overflow: hidden; transition: max-height .3s; max-height: 0; }
+.collapse-body.open { max-height: 2000px; }
 
-.footer{padding:16px 0 8px;text-align:center;font-size:11px;color:var(--sub)}
-@media(max-width:360px){body{font-size:13px}.recipe-stats{gap:4px}}
+.footer { padding: 16px 0 8px; text-align: center; font-size: 11px; color: var(--sub); }
+@media(max-width:360px) { body { font-size: 13px; } .recipe-stats { gap: 4px; } }
 </style>
 </head>
 <body>
 
-<!-- 顶部导航 -->
-<div class="top-nav">
-  <a href="index.html">首页</a>
-  <a href="减脂全面计划.html">全面计划</a>
-  <a href="减脂训练日跟练_三分化.html">训练跟练</a>
-  <a href="饮食参考.html" class="active">饮食参考</a>
-  <a href="今日计划.html">今日计划</a>
-  <a href="每日必做清单.html">必做清单</a>
-  <a href="每周小结.html">每周小结</a>
-  <a href="减脂完整教程_饮食运动作息动作库.html">教程库</a>
-</div>
+<!-- ===== TOP TAB BAR ===== -->
+<nav class="tab-bar">
+  <a href="今日计划.html">今日</a>
+  <a href="减脂全面计划.html">计划</a>
+  <a href="减脂训练日跟练_三分化.html">跟练</a>
+  <a href="每日必做清单.html">清单</a>
+  <a href="饮食参考.html" class="active">饮食</a>
+</nav>
 
 <h1>🍽️ 饮食参考</h1>
 <div class="subtitle">具体食谱 · 分量克重 · 热量营养 · 做法步骤<br>当前阶段：83.25kg → 目标63-70kg · 减脂期</div>
@@ -108,10 +96,10 @@ h4{font-size:12px;margin:6px 0 3px;color:var(--green)}
 <h2>📊 你的每日营养目标</h2>
 <table class="nutr-table">
 <tr><th>项目</th><th>数值</th><th>说明</th></tr>
-<tr><td>每日热量</td><td><b style="color:var(--orange)">1800–2000 kcal</b></td><td>缺口400-500kcal</td></tr>
-<tr><td>蛋白质</td><td><b style="color:var(--blue)">98–122g</b></td><td>瘦体重61kg×1.6-2.0g</td></tr>
+<tr><td>每日热量</td><td><b style="color:var(--primary)">1800–2000 kcal</b></td><td>缺口400-500kcal</td></tr>
+<tr><td>蛋白质</td><td><b style="color:var(--pull)">98–122g</b></td><td>瘦体重61kg×1.6-2.0g</td></tr>
 <tr><td>碳水</td><td><b style="color:var(--warn)">100–150g</b></td><td>训练日偏多·休息日偏少</td></tr>
-<tr><td>脂肪</td><td><b style="color:var(--green)">45–60g</b></td><td>坚果·橄榄油·蛋黄</td></tr>
+<tr><td>脂肪</td><td><b style="color:var(--cardio)">45–60g</b></td><td>坚果·橄榄油·蛋黄</td></tr>
 </table>
 <div class="tip-box">
   💡 <b>实操建议：</b>每天至少吃到 <b>100g蛋白质</b>。差多少用蛋白粉补（一勺约24g）。碳水化合物不要完全断，晚餐保留50g以内，帮助睡眠。
@@ -123,7 +111,7 @@ h4{font-size:12px;margin:6px 0 3px;color:var(--green)}
 <h2>🚦 食物红绿灯（更新版）</h2>
 
 <div style="margin:8px 0">
-  <b style="color:var(--green);font-size:13px">🟢 绿灯 — 随便吃·多吃</b>
+  <b style="color:var(--cardio);font-size:13px">🟢 绿灯 — 随便吃·多吃</b>
   <div style="font-size:12px;color:var(--sub);line-height:1.8;margin-top:4px">
     <b style="color:var(--text)">蔬菜类：</b>丝瓜、苋菜、菠菜、生菜、黄瓜、蘑菇/菌类（香菇·金针菇·杏鲍菇·木耳）、西兰花（如果你不讨厌）<br>
     <b style="color:var(--text)">蛋白质：</b>鸡蛋（全蛋）、鸡胸肉、瘦牛肉、虾仁、豆腐、豆浆<br>
@@ -142,7 +130,7 @@ h4{font-size:12px;margin:6px 0 3px;color:var(--green)}
 </div>
 
 <div style="margin:8px 0">
-  <b style="color:var(--red);font-size:13px">🔴 红灯 — 不吃·尽量避免</b>
+  <b style="color:var(--danger);font-size:13px">🔴 红灯 — 不吃·尽量避免</b>
   <div style="font-size:12px;color:var(--sub);line-height:1.8;margin-top:4px">
     <b style="color:var(--text)">加工肉：</b>火腿肠、热狗、培根、午餐肉（高钠·添加剂多·一类致癌物）<br>
     <b style="color:var(--text)">传统腌制食品：</b>腊肠、腊肉、咸鸭蛋、皮蛋（高钠·高盐·防腐剂·减脂期不推荐）<br>
@@ -240,11 +228,11 @@ h4{font-size:12px;margin:6px 0 3px;color:var(--green)}
   <h3>盒饭常见菜 · 蛋白质含量参考</h3>
   <table class="nutr-table">
   <tr><th>菜名</th><th>一份约重</th><th>蛋白质</th><th>建议</th></tr>
-  <tr><td>清蒸鸡胸/瘦肉</td><td>80g</td><td style="color:var(--blue)">~17g</td><td><span class="tag tag-g">优选</span></td></tr>
-  <tr><td>红烧肉/排骨</td><td>80g</td><td style="color:var(--blue)">~12g</td><td><span class="tag tag-w">少吃·太油</span></td></tr>
-  <tr><td>蒸蛋/水蒸蛋</td><td>100g</td><td style="color:var(--blue)">~13g</td><td><span class="tag tag-g">优选</span></td></tr>
-  <tr><td>豆腐菜</td><td>100g</td><td style="color:var(--blue)">~10g</td><td><span class="tag tag-g">优选</span></td></tr>
-  <tr><td>炒青菜</td><td>100g</td><td style="color:var(--blue)">~2g</td><td><span class="tag tag-g">多吃</span></td></tr>
+  <tr><td>清蒸鸡胸/瘦肉</td><td>80g</td><td style="color:var(--pull)">~17g</td><td><span class="tag tag-g">优选</span></td></tr>
+  <tr><td>红烧肉/排骨</td><td>80g</td><td style="color:var(--pull)">~12g</td><td><span class="tag tag-w">少吃·太油</span></td></tr>
+  <tr><td>蒸蛋/水蒸蛋</td><td>100g</td><td style="color:var(--pull)">~13g</td><td><span class="tag tag-g">优选</span></td></tr>
+  <tr><td>豆腐菜</td><td>100g</td><td style="color:var(--pull)">~10g</td><td><span class="tag tag-g">优选</span></td></tr>
+  <tr><td>炒青菜</td><td>100g</td><td style="color:var(--pull)">~2g</td><td><span class="tag tag-g">多吃</span></td></tr>
   <tr><td>米饭（半份）</td><td>100g</td><td>—</td><td><span class="tag tag-w">减半吃</span></td></tr>
   </table>
 </div>
@@ -385,11 +373,11 @@ h4{font-size:12px;margin:6px 0 3px;color:var(--green)}
 <p style="font-size:12px;color:var(--sub);margin-bottom:8px">周日花40分钟准备，工作日每晚晚餐15分钟出餐</p>
 
 <div style="font-size:12px;line-height:1.8">
-  <div style="margin:6px 0"><b style="color:var(--orange)">步骤1：</b>鸡胸肉用4%盐水腌30分钟（500ml水+20g盐），然后分装进保鲜盒，冷藏（3天内吃完）或冷冻</div>
-  <div style="margin:6px 0"><b style="color:var(--orange)">步骤2：</b>瘦牛肉切薄片/条，分装成200g一份，冷冻。吃前提前一晚放冷藏解冻</div>
-  <div style="margin:6px 0"><b style="color:var(--orange)">步骤3：</b>蔬菜洗净沥干，放进保鲜盒，冷藏（2-3天内吃完）。绿叶菜不要洗了再存，容易烂</div>
-  <div style="margin:6px 0"><b style="color:var(--orange)">步骤4：</b>南瓜/红薯/玉米蒸熟（一次蒸3天的量），冷藏。吃前微波2分钟</div>
-  <div style="margin:6px 0"><b style="color:var(--orange)">步骤5：</b>煮6个鸡蛋，去壳，冷藏。早餐或加餐直接用</div>
+  <div style="margin:6px 0"><b style="color:var(--primary)">步骤1：</b>鸡胸肉用4%盐水腌30分钟（500ml水+20g盐），然后分装进保鲜盒，冷藏（3天内吃完）或冷冻</div>
+  <div style="margin:6px 0"><b style="color:var(--primary)">步骤2：</b>瘦牛肉切薄片/条，分装成200g一份，冷冻。吃前提前一晚放冷藏解冻</div>
+  <div style="margin:6px 0"><b style="color:var(--primary)">步骤3：</b>蔬菜洗净沥干，放进保鲜盒，冷藏（2-3天内吃完）。绿叶菜不要洗了再存，容易烂</div>
+  <div style="margin:6px 0"><b style="color:var(--primary)">步骤4：</b>南瓜/红薯/玉米蒸熟（一次蒸3天的量），冷藏。吃前微波2分钟</div>
+  <div style="margin:6px 0"><b style="color:var(--primary)">步骤5：</b>煮6个鸡蛋，去壳，冷藏。早餐或加餐直接用</div>
 </div>
 
 <div class="tip-box">
@@ -437,10 +425,10 @@ h4{font-size:12px;margin:6px 0 3px;color:var(--green)}
 <p style="font-size:12px;color:var(--sub);margin-bottom:8px">照这个买，一周不纠结</p>
 
 <div style="font-size:12px;line-height:1.8">
-  <div style="margin:6px 0"><b style="color:var(--blue)">蛋白质类：</b>鸡胸肉 800g · 瘦牛肉 600g · 虾仁 400g · 鸡蛋 12个 · 豆腐 3盒 · 无糖酸奶 4杯</div>
-  <div style="margin:6px 0"><b style="color:var(--green)">蔬菜类：</b>丝瓜 2根 · 苋菜/菠菜 300g · 生菜 1颗 · 黄瓜 2根 · 蘑菇/菌类 300g（香菇·金针菇·杏鲍菇）</div>
+  <div style="margin:6px 0"><b style="color:var(--pull)">蛋白质类：</b>鸡胸肉 800g · 瘦牛肉 600g · 虾仁 400g · 鸡蛋 12个 · 豆腐 3盒 · 无糖酸奶 4杯</div>
+  <div style="margin:6px 0"><b style="color:var(--cardio)">蔬菜类：</b>丝瓜 2根 · 苋菜/菠菜 300g · 生菜 1颗 · 黄瓜 2根 · 蘑菇/菌类 300g（香菇·金针菇·杏鲍菇）</div>
   <div style="margin:6px 0"><b style="color:var(--warn)">主食类：</b>玉米 4根 · 南瓜 1个（约600g） · 红薯 3个 · 即食麦片 1袋 · 即食燕麦 1袋</div>
-  <div style="margin:6px 0"><b style="color:var(--purple)">其他：</b>牛奶 2L · 无糖豆浆 1L · 橄榄油 1瓶 · 生抽 · 黑胡椒 · 蒜</div>
+  <div style="margin:6px 0"><b style="color:var(--recovery)">其他：</b>牛奶 2L · 无糖豆浆 1L · 橄榄油 1瓶 · 生抽 · 黑胡椒 · 蒜</div>
 </div>
 
 <div class="tip-box">
@@ -452,6 +440,15 @@ h4{font-size:12px;margin:6px 0 3px;color:var(--green)}
   减脂计划 · 饮食参考 v1.0 · 2026-06-26<br>
   数据来源：中国营养学会 · 梅林FIT食谱 · 减脂实战经验
 </div>
+
+<!-- ===== BOTTOM NAV ===== -->
+<nav class="bottom-nav">
+  <a href="今日计划.html">今日</a>
+  <a href="减脂全面计划.html">计划</a>
+  <a href="减脂训练日跟练_三分化.html">跟练</a>
+  <a href="每日必做清单.html">清单</a>
+  <a href="饮食参考.html" class="active">饮食</a>
+</nav>
 
 </body>
 </html>

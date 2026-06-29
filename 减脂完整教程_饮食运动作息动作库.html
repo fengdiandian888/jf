@@ -5,46 +5,52 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <meta name="theme-color" content="#faf8f5">
 <link rel="manifest" href="/jf/manifest.json">
+<link rel="stylesheet" href="shared.css">
 <title>减脂完整教程 · 饮食运动作息动作库</title>
 <style>
-:root {
-  --bg:#faf8f5; --card-bg:#ffffff; --border:#e5e7eb; --radius:12px;
-  --text:#1a1a2e; --sub:#9ca3af; --orange:#f97316; --blue:#3b82f6;
-  --green:#22c55e; --red:#ef4444; --warn:#f59e0b; --purple:#a78bfa;
-}
-*{margin:0;padding:0;box-sizing:border-box}
-body{font-family:system-ui,'PingFang SC','Microsoft YaHei',sans-serif;background:var(--bg);color:var(--text);line-height:1.65;padding:8px;max-width:500px;margin:0 auto;font-size:15px}
-.card{background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px}
-h1{font-size:20px;text-align:center;padding:12px 0 4px;color:var(--orange)}
-h2{font-size:16px;margin:14px 0 8px;padding-bottom:6px;border-bottom:2px solid var(--border)}
-h3{font-size:14px;margin:10px 0 5px;color:var(--blue)}
-table{width:100%;border-collapse:collapse;font-size:13px;margin:8px 0}
-td{padding:6px 8px;border-bottom:1px solid var(--border);vertical-align:top;color:var(--text)}
-td:first-child{color:var(--orange);font-weight:600;white-space:nowrap;width:30%}
-.tag{display:inline-block;padding:2px 7px;border-radius:6px;font-size:11px;font-weight:600;margin:2px}
-.tag-green{background:rgba(74,222,128,.1);color:var(--green)}
-.tag-red{background:rgba(239,68,68,.1);color:var(--red)}
-.tag-yellow{background:rgba(245,158,11,.1);color:var(--warn)}
-.tag-blue{background:rgba(96,165,250,.1);color:var(--blue)}
-.tag-orange{background:rgba(224,112,64,.1);color:var(--orange)}
-ul,ol{padding-left:20px;font-size:13px;line-height:1.8}
-li{margin-bottom:2px}
-.highlight{background:rgba(74,222,128,.06);border-left:3px solid var(--green);padding:10px 12px;border-radius:0 8px 8px 0;margin:10px 0;font-size:13px}
-.warn-box{background:rgba(245,158,11,.06);border-left:3px solid var(--warn);padding:10px 12px;border-radius:0 8px 8px 0;margin:10px 0;font-size:13px}
-.danger-box{background:rgba(239,68,68,.06);border-left:3px solid var(--red);padding:10px 12px;border-radius:0 8px 8px 0;margin:10px 0;font-size:13px}
-.stage{border:1px solid var(--border);border-radius:10px;padding:12px;margin:8px 0}
-.stage h3{margin:0 0 6px;font-size:14px}
-.phase-dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px}
-.macro-bar{height:8px;border-radius:4px;margin:6px 0;overflow:hidden;display:flex}
-.macro-bar span{height:100%}
-.footer{padding:20px 0 8px;text-align:center;font-size:11px;color:var(--sub)}
+/* ===== 教程页专属样式 ===== */
+body { line-height: 1.65; font-size: 15px; }
+.card { padding: 16px; margin-bottom: 12px; }
+h1 { font-size: 20px; text-align: center; padding: 12px 0 4px; color: var(--primary); }
+h2 { font-size: 16px; margin: 14px 0 8px; padding-bottom: 6px; border-bottom: 2px solid var(--border); }
+h3 { font-size: 14px; margin: 10px 0 5px; color: var(--pull); }
+table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 8px 0; }
+td { padding: 6px 8px; border-bottom: 1px solid var(--border); vertical-align: top; color: var(--text); }
+td:first-child { color: var(--primary); font-weight: 600; white-space: nowrap; width: 30%; }
+.tag { display: inline-block; padding: 2px 7px; border-radius: 6px; font-size: 11px; font-weight: 600; margin: 2px; }
+.tag-green { background: rgba(74,222,128,.1); color: var(--cardio); }
+.tag-red { background: rgba(239,68,68,.1); color: var(--danger); }
+.tag-yellow { background: rgba(245,158,11,.1); color: var(--warn); }
+.tag-blue { background: rgba(96,165,250,.1); color: var(--pull); }
+.tag-orange { background: rgba(224,112,64,.1); color: var(--primary); }
+.tag-recovery { background: rgba(167,139,250,.1); color: var(--recovery); }
+ul, ol { padding-left: 20px; font-size: 13px; line-height: 1.8; }
+li { margin-bottom: 2px; }
+.highlight { background: rgba(74,222,128,.06); border-left: 3px solid var(--cardio); padding: 10px 12px; border-radius: 0 8px 8px 0; margin: 10px 0; font-size: 13px; }
+.warn-box { background: rgba(245,158,11,.06); border-left: 3px solid var(--warn); padding: 10px 12px; border-radius: 0 8px 8px 0; margin: 10px 0; font-size: 13px; }
+.danger-box { background: rgba(239,68,68,.06); border-left: 3px solid var(--danger); padding: 10px 12px; border-radius: 0 8px 8px 0; margin: 10px 0; font-size: 13px; }
+.stage { border: 1px solid var(--border); border-radius: 10px; padding: 12px; margin: 8px 0; }
+.stage h3 { margin: 0 0 6px; font-size: 14px; }
+.phase-dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 6px; }
+.macro-bar { height: 8px; border-radius: 4px; margin: 6px 0; overflow: hidden; display: flex; }
+.macro-bar span { height: 100%; }
+.footer { padding: 20px 0 8px; text-align: center; font-size: 11px; color: var(--sub); }
 </style>
 </head>
 <body>
 
+<!-- ===== TOP TAB BAR ===== -->
+<nav class="tab-bar">
+  <a href="今日计划.html">今日</a>
+  <a href="减脂全面计划.html">计划</a>
+  <a href="减脂训练日跟练_三分化.html">跟练</a>
+  <a href="每日必做清单.html">清单</a>
+  <a href="饮食参考.html">饮食</a>
+</nav>
+
 <h1>📚 大体重男性减脂完整教程</h1>
 <div style="text-align:center;font-size:12px;color:var(--sub);margin-bottom:12px">
-  根据你的身体数据定制 · 170cm / 85kg / 40岁 / 右肩保护<br>
+  根据你的身体数据定制 · 170cm / 83.25kg / 40岁 / 右肩保护<br>
   整合国际运动医学 + 中国营养学 + B站健身实战经验
 </div>
 
@@ -52,7 +58,7 @@ li{margin-bottom:2px}
 <div class="card">
 <h2>📊 你的身体画像</h2>
 <table>
-<tr><td>BMI</td><td>29.4（肥胖区间，目标 &lt;24）</td></tr>
+<tr><td>BMI</td><td>28.7（超重区间，目标 &lt;24）</td></tr>
 <tr><td>基础代谢 BMR</td><td>≈1700 kcal/天（Mifflin-St Jeor 公式）</td></tr>
 <tr><td>每日消耗 TDEE</td><td>≈2300–2500 kcal（含骑行通勤 11.2km）</td></tr>
 <tr><td>减脂热量</td><td>1800–2000 kcal/天（缺口 400–500 kcal）</td></tr>
@@ -71,14 +77,14 @@ li{margin-bottom:2px}
 蛋白质 1.6–2.0g × 瘦体重 61kg = <strong>98–122g/天</strong><br>
 碳水 2.0–2.5g × 瘦体重 61kg = <strong>122–152g/天</strong><br>
 脂肪 0.6–0.8g × 瘦体重 61kg = <strong>37–49g/天</strong><br>
-<span style="color:var(--sub);font-size:10px">⚠️ 不用总体重85kg算，否则蛋白质170g吃不下（≈750g瘦肉）</span>
+<span style="color:var(--sub);font-size:10px">⚠️ 不用总体重83.25kg算，否则蛋白质170g吃不下（≈750g瘦肉）</span>
 </div>
 
 <h3>热量分配结构</h3>
 <div class="macro-bar">
-  <span style="width:35%;background:var(--red)"></span>
+  <span style="width:35%;background:var(--danger)"></span>
   <span style="width:40%;background:var(--warn)"></span>
-  <span style="width:25%;background:var(--blue)"></span>
+  <span style="width:25%;background:var(--pull)"></span>
 </div>
 <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--sub);margin-top:2px">
   <span>蛋白质 35%</span><span>碳水 40%</span><span>脂肪 25%</span>
@@ -89,18 +95,18 @@ li{margin-bottom:2px}
 <tr><td>早 9:00<br><span class="tag tag-blue">~370 kcal</span></td><td>
   鸡蛋 2 个（100g，蛋白质 12g）+ 牛奶 250ml（蛋白质 8g，碳水 12g）<br>
   <span style="color:var(--sub);font-size:11px">或 1 蛋 + 豆浆 + 半根玉米</span><br>
-  <span style="color:var(--green);font-size:10px">早计：蛋白质 20g</span>
+  <span style="color:var(--cardio);font-size:10px">早计：蛋白质 20g</span>
 </td></tr>
 <tr><td>午 12:00<br><span class="tag tag-orange">~550 kcal</span></td><td>
   公司盒饭：米饭只吃半份约 100g（碳水 28g）+ 肉菜瘦肉约 80g（蛋白质 17g）<br>
   <span style="color:var(--sub);font-size:11px">避开红烧/糖醋/油炸，多夹瘦肉+蔬菜</span><br>
-  <span style="color:var(--green);font-size:10px">午计：蛋白质 17g</span>
+  <span style="color:var(--cardio);font-size:10px">午计：蛋白质 17g</span>
 </td></tr>
 <tr><td>晚 19:00<br><span class="tag tag-green">~480 kcal</span></td><td>
   🥩 <b>一肉</b>：鸡胸肉 200g（蛋白质 44g）/ 瘦牛肉 200g（蛋白质 44g）/ 虾仁 200g（蛋白质 36g）<br>
   🥬 <b>一菜</b>：蔬菜 300g（丝瓜/苋菜/菠菜/生菜/黄瓜 任选，蛋白质 4g）<br>
   🍚 <b>一主食</b>：半根玉米 80g（碳水 18g）/ 小块南瓜 200g（碳水 14g）/ 半个红薯 100g（碳水 20g）<br>
-  <span style="color:var(--green);font-size:10px">晚计：蛋白质 40–50g</span>
+  <span style="color:var(--cardio);font-size:10px">晚计：蛋白质 40–50g</span>
 </td></tr>
 </table>
 <div class="highlight" style="margin-top:8px">
@@ -108,22 +114,15 @@ li{margin-bottom:2px}
 <strong>目标对比：</strong>蛋白 98–122g → 缺口 11–43g，一勺蛋白粉（24g）刚好补到 103–111g ✅
 </div>
 
-<h3>你的食物红绿灯</h3>
-<div style="margin-top:6px">
-  <strong style="color:var(--green)">🟢 绿灯 — 爱吃且方便</strong><br>
-  <span class="tag tag-green">丝瓜</span><span class="tag tag-green">苋菜</span><span class="tag tag-green">菠菜</span><span class="tag tag-green">生菜</span><span class="tag tag-green">黄瓜</span>
-  <span class="tag tag-green">虾</span><span class="tag tag-green">豆腐</span><span class="tag tag-green">牛肉</span><span class="tag tag-green">鸡胸</span><span class="tag tag-green">鸡蛋</span>
-  <span class="tag tag-green">玉米</span><span class="tag tag-green">南瓜</span><span class="tag tag-green">红薯</span>
-</div>
-<div style="margin-top:4px">
-  <strong style="color:var(--red)">🔴 红灯 — 不吃</strong><br>
-  <span class="tag tag-red">西兰花</span>
-</div>
-<div style="margin-top:4px">
-  <strong style="color:var(--warn)">🟡 黄灯 — 操作不便，默认避开</strong><br>
-  <span class="tag tag-yellow">鱼（处理麻烦）</span><span class="tag tag-yellow">冬瓜（太大浪费）</span>
-  <span class="tag tag-yellow">木耳菜</span><span class="tag tag-yellow">红薯叶</span>
-</div>
+<h3>详细饮食方案 → <a href="饮食参考.html" style="color:var(--primary);font-size:13px;">查看饮食参考页</a></h3>
+<a href="饮食参考.html" class="xref-card">
+  <span class="xref-icon">🍽️</span>
+  <span class="xref-body">
+    <span class="xref-title">完整食谱 · 食物红绿灯 · 备餐指南</span>
+    <span class="xref-desc">含三餐方案、盒饭攻略、购物清单、外食策略</span>
+  </span>
+  <span class="xref-arrow">→</span>
+</a>
 
 <h3>鸡胸肉不柴秘诀</h3>
 <div class="highlight">
@@ -132,14 +131,14 @@ li{margin-bottom:2px}
 ③ 盖盖关火焖 3 分钟 → 出锅多汁不柴
 </div>
 
-<h3>周日备餐（40 分钟管一周）</h3>
-<ol>
-  <li>盐水腌鸡胸，分装冷藏</li>
-  <li>牛肉切薄片/条，分装冷冻</li>
-  <li>蔬菜洗净沥干，保鲜盒存</li>
-  <li>蒸熟南瓜/红薯，冷藏备用</li>
-</ol>
-<div style="font-size:11px;color:var(--sub);margin-top:4px">工作日晚餐 15 分钟出餐：取蛋白+蔬菜入锅 → 调味 → 装盘</div>
+<a href="饮食参考.html" class="xref-card">
+  <span class="xref-icon">📦</span>
+  <span class="xref-body">
+    <span class="xref-title">周日备餐指南（40分钟管一周）</span>
+    <span class="xref-desc">含详细流程 + 每周购物清单 → 饮食参考页</span>
+  </span>
+  <span class="xref-arrow">→</span>
+</a>
 </div>
 
 <!-- ====== 运动篇 ====== -->
@@ -154,7 +153,7 @@ li{margin-bottom:2px}
 <tr><td>周四</td><td><span class="tag tag-green">骑行日</span> 下班绕路 60–80'</td></tr>
 <tr><td>周五</td><td><span class="tag tag-red">腿日</span> 力量训练 45–50'</td></tr>
 <tr><td>周六</td><td><span class="tag tag-green">骑行日</span> 下午户外 60–90'</td></tr>
-<tr><td>周日</td><td><span class="tag tag-purple">休息</span> 完全休息或散步</td></tr>
+<tr><td>周日</td><td><span class="tag tag-recovery">休息</span> 完全休息或散步</td></tr>
 </table>
 
 <div class="highlight">
@@ -163,9 +162,9 @@ li{margin-bottom:2px}
 </div>
 
 <!-- ===== 当前阶段：大体重低冲击动作库 ===== -->
-<h3>🟢 阶段一：当前适用（85→75kg，BMI 29→26）</h3>
-<div class="stage" style="border-color:var(--green)">
-<h3><span class="phase-dot" style="background:var(--green)"></span>低冲击·关节安全·居家可做</h3>
+<h3>🟢 阶段一：当前适用（83.25→75kg，BMI 28.7→26）</h3>
+<div class="stage" style="border-color:var(--cardio)">
+<h3><span class="phase-dot" style="background:var(--cardio)"></span>低冲击·关节安全·居家可做</h3>
 
 <p style="font-size:12px;color:var(--sub);margin-bottom:8px">此阶段以保护关节为第一优先，所有动作为零跳跃或极低冲击。这些动作也适合下雨天替代户外骑行。</p>
 
@@ -246,23 +245,23 @@ li{margin-bottom:2px}
 <p style="font-size:11px;color:var(--sub);margin-bottom:6px">整合 B站好人松松 + 国际力量训练指南 + 你的肩伤限制</p>
 
 <table>
-<tr><td colspan="2"><strong style="color:var(--blue)">🔵 拉日（周一）— 背+二头</strong></td></tr>
+<tr><td colspan="2"><strong style="color:var(--pull)">🔵 拉日（周一）— 背+二头</strong></td></tr>
 <tr><td>1. 负重引体/高位下拉</td><td>4×8–10</td></tr>
 <tr><td>2. 俯身哑铃划船</td><td>4×10–12</td></tr>
 <tr><td>3. 坐姿绳索划船</td><td>3×12</td></tr>
 <tr><td>4. 直臂下压</td><td>3×15</td></tr>
 <tr><td>5. 哑铃弯举</td><td>3×12–15</td></tr>
 <tr><td>6. 锤式弯举</td><td>3×12</td></tr>
-<tr><td colspan="2"><strong style="color:var(--orange)">🟠 推日（周三）— 胸+肩+三头 ⚠️</strong></td></tr>
+<tr><td colspan="2"><strong style="color:var(--primary)">🟠 推日（周三）— 胸+肩+三头 ⚠️</strong></td></tr>
 <tr><td>1. 窄距俯卧撑</td><td>4×力竭（替代卧推）</td></tr>
-<tr><td style="color:var(--red)">❌ 杠铃/哑铃推举</td><td>禁止！肩峰撞击</td></tr>
+<tr><td style="color:var(--danger)">❌ 杠铃/哑铃推举</td><td>禁止！肩峰撞击</td></tr>
 <tr><td>2. 前平举（掌心相对）</td><td>3×12–15（替代推举）</td></tr>
-<tr><td style="color:var(--red)">❌ 哑铃飞鸟</td><td>禁止！肩峰撞击</td></tr>
+<tr><td style="color:var(--danger)">❌ 哑铃飞鸟</td><td>禁止！肩峰撞击</td></tr>
 <tr><td>3. 窄距哑铃卧推</td><td>3×10–12（肘贴身）</td></tr>
 <tr><td>4. 双杠臂屈伸/板凳臂屈伸</td><td>3×力竭</td></tr>
 <tr><td>5. 绳索下压（三头）</td><td>3×15</td></tr>
 <tr><td>6. 🏥 弹力带肩外旋</td><td>3×15（康复必做）</td></tr>
-<tr><td colspan="2"><strong style="color:var(--red)">🔴 腿日（周五）</strong></td></tr>
+<tr><td colspan="2"><strong style="color:var(--danger)">🔴 腿日（周五）</strong></td></tr>
 <tr><td>1. 高脚杯深蹲</td><td>4×10–12</td></tr>
 <tr><td>2. 分腿蹲（保加利亚）</td><td>3×10/侧</td></tr>
 <tr><td>3. 哑铃罗马尼亚硬拉</td><td>4×12</td></tr>
@@ -287,7 +286,7 @@ li{margin-bottom:2px}
 
 <h3>你的睡眠挑战：OSA（睡眠呼吸暂停）</h3>
 <div class="warn-box">
-BMI 29.4 + 多年重鼾 → 大概率阻塞性睡眠呼吸暂停 (OSA)<br>
+BMI 28.7 + 多年重鼾 → 大概率阻塞性睡眠呼吸暂停 (OSA)<br>
 <strong>OSA 如何阻碍减脂：</strong><br>
 夜间反复缺氧 → 皮质醇持续升高 → 饥饿素↑瘦素↓ → 白天更想吃 → 更难减脂<br>
 <strong>核心对策：</strong>减重本身就是最有效的治疗（减 10% 体重可改善 26% 的 AHI 指数）
@@ -319,15 +318,15 @@ BMI 29.4 + 多年重鼾 → 大概率阻塞性睡眠呼吸暂停 (OSA)<br>
 
 <h3>减脂激素调控</h3>
 <table>
-<tr><td>皮质醇<br><span style="color:var(--red)">需降低</span></td><td>
+<tr><td>皮质醇<br><span style="color:var(--danger)">需降低</span></td><td>
   过高→分解肌肉+储存腹部脂肪+增加食欲<br>
   对策：充足睡眠+晚餐碳水≤50g（稳定夜间血糖）+不过度训练
 </td></tr>
-<tr><td>生长激素<br><span style="color:var(--green)">需提升</span></td><td>
+<tr><td>生长激素<br><span style="color:var(--cardio)">需提升</span></td><td>
   深度睡眠时分泌高峰→分解脂肪+修复肌肉<br>
   对策：22:45 前入睡（抓住 23:00–1:00 的 GH 脉冲）
 </td></tr>
-<tr><td>饥饿素/瘦素<br><span style="color:var(--green)">需平衡</span></td><td>
+<tr><td>饥饿素/瘦素<br><span style="color:var(--cardio)">需平衡</span></td><td>
   睡眠不足→饥饿素↑28%+瘦素↓18%<br>
   对策：7.5h 睡眠（5 个完整睡眠周期，每周期 90 分钟）
 </td></tr>
@@ -402,8 +401,8 @@ BMI 29.4 + 多年重鼾 → 大概率阻塞性睡眠呼吸暂停 (OSA)<br>
 <div class="card">
 <h2>🗺️ 第五篇：6 个月减重路线图</h2>
 
-<div class="stage" style="border-color:var(--green)">
-<h3><span class="phase-dot" style="background:var(--green)"></span>第 1–2 月：85→80kg（适应期）</h3>
+<div class="stage" style="border-color:var(--cardio)">
+<h3><span class="phase-dot" style="background:var(--cardio)"></span>第 1–2 月：85→80kg（适应期）</h3>
 <ul>
   <li><strong>饮食：</strong>严格执行三餐模板，零食清零，戒甜食</li>
   <li><strong>运动：</strong>骑行通勤 + 力量训练建立神经适应，不追求重量</li>
@@ -422,8 +421,8 @@ BMI 29.4 + 多年重鼾 → 大概率阻塞性睡眠呼吸暂停 (OSA)<br>
 </ul>
 </div>
 
-<div class="stage" style="border-color:var(--orange)">
-<h3><span class="phase-dot" style="background:var(--orange)"></span>第 5–6 月：75→68–70kg（塑形期）</h3>
+<div class="stage" style="border-color:var(--primary)">
+<h3><span class="phase-dot" style="background:var(--primary)"></span>第 5–6 月：75→68–70kg（塑形期）</h3>
 <ul>
   <li><strong>饮食：</strong>保持高蛋白（按瘦体重 1.6–2.0g/kg），防止肌肉流失</li>
   <li><strong>运动：</strong>完全三分化训练，骑行可加入爬坡</li>
@@ -471,5 +470,15 @@ if('serviceWorker' in navigator){
   navigator.serviceWorker.register('/jf/serviceWorker.js').catch(function(){});
 }
 </script>
+
+<!-- ===== BOTTOM NAV ===== -->
+<nav class="bottom-nav">
+  <a href="今日计划.html">今日</a>
+  <a href="减脂全面计划.html">计划</a>
+  <a href="减脂训练日跟练_三分化.html">跟练</a>
+  <a href="每日必做清单.html">清单</a>
+  <a href="饮食参考.html">饮食</a>
+</nav>
+
 </body>
 </html>

@@ -5,54 +5,13 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <meta name="theme-color" content="#faf8f5">
 <link rel="manifest" href="/jf/manifest.json">
+<link rel="stylesheet" href="shared.css">
 <title>减脂全面计划 · 2026</title>
 <style>
-:root {
- --bg: #faf8f5;
- --card: #ffffff;
- --surface: #f3f4f6;
- --text: #1a1a2e;
- --sub: #9ca3af;
- --border: #e5e7eb;
- --primary: #f97316;
- --primary-text: #ffedd5;
- --pull: #3b82f6;
- --push: #f59e0b;
- --leg: #ef4444;
- --cardio: #22c55e;
- --recovery: #a78bfa;
- --morning: #fbbf24;
- --evening: #818cf8;
- --sleep: #6366f1;
- --danger: #ef4444;
- --warn: #f59e0b;
- --info: #60a5fa;
- --radius: 10px;
- --radius-sm: 8px;
- --font: system-ui, -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif;
-}
-* { margin:0; padding:0; box-sizing:border-box; }
-body {
- background: var(--bg); color: var(--text);
- font-family: var(--font);
- line-height: 1.6; min-height: 100vh; padding-bottom: 40px;
- max-width: 520px; margin: 0 auto;
-}
+/* ===== 全面计划页专属样式 ===== */
 .container { padding: 0 8px; }
 
-/* ===== Top Tab Bar ===== */
-.tab-bar {
- display: flex; gap: 0; background: var(--card); border-radius: 0 0 var(--radius) var(--radius);
- border: 1px solid var(--border); border-top: none; overflow: hidden; position: sticky;
- top: 0; z-index: 10; margin-bottom: 16px;
-}
-.tab-bar a {
- flex: 1; text-align: center; padding: 10px 4px; font-size: 15px; font-weight: 600;
- color: var(--sub); text-decoration: none; transition: .2s; border-bottom: 3px solid transparent;
-}
-.tab-bar a.active { color: var(--primary); font-weight: 700; border-bottom-color: var(--primary); }
-
-/* ===== Weather ===== */
+/* Weather */
 .weather-bar {
  background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
  padding: 12px 16px; margin-bottom: 12px; display: flex; align-items: center; gap: 12px;
@@ -68,15 +27,12 @@ body {
 .wx-skel-text { height: 12px; flex: 1; }
 @keyframes skelPulse { 0%,100%{opacity:0.4} 50%{opacity:0.8} }
 
-/* ===== Shared Card ===== */
-.card {
- background: var(--card); border: 1px solid var(--border);
- border-radius: var(--radius); padding: 20px 22px; margin-bottom: 12px;
-}
+/* Card overrides */
+.card { padding: 20px 22px; margin-bottom: 12px; }
 .card h2 { font-size: 22px; font-weight: 700; margin-bottom: 16px; display: flex; align-items: center; gap: 8px; color: var(--text); letter-spacing: -0.01em; }
 .card h3 { font-size: 17px; font-weight: 700; color: var(--primary); margin: 18px 0 8px; }
 
-/* ===== Stats Row ===== */
+/* Stats Row */
 .stat-row { display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; margin-bottom: 12px; }
 .stat-item {
  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm);
@@ -88,10 +44,9 @@ body {
 .stat-item.blue .val { color: var(--info); }
 .stat-item.green .val { color: var(--cardio); }
 .stat-item.purple .val { color: var(--recovery); }
-
 @media(max-width:600px){ .stat-row { grid-template-columns: 1fr 1fr; } }
 
-/* ===== Timeline ===== */
+/* Timeline */
 .timeline { position: relative; }
 .tl-item { display: flex; gap: 12px; padding: 10px 0; border-bottom: 1px solid rgba(0,0,0,0.04); align-items: flex-start; }
 .tl-item:last-child { border-bottom: none; }
@@ -108,7 +63,7 @@ body {
 .tag-rest { background: rgba(82,82,91,0.12); color: var(--sub); }
 .tag-prep { background: rgba(245,158,11,0.12); color: var(--warn); }
 
-/* ===== Week grid ===== */
+/* Week grid */
 .week-grid { display: grid; grid-template-columns: repeat(7,1fr); gap: 6px; margin: 12px 0; }
 .week-day {
  background: var(--surface); border-radius: var(--radius-sm); padding: 10px 6px; text-align: center;
@@ -128,10 +83,9 @@ body {
 .wtag-leg { background: rgba(239,68,68,0.1); color: var(--leg); }
 .wtag-cardio { background: rgba(34,197,94,0.1); color: var(--cardio); }
 .wtag-recovery { background: rgba(167,139,250,0.1); color: var(--recovery); }
-
 @media(max-width:600px){ .week-grid { grid-template-columns: repeat(4,1fr); } .week-grid .day-sun { grid-column: span 3; } }
 
-/* ===== Flow cards (replacing tables) ===== */
+/* Flow cards */
 .flow-cards { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 8px; }
 @media(max-width:600px){ .flow-cards { grid-template-columns: 1fr; } }
 .flow-card {
@@ -147,7 +101,7 @@ body {
 .flow-card .fc-day { font-size: 1rem; font-weight: 700; margin: 4px 0; }
 .flow-card .fc-detail { font-size: 0.8rem; color: var(--sub); line-height: 1.5; font-weight: 400; }
 
-/* ===== Training move card ===== */
+/* Training move card */
 .move-card {
  background: var(--surface); border: 1px solid var(--border);
  border-radius: var(--radius-sm); padding: 10px 14px; margin-bottom: 6px;
@@ -173,19 +127,15 @@ body {
 .tab-panel.active { display: block; }
 @keyframes panelIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
 
-/* ===== Food grids ===== */
+/* Food grids */
 .food-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 @media(max-width:600px){ .food-grid { grid-template-columns: 1fr; } }
 .food-section { background: var(--surface); border-radius: var(--radius-sm); padding: 14px; border: 1px solid var(--border); }
 .food-section h4 { font-size: 0.9rem; font-weight: 700; margin-bottom: 8px; }
 .food-list { list-style: none; font-size: 0.88rem; }
 .food-list li { padding: 3px 0; color: var(--sub); }
-.like::before { content: ' '; }
-.ok::before { content: ' '; }
-.avoid::before { content: ' '; }
-.hard::before { content: ' '; }
 
-/* ===== Notes ===== */
+/* Notes */
 .note {
  background: var(--surface); border-left: 3px solid var(--warn); padding: 12px 16px;
  border-radius: 0 var(--radius-sm) var(--radius-sm) 0; margin: 10px 0; font-size: 0.88rem; line-height: 1.6;
@@ -194,44 +144,24 @@ body {
 .note.danger { border-left-color: var(--danger); }
 .note.success { border-left-color: var(--cardio); }
 
-/* ===== Table (minimal) ===== */
+/* Table */
 .tbl { width: 100%; border-collapse: collapse; font-size: 0.9rem; margin: 8px 0; }
 .tbl th { padding: 8px 10px; text-align: left; font-weight: 700; color: var(--sub); border-bottom: 1px solid var(--border); font-size: 0.75rem; letter-spacing: 0.04em; }
 .tbl td { padding: 8px 10px; border-bottom: 1px solid rgba(0,0,0,0.03); font-size: 0.9rem; }
 .tbl .hi { font-weight: 700; color: var(--cardio); }
 
-/* ===== Milestone progress ===== */
-.milestone-track {
- display: flex; align-items: center; gap: 0; margin: 12px 0; position: relative;
-}
-.milestone-dot {
- flex: 1; text-align: center; position: relative; z-index: 1;
-}
-.milestone-dot .dot-circle {
- width: 12px; height: 12px; border-radius: 50%; background: var(--border);
- margin: 0 auto 4px; border: 2px solid rgba(0,0,0,0.05);
-}
+/* Milestone */
+.milestone-track { display: flex; align-items: center; gap: 0; margin: 12px 0; position: relative; }
+.milestone-dot { flex: 1; text-align: center; position: relative; z-index: 1; }
+.milestone-dot .dot-circle { width: 12px; height: 12px; border-radius: 50%; background: var(--border); margin: 0 auto 4px; border: 2px solid rgba(0,0,0,0.05); }
 .milestone-dot .dot-label { font-size: 11px; color: var(--sub); font-weight: 600; letter-spacing: 0.04em; }
 .milestone-dot .dot-wt { font-size: 18px; font-weight: 800; color: var(--text); }
 .milestone-dot .dot-time { font-size: 11px; color: var(--sub); font-weight: 400; }
-.milestone-line {
- position: absolute; top: 6px; left: 8%; right: 8%; height: 1px; background: var(--border); z-index: 0;
-}
+.milestone-line { position: absolute; top: 6px; left: 8%; right: 8%; height: 1px; background: var(--border); z-index: 0; }
 
-/* ===== Expandable ===== */
+/* Expandable */
 details summary { cursor: pointer; font-size: 14px; color: var(--info); padding: 3px 0; }
 details .inner { padding: 8px 0; }
-
-/* Bottom Nav */
-.bottom-nav {
- display: flex; gap: 0; background: var(--card); border: 1px solid var(--border);
- border-radius: 12px; margin: 20px 14px 24px; overflow: hidden;
-}
-.bottom-nav a {
- flex: 1; text-align: center; padding: 12px 2px; font-size: 14px; font-weight: 600;
- color: var(--sub); text-decoration: none; transition: .2s;
-}
-.bottom-nav a.active { color: var(--primary); }
 </style>
 <script src="data.js"></script>
 </head>

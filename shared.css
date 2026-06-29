@@ -1,0 +1,204 @@
+/* ===========================================
+   减脂计划 · 共享样式系统 (Shared Design System)
+   所有页面通过 <link rel="stylesheet" href="shared.css"> 引用
+   版本: 1.0 · 最后更新: 2026-06-27
+   =========================================== */
+
+/* ===== CSS Variables (Canonical) ===== */
+:root {
+  /* Surfaces */
+  --bg: #faf8f5;
+  --card: #ffffff;
+  --surface: #f3f4f6;
+  --text: #1a1a2e;
+  --sub: #9ca3af;
+  --border: #e5e7eb;
+
+  /* Functional Colors */
+  --primary: #f97316;
+  --primary-text: #ffedd5;
+  --pull: #3b82f6;
+  --push: #f59e0b;
+  --leg: #ef4444;
+  --cardio: #22c55e;
+  --recovery: #a78bfa;
+  --morning: #fbbf24;
+  --evening: #818cf8;
+  --sleep: #6366f1;
+  --danger: #ef4444;
+  --warn: #f59e0b;
+  --info: #60a5fa;
+
+  /* Typography & Shape */
+  --radius: 10px;
+  --radius-sm: 8px;
+  --font: system-ui, -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+}
+
+/* ===== Reset ===== */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  max-width: 520px;
+  margin: 0 auto;
+  padding-bottom: 40px;
+}
+
+/* ===== Top Tab Bar ===== */
+.tab-bar {
+  display: flex; gap: 0;
+  background: var(--card);
+  border-radius: 0 0 var(--radius) var(--radius);
+  border: 1px solid var(--border);
+  border-top: none;
+  overflow: hidden;
+  position: sticky;
+  top: 0; z-index: 10;
+  margin-bottom: 12px;
+}
+.tab-bar a {
+  flex: 1; text-align: center;
+  padding: 10px 4px;
+  font-size: 15px; font-weight: 600;
+  color: var(--sub); text-decoration: none;
+  transition: .2s;
+  border-bottom: 3px solid transparent;
+}
+.tab-bar a.active {
+  color: var(--primary); font-weight: 700;
+  border-bottom-color: var(--primary);
+}
+
+/* ===== Bottom Nav ===== */
+.bottom-nav {
+  display: flex; gap: 0;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  margin: 20px 14px 24px;
+  overflow: hidden;
+}
+.bottom-nav a {
+  flex: 1; text-align: center;
+  padding: 12px 2px;
+  font-size: 14px; font-weight: 600;
+  color: var(--sub); text-decoration: none;
+  transition: .2s;
+}
+.bottom-nav a.active { color: var(--primary); }
+
+/* ===== Shared Card (base) ===== */
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px;
+  margin: 0 10px 10px;
+}
+
+/* ===== Shared Badges ===== */
+.badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 11px; font-weight: 700;
+  letter-spacing: 0.03em;
+}
+.badge-primary { background: rgba(249,115,22,0.12); color: var(--primary); }
+.badge-pull    { background: rgba(59,130,246,0.1); color: var(--pull); }
+.badge-push    { background: rgba(245,158,11,0.1); color: var(--push); }
+.badge-leg     { background: rgba(239,68,68,0.1); color: var(--leg); }
+.badge-cardio  { background: rgba(34,197,94,0.1); color: var(--cardio); }
+.badge-recovery{ background: rgba(167,139,250,0.1); color: var(--recovery); }
+
+/* ===== Shared Section Title ===== */
+.section-title {
+  color: var(--sub);
+  font-size: 11px; font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  margin-bottom: 8px;
+  display: flex; align-items: center; gap: 5px;
+}
+
+/* ===== Shared Block (colored background strips) ===== */
+.block {
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  font-size: 14px; line-height: 1.55;
+  margin-bottom: 6px;
+}
+.block.morning  { background: rgba(251,191,36,0.06); border: 1px solid rgba(251,191,36,0.12); }
+.block.evening  { background: rgba(129,140,248,0.06); border: 1px solid rgba(129,140,248,0.12); }
+.block.dinner   { background: rgba(34,197,94,0.05); border: 1px solid rgba(34,197,94,0.1); }
+.block.move     { background: rgba(249,115,22,0.04); border: 1px solid rgba(249,115,22,0.08); }
+.block.warn     { background: rgba(245,158,11,0.05); border: 1px solid rgba(245,158,11,0.1); }
+.block.info     { background: rgba(59,130,246,0.04); border: 1px solid rgba(59,130,246,0.08); }
+
+.block b          { font-weight: 800; color: var(--text); }
+.block .sub       { font-size: 13px; color: var(--sub); display: block; margin-top: 2px; font-weight: 400; }
+
+/* ===== Shared Stat Grid ===== */
+.stat-grid {
+  display: flex; gap: 1px;
+  border-top: 1px solid var(--border);
+  background: var(--border);
+}
+.stat-item {
+  flex: 1; background: var(--card);
+  padding: 14px 6px; text-align: center;
+}
+.stat-item .val {
+  font-size: 26px; font-weight: 800;
+  display: block; line-height: 1;
+}
+.stat-item .lbl {
+  font-size: 11px; color: var(--sub);
+  margin-top: 4px; font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+/* ===== Shared Move Row (compact, for lists) ===== */
+.move-row-compact {
+  display: flex; align-items: center; gap: 8px;
+  padding: 5px 0;
+  border-bottom: 1px solid rgba(0,0,0,0.03);
+  font-size: 14px; font-weight: 500;
+}
+.move-row-compact:last-child { border-bottom: none; }
+.move-row-compact .move-name { flex: 1; color: var(--text); }
+.move-row-compact .move-sets {
+  color: var(--sub); white-space: nowrap;
+  font-size: 12px; font-weight: 600;
+}
+
+/* ===== Utils ===== */
+details summary {
+  cursor: pointer;
+  color: var(--primary);
+  font-size: 13px; font-weight: 600;
+  padding: 2px 0;
+}
+details .inner { padding: 6px 0; }
+
+/* ===== Link to another page (cross-reference card) ===== */
+.xref-card {
+  display: flex; align-items: center; gap: 10px;
+  padding: 12px 14px;
+  background: rgba(249,115,22,0.03);
+  border: 1px dashed rgba(249,115,22,0.2);
+  border-radius: var(--radius-sm);
+  margin-bottom: 6px;
+  text-decoration: none; color: var(--text);
+  transition: .2s;
+}
+.xref-card:hover { background: rgba(249,115,22,0.06); border-color: var(--primary); }
+.xref-card .xref-icon { font-size: 18px; flex-shrink: 0; }
+.xref-card .xref-body { flex: 1; }
+.xref-card .xref-title { font-weight: 700; font-size: 14px; }
+.xref-card .xref-desc { font-size: 12px; color: var(--sub); margin-top: 2px; }
+.xref-card .xref-arrow { font-size: 18px; color: var(--primary); flex-shrink: 0; }
