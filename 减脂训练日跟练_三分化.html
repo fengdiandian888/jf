@@ -1468,6 +1468,7 @@ if('serviceWorker' in navigator){
     <div class="tm-complete-icon">🎉</div>
     <div class="tm-complete-title">训练完成！</div>
     <div class="tm-complete-sub" id="tmCompleteSub">太棒了，今天的表现很出色</div>
+    <div id="tmCompleteStreak" style="display:none;font-size:16px;font-weight:800;color:#f97316;margin:6px 0 2px;letter-spacing:0.02em;text-shadow:0 0 20px rgba(249,115,22,0.3)"></div>
     <div class="tm-complete-stats">
       <div class="tm-stat-card"><div class="tm-stat-val" id="tmStatDuration">--</div><div class="tm-stat-label">总时长</div></div>
       <div class="tm-stat-card"><div class="tm-stat-val" id="tmStatExercises">--</div><div class="tm-stat-label">完成动作</div></div>
@@ -1986,10 +1987,12 @@ var WorkoutTimer = (function() {
     $('tmStatCalories').textContent = calEst + ' kcal';
 
     // 保存训练完成记录到 localStorage（供每周小结使用）
+    var streak = 0;
     try {
       var logs = JSON.parse(localStorage.getItem('jf_training_logs') || '[]');
+      var todayLogDate = new Date().toISOString().slice(0, 10);
       logs.push({
-        date: new Date().toISOString().slice(0, 10),
+        date: todayLogDate,
         time: new Date().toISOString(),
         dayType: sessionDayType,
         duration: elapsed,
@@ -2000,7 +2003,36 @@ var WorkoutTimer = (function() {
       });
       if (logs.length > 200) logs = logs.slice(-200);
       localStorage.setItem('jf_training_logs', JSON.stringify(logs));
+
+      // 计算连续打卡天数（包含今天）
+      var uniqueDates = [];
+      logs.forEach(function(l) {
+        if (uniqueDates.indexOf(l.date) < 0) uniqueDates.push(l.date);
+      });
+      uniqueDates.sort().reverse(); // 降序（最新日期在前）
+
+      var checkDate = new Date();
+      for (var si = 0; si < uniqueDates.length; si++) {
+        var expected = checkDate.toISOString().slice(0, 10);
+        if (uniqueDates[si] === expected) {
+          streak++;
+          checkDate.setDate(checkDate.getDate() - 1);
+        } else {
+          break;
+        }
+      }
     } catch(e) { /* ignore quota errors */ }
+
+    // 显示连续打卡天数
+    var streakEl = $('tmCompleteStreak');
+    if (streakEl) {
+      if (streak >= 2) {
+        streakEl.textContent = '🔥 已连续训练 ' + streak + ' 天！';
+        streakEl.style.display = '';
+      } else {
+        streakEl.style.display = 'none';
+      }
+    }
 
     var totalEst = window.TimeEstimator ? TimeEstimator.estimateTotal(exercises) : 0;
     var estStr = totalEst > 0 ? '（预估 ' + TimeEstimator.formatDuration(totalEst) + '）' : '';

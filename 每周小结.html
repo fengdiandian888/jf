@@ -131,6 +131,30 @@ textarea:focus { border-color: var(--primary); }
 /* Progress toward goal */
 .goal-bar-wrap { background: var(--surface); border-radius: 6px; height: 10px; overflow: hidden; margin: 6px 0; }
 .goal-bar { height: 100%; border-radius: 6px; background: var(--primary); transition: width .6s ease; }
+
+/* 体重趋势折线图 */
+.trend-chart-wrap {
+  position: relative; width: 100%; height: 140px; margin: 6px 0 4px;
+  background: var(--surface); border-radius: 10px; overflow: hidden;
+}
+.trend-svg { width: 100%; height: 100%; display: block; }
+.trend-axis { display: flex; justify-content: space-between; font-size: 10px; color: var(--sub); margin-top: 3px; padding: 0 4px; }
+.trend-empty {
+  display: flex; align-items: center; justify-content: center;
+  height: 140px; color: var(--sub); font-size: 13px; background: var(--surface); border-radius: 10px;
+}
+.trend-range-btns { display: flex; gap: 6px; margin-bottom: 8px; }
+.trend-range-btn {
+  padding: 3px 12px; border-radius: 20px; font-size: 12px; font-weight: 600;
+  border: 1.5px solid var(--border); background: #fff; color: var(--sub); cursor: pointer;
+  font-family: var(--font); transition: .15s;
+}
+.trend-range-btn.active {
+  background: var(--primary); border-color: var(--primary); color: #fff;
+}
+.trend-goal-label { font-size: 10px; color: var(--sub); margin-bottom: 4px; display: flex; justify-content: flex-end; gap: 12px; align-items: center; }
+.trend-goal-label span { display: flex; align-items: center; gap: 3px; }
+.legend-dot { width: 8px; height: 3px; border-radius: 2px; display: inline-block; }
 </style>
 </head>
 <body>
@@ -191,8 +215,24 @@ textarea:focus { border-color: var(--primary); }
     <div style="flex:1;text-align:center;font-size:10px;color:var(--sub)">日</div>
   </div>
 
+  <!-- 长期体重趋势折线图 -->
+  <div style="margin-top:16px;font-size:12px;color:var(--sub);font-weight:600;margin-bottom:6px">📈 长期趋势</div>
+  <div class="trend-range-btns">
+    <button class="trend-range-btn active" onclick="renderTrendChart(30)" id="trendBtn30">近30天</button>
+    <button class="trend-range-btn" onclick="renderTrendChart(60)" id="trendBtn60">近60天</button>
+    <button class="trend-range-btn" onclick="renderTrendChart(0)" id="trendBtnAll">全部</button>
+  </div>
+  <div class="trend-goal-label">
+    <span><span class="legend-dot" style="background:var(--primary)"></span>实测体重</span>
+    <span><span class="legend-dot" style="background:#ef4444;opacity:0.6"></span>目标线 63kg</span>
+  </div>
+  <div id="trendChartWrap" class="trend-chart-wrap">
+    <div class="trend-empty">记录体重后这里自动显示趋势 📊</div>
+  </div>
+  <div class="trend-axis" id="trendAxis"></div>
+
   <!-- 历史记录列表 -->
-  <div style="margin-top:12px;font-size:12px;color:var(--sub);font-weight:600;margin-bottom:6px">最近记录</div>
+  <div style="margin-top:16px;font-size:12px;color:var(--sub);font-weight:600;margin-bottom:6px">最近记录</div>
   <div class="weight-log-list" id="weightLogList">
     <div style="color:var(--sub);font-size:13px;text-align:center;padding:12px">还没有记录</div>
   </div>
@@ -413,6 +453,125 @@ function renderWeightLog() {
 }
 
 renderWeightLog();
+
+// ========= 体重趋势折线图 =========
+var trendDays = 30;
+
+function renderTrendChart(days) {
+  trendDays = days;
+  // 更新按钮状态
+  ['30','60','All'].forEach(function(k) {
+    var btn = document.getElementById('trendBtn' + k);
+    if (btn) btn.classList.remove('active');
+  });
+  var activeId = days === 30 ? 'trendBtn30' : days === 60 ? 'trendBtn60' : 'trendBtnAll';
+  var activeBtn = document.getElementById(activeId);
+  if (activeBtn) activeBtn.classList.add('active');
+
+  var wrap = document.getElementById('trendChartWrap');
+  var axisEl = document.getElementById('trendAxis');
+
+  // 过滤数据
+  var data = weightLog.slice().sort(function(a, b) { return a.date.localeCompare(b.date); });
+  if (days > 0) {
+    var cutoff = new Date(now);
+    cutoff.setDate(cutoff.getDate() - days);
+    var cutoffStr = cutoff.toISOString().slice(0, 10);
+    data = data.filter(function(e) { return e.date >= cutoffStr; });
+  }
+
+  if (data.length < 2) {
+    wrap.innerHTML = '<div class="trend-empty">至少需要 2 天记录才能显示趋势 📊</div>';
+    if (axisEl) axisEl.innerHTML = '';
+    return;
+  }
+
+  var weights = data.map(function(e) { return e.weight; });
+  var minW = Math.min.apply(null, weights);
+  var maxW = Math.max.apply(null, weights);
+  var GOAL = 63;
+  var chartMin = Math.min(minW - 0.5, GOAL - 0.5);
+  var chartMax = maxW + 0.5;
+  var range = chartMax - chartMin;
+
+  var W = 320, H = 130; // SVG 内部坐标系
+  var PAD_L = 30, PAD_R = 10, PAD_T = 12, PAD_B = 16;
+  var plotW = W - PAD_L - PAD_R;
+  var plotH = H - PAD_T - PAD_B;
+  var n = data.length;
+
+  function xPos(i) { return PAD_L + (n === 1 ? plotW / 2 : i / (n - 1) * plotW); }
+  function yPos(w) { return PAD_T + (1 - (w - chartMin) / range) * plotH; }
+
+  // 网格线（水平3条）
+  var gridLines = '';
+  var gridVals = [chartMin + range * 0.25, chartMin + range * 0.5, chartMin + range * 0.75].map(function(v) {
+    return Math.round(v * 2) / 2;
+  });
+  gridVals.forEach(function(gv) {
+    var gy = yPos(gv);
+    gridLines += '<line x1="' + PAD_L + '" y1="' + gy.toFixed(1) + '" x2="' + (W - PAD_R) + '" y2="' + gy.toFixed(1) + '" stroke="rgba(0,0,0,0.05)" stroke-width="1"/>';
+    gridLines += '<text x="' + (PAD_L - 3) + '" y="' + (gy + 3.5).toFixed(1) + '" text-anchor="end" font-size="8" fill="rgba(0,0,0,0.3)">' + gv + '</text>';
+  });
+
+  // 目标线63kg
+  var goalY = yPos(GOAL);
+  var goalLine = '';
+  if (GOAL >= chartMin && GOAL <= chartMax) {
+    goalLine = '<line x1="' + PAD_L + '" y1="' + goalY.toFixed(1) + '" x2="' + (W - PAD_R) + '" y2="' + goalY.toFixed(1) + '" stroke="rgba(239,68,68,0.5)" stroke-width="1.5" stroke-dasharray="4,3"/>';
+    goalLine += '<text x="' + (W - PAD_R + 2) + '" y="' + (goalY + 3).toFixed(1) + '" font-size="7" fill="rgba(239,68,68,0.7)">63</text>';
+  }
+
+  // 折线路径
+  var points = data.map(function(e, i) { return xPos(i).toFixed(1) + ',' + yPos(e.weight).toFixed(1); });
+  var polyline = '<polyline points="' + points.join(' ') + '" fill="none" stroke="var(--primary)" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>';
+
+  // 面积填充
+  var areaPoints = [PAD_L + ','+  (PAD_T + plotH)];
+  data.forEach(function(e, i) { areaPoints.push(xPos(i).toFixed(1) + ',' + yPos(e.weight).toFixed(1)); });
+  areaPoints.push((W - PAD_R) + ',' + (PAD_T + plotH));
+  var area = '<polygon points="' + areaPoints.join(' ') + '" fill="rgba(224,112,64,0.08)"/>';
+
+  // 数据点
+  var dots = '';
+  data.forEach(function(e, i) {
+    var cx = xPos(i).toFixed(1), cy = yPos(e.weight).toFixed(1);
+    var isLast = i === n - 1;
+    dots += '<circle cx="' + cx + '" cy="' + cy + '" r="' + (isLast ? '4' : '2.5') + '" fill="' + (isLast ? 'var(--primary)' : '#fff') + '" stroke="var(--primary)" stroke-width="2"/>';
+    // 最新一个显示体重
+    if (isLast) {
+      dots += '<text x="' + cx + '" y="' + (parseFloat(cy) - 7).toFixed(1) + '" text-anchor="middle" font-size="9" font-weight="700" fill="var(--primary)">' + e.weight + '</text>';
+    }
+  });
+
+  // 起止标注（最低点）
+  var minIdx = weights.indexOf(minW);
+  if (minIdx !== n - 1 && minIdx !== 0) {
+    var mx = xPos(minIdx).toFixed(1), my = yPos(minW).toFixed(1);
+    dots += '<text x="' + mx + '" y="' + (parseFloat(my) + 13).toFixed(1) + '" text-anchor="middle" font-size="8" fill="var(--cardio)">' + minW + '</text>';
+  }
+
+  wrap.innerHTML = '<svg class="trend-svg" viewBox="0 0 ' + W + ' ' + H + '" preserveAspectRatio="none">' +
+    gridLines + goalLine + area + polyline + dots +
+    '</svg>';
+
+  // X轴日期
+  if (axisEl) {
+    var show = Math.min(n, 5);
+    var step = n <= 5 ? 1 : Math.floor(n / (show - 1));
+    var axisItems = [];
+    for (var i = 0; i < n; i += step) {
+      axisItems.push(data[i].date.slice(5)); // MM-DD
+    }
+    if (axisItems[axisItems.length - 1] !== data[n - 1].date.slice(5)) {
+      axisItems.push(data[n - 1].date.slice(5));
+    }
+    axisEl.innerHTML = axisItems.map(function(d) { return '<span>' + d + '</span>'; }).join('');
+  }
+}
+
+// 初次渲染
+renderTrendChart(30);
 
 // ========= 本周训练详情（读取跟练完成记录） =========
 (function renderTrainingStats() {
