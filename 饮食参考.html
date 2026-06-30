@@ -46,53 +46,59 @@ h1 { font-size: 20px; text-align: center; padding: 12px 0 0; color: var(--primar
 }
 .ing-cat-label .cat-icon { font-size: 16px; }
 
-/* 食材行 */
-.ing-rows { display: flex; flex-direction: column; gap: 3px; }
-.ing-row {
-  display: flex; align-items: center; gap: 5px;
-  padding: 5px 6px; border-radius: 8px;
-  background: var(--surface); border: 1px solid transparent;
-  transition: all .15s; flex-wrap: wrap;
+/* 食材卡片网格 */
+.ing-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px;
 }
-.ing-row.has-stock { border-color: var(--border); background: #fff; }
+@media(min-width:420px) { .ing-grid { grid-template-columns: repeat(4, 1fr); } }
 
-/* 选择chip */
-.ing-chip {
-  flex-shrink: 0; padding: 4px 10px; border-radius: 14px;
-  border: 1.5px solid var(--border); background: #fff;
-  font-size: 12px; font-weight: 600; color: var(--text);
-  cursor: pointer; user-select: none; transition: all .15s;
-  -webkit-tap-highlight-color: transparent;
+.ing-card {
+  display: flex; flex-direction: column; align-items: center; gap: 3px;
+  padding: 8px 6px 7px; border-radius: 10px;
+  background: #fff; border: 1.5px solid var(--border);
+  transition: all .15s; cursor: default;
 }
-.ing-chip:active { transform: scale(.95); }
-.ing-chip.selected { font-weight: 700; border-width: 2px; }
-.ing-chip.meat-chip.selected   { background: rgba(96,165,250,.10);  border-color: var(--pull); color: var(--pull); }
-.ing-chip.soy-chip.selected    { background: rgba(167,139,250,.10); border-color: var(--recovery); color: var(--recovery); }
-.ing-chip.veg-chip.selected    { background: rgba(74,222,128,.10);  border-color: var(--cardio); color: #166534; }
-.ing-chip.staple-chip.selected { background: rgba(245,158,11,.10);  border-color: var(--warn); color: #92400e; }
-
-/* 营养提示 */
-.ing-tip {
-  font-size: 10px; color: var(--sub); flex-shrink: 0;
-  display: none;
+.ing-card.has-stock {
+  border-color: var(--primary); border-width: 2px;
+  background: rgba(224,112,64,.03);
 }
-.ing-row.has-stock .ing-tip { display: inline; }
 
-/* 分量输入 */
-.ing-qty-wrap {
+.ing-card-name {
+  font-size: 12px; font-weight: 700; color: var(--text);
+  text-align: center; line-height: 1.3;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  max-width: 100%;
+}
+
+.ing-card-qty-row {
   display: flex; align-items: center; gap: 2px;
-  font-size: 11px; color: var(--sub); margin-left: auto; flex-shrink: 0;
 }
-.ing-qty {
-  width: 56px; padding: 4px 2px; border: 1.5px solid var(--border);
-  border-radius: 6px; font-size: 12px; text-align: center;
-  background: #fff; color: var(--text); font-weight: 600;
+
+.ing-card-qty {
+  width: 46px; padding: 3px 0; border: none; border-bottom: 2px solid var(--border);
+  font-size: 13px; font-weight: 800; text-align: center;
+  background: transparent; color: var(--text);
   -webkit-appearance: none; -moz-appearance: textfield;
+  font-family: -apple-system,BlinkMacSystemFont,sans-serif;
 }
-.ing-qty::-webkit-inner-spin-button, .ing-qty::-webkit-outer-spin-button { -webkit-appearance: none; }
-.ing-qty:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 2px rgba(224,112,64,.15); }
-.ing-qty:disabled { opacity: .3; background: var(--surface); }
-.ing-qty-unit { font-size: 10px; color: var(--sub); }
+.ing-card-qty::-webkit-inner-spin-button,
+.ing-card-qty::-webkit-outer-spin-button { -webkit-appearance: none; }
+.ing-card-qty:focus {
+  outline: none; border-bottom-color: var(--primary);
+}
+.ing-card.has-stock .ing-card-qty {
+  border-bottom-color: var(--primary); color: var(--primary);
+}
+.ing-card.has-stock .ing-card-qty-unit,
+.ing-card.has-stock .ing-card-name { color: var(--primary); }
+
+.ing-card-qty-unit {
+  font-size: 11px; font-weight: 700; color: var(--sub);
+}
+.ing-card-tip {
+  font-size: 9px; color: var(--sub); text-align: center;
+  line-height: 1.2; margin-top: -1px;
+}
 
 .auto-assign-btn {
   display: block; width: 100%; margin-top: 14px; padding: 12px;
@@ -195,8 +201,8 @@ h1 { font-size: 20px; text-align: center; padding: 12px 0 0; color: var(--primar
 
 @media(max-width:360px) {
   body { font-size: 13px; }
-  .ing-chip { padding: 3px 8px; font-size: 11px; }
-  .ing-qty { width: 48px; font-size: 11px; }
+  .ing-card-name { font-size: 11px; }
+  .ing-card-qty { width: 40px; font-size: 12px; }
   .goal-val { font-size: 15px; }
 }
 </style>
@@ -252,7 +258,7 @@ h1 { font-size: 20px; text-align: center; padding: 12px 0 0; color: var(--primar
   <span class="save-status-time" id="saveStatusTime"></span>
 </div>
 
-<div class="footer">减脂计划 · 饮食设置 v8.0 · 2026-06-30<br>食材选择 + 分量标注 + 自动分配 + 结余追踪 · <a href="今日计划.html" style="color:var(--primary)">今日页面</a>查看当天安排</div>
+<div class="footer">减脂计划 · 饮食设置 v8.2 · 2026-06-30<br>卡片式食材选择 + 精确单位 + 自动分配 + 结余追踪 · <a href="今日计划.html" style="color:var(--primary)">今日页面</a>查看当天安排</div>
 
 <nav class="bottom-nav">
   <a href="今日计划.html">今日</a>
@@ -381,31 +387,54 @@ h1 { font-size: 20px; text-align: center; padding: 12px 0 0; color: var(--primar
     return { cal:Math.round(f.cal*r), pro:Number((f.pro*r).toFixed(1)), carb:Number((f.carb*r).toFixed(1)), fat:Number((f.fat*r).toFixed(1)) };
   }
 
-  // ========== 食材选择器渲染 ==========
+  // ========== 显示单位 ==========
+  function getDisplayUnit(name) {
+    if (name === '鸡蛋') return '个';
+    if (name === '牛奶' || name === '无糖酸奶' || name === '无糖豆浆') return 'ml';
+    return 'g';
+  }
+
+  function getQtyStep(name) {
+    if (name === '鸡蛋') return 1;
+    return 50;
+  }
+
+  function toDisplayQty(name, storageVal) {
+    if (!storageVal) return '';
+    if (name === '鸡蛋') return Math.round(storageVal / 50);
+    return storageVal;
+  }
+
+  function toStorageQty(name, displayVal) {
+    var v = parseInt(displayVal) || 0;
+    if (v <= 0) return 0;
+    if (name === '鸡蛋') return v * 50;
+    return v;
+  }
+
+  // ========== 食材卡片网格 ==========
   function renderIngredientSelector() {
     var wrap = document.getElementById('ingredientSelector');
     if (!wrap) return;
 
     var html = '';
     CAT_ORDER.forEach(function(cat) {
-      var catClass = cat+'-chip';
       html += '<div class="ing-cat">';
       html += '<div class="ing-cat-label">';
       html += '<span class="cat-icon">'+CAT_ICONS[cat]+'</span>';
       html += CAT_LABEL[cat];
       html += ' <span style="font-weight:400;font-size:10px;color:var(--sub)">'+CAT_HINT[cat]+'</span>';
       html += '</div>';
-      html += '<div class="ing-rows" id="ing_'+cat+'"></div>';
+      html += '<div class="ing-grid" id="ing_'+cat+'"></div>';
       html += '</div>';
     });
     wrap.innerHTML = html;
 
-    // 填充每个分类的食材行
+    // 填充每个分类的食材卡片
     CAT_ORDER.forEach(function(cat) {
       var container = document.getElementById('ing_'+cat);
       if (!container) return;
 
-      // 遍历FOODS，按cat筛选午晚餐可用食材
       var foods = [];
       Object.keys(FOODS).forEach(function(name) {
         var f = FOODS[name];
@@ -418,108 +447,72 @@ h1 { font-size: 20px; text-align: center; padding: 12px 0 0; color: var(--primar
       foods.forEach(function(name) {
         var f = FOODS[name];
         var stock = ingredientStock[name];
-        var hasStock = stock && stock.bought > 0;
-        var selected = !!hasStock;
+        var bought = stock ? stock.bought : 0;
+        var hasStock = bought > 0;
+        var displayUnit = getDisplayUnit(name);
+        var step = getQtyStep(name);
 
-        var row = document.createElement('div');
-        row.className = 'ing-row' + (hasStock ? ' has-stock' : '');
-        row.setAttribute('data-food', name);
-        row.setAttribute('data-cat', cat);
+        var card = document.createElement('div');
+        card.className = 'ing-card' + (hasStock ? ' has-stock' : '');
+        card.setAttribute('data-food', name);
+        card.setAttribute('data-cat', cat);
 
-        // Chip按钮
-        var chip = document.createElement('button');
-        chip.className = 'ing-chip '+cat+'-chip' + (selected ? ' selected' : '');
-        chip.textContent = CAT_ICONS[cat] + ' ' + name;
-        chip.setAttribute('data-food', name);
-        chip.setAttribute('data-cat', cat);
+        var nameEl = document.createElement('div');
+        nameEl.className = 'ing-card-name';
+        nameEl.textContent = CAT_ICONS[cat] + ' ' + name;
 
-        // 营养提示
-        var tip = document.createElement('span');
-        tip.className = 'ing-tip';
-        tip.textContent = f.tip;
+        var qtyRow = document.createElement('div');
+        qtyRow.className = 'ing-card-qty-row';
 
-        // 分量输入
-        var qtyWrap = document.createElement('span');
-        qtyWrap.className = 'ing-qty-wrap';
         var qtyInput = document.createElement('input');
         qtyInput.type = 'number';
-        qtyInput.className = 'ing-qty';
+        qtyInput.className = 'ing-card-qty';
         qtyInput.setAttribute('data-food', name);
         qtyInput.min = '0';
-        qtyInput.step = '50';
-        qtyInput.value = stock ? stock.bought : '';
+        qtyInput.step = step;
+        qtyInput.value = toDisplayQty(name, bought);
         qtyInput.placeholder = '0';
-        qtyInput.disabled = !selected;
         qtyInput.inputMode = 'numeric';
 
-        qtyWrap.appendChild(qtyInput);
         var unitSpan = document.createElement('span');
-        unitSpan.className = 'ing-qty-unit';
-        unitSpan.textContent = 'g';
-        qtyWrap.appendChild(unitSpan);
+        unitSpan.className = 'ing-card-qty-unit';
+        unitSpan.textContent = displayUnit;
 
-        row.appendChild(chip);
-        row.appendChild(tip);
-        row.appendChild(qtyWrap);
-        container.appendChild(row);
+        qtyRow.appendChild(qtyInput);
+        qtyRow.appendChild(unitSpan);
 
-        // 事件绑定
-        (function(n, c, r, ci, qi) {
-          ci.addEventListener('click', function(e) { e.preventDefault(); toggleIngredient(n, c); });
-          ci.addEventListener('touchend', function(e) { e.preventDefault(); toggleIngredient(n, c); });
-          qi.addEventListener('input', function() { updateStockQty(n); });
-          qi.addEventListener('change', function() { updateStockQty(n); });
-        })(name, cat, row, chip, qtyInput);
+        var tipEl = document.createElement('div');
+        tipEl.className = 'ing-card-tip';
+        tipEl.textContent = f.tip || '';
+
+        card.appendChild(nameEl);
+        card.appendChild(qtyRow);
+        card.appendChild(tipEl);
+        container.appendChild(card);
+
+        // 事件：输入即保存（400ms防抖）
+        (function(n, cardEl, inputEl) {
+          var debounceTimer;
+          inputEl.addEventListener('input', function() {
+            clearTimeout(debounceTimer);
+            debounceTimer = setTimeout(function() {
+              var displayVal = parseInt(inputEl.value) || 0;
+              var storageVal = toStorageQty(n, displayVal);
+              if (storageVal > 0) {
+                if (!ingredientStock[n]) ingredientStock[n] = { bought: 0, used: 0 };
+                ingredientStock[n].bought = storageVal;
+                cardEl.classList.add('has-stock');
+              } else {
+                delete ingredientStock[n];
+                cardEl.classList.remove('has-stock');
+                inputEl.value = '';
+              }
+              updateAssignBtn();
+              autoSaveStock();
+            }, 400);
+          });
+        })(name, card, qtyInput);
       });
-    });
-  }
-
-  function toggleIngredient(name, cat) {
-    var stock = ingredientStock[name];
-    if (stock && stock.bought > 0) {
-      // 已选 → 取消选择（清零）
-      delete ingredientStock[name];
-    } else {
-      // 未选 → 选中（默认分量待填写）
-      ingredientStock[name] = { bought: 0, used: 0 };
-    }
-    refreshIngredientUI();
-    updateAssignBtn();
-  }
-
-  function updateStockQty(name) {
-    var input = document.querySelector('.ing-qty[data-food="'+name+'"]');
-    if (!input) return;
-    var val = parseInt(input.value) || 0;
-    if (val > 0) {
-      ingredientStock[name] = { bought: val, used: ingredientStock[name] ? ingredientStock[name].used || 0 : 0 };
-    } else {
-      // 数量为0 → 取消选择
-      delete ingredientStock[name];
-      refreshIngredientUI();
-    }
-    updateAssignBtn();
-  }
-
-  function refreshIngredientUI() {
-    // 遍历所有行，更新chip选中状态和qty启用状态
-    var rows = document.querySelectorAll('.ing-row');
-    rows.forEach(function(row) {
-      var name = row.getAttribute('data-food');
-      var cat = row.getAttribute('data-cat');
-      var stock = ingredientStock[name];
-      var hasStock = stock && stock.bought > 0;
-
-      row.classList.toggle('has-stock', hasStock);
-
-      var chip = row.querySelector('.ing-chip');
-      if (chip) chip.classList.toggle('selected', hasStock);
-
-      var qty = row.querySelector('.ing-qty');
-      if (qty) {
-        qty.disabled = !hasStock;
-        if (!hasStock) qty.value = '';
-      }
     });
   }
 
@@ -626,6 +619,12 @@ h1 { font-size: 20px; text-align: center; padding: 12px 0 0; color: var(--primar
     if (!ingredientStock[name]) return;
     var p = calcPortion(name, meal);
     ingredientStock[name].used = (ingredientStock[name].used || 0) + p.g;
+  }
+
+  // 自动保存 ingredientStock 到 localStorage
+  function autoSaveStock() {
+    localStorage.setItem('jf_ingredient_stock', JSON.stringify(ingredientStock));
+    updateSaveStatus();
   }
 
   // ========== 周计划展示 ==========
@@ -740,13 +739,17 @@ h1 { font-size: 20px; text-align: center; padding: 12px 0 0; color: var(--primar
         else if (pct >= 80) barClass = 'bar-warn';
         else barClass = 'bar-ok';
 
-        var leftText = item.left <= 0 ? '用完' : '剩'+item.left+'g';
+        var displayUnit = getDisplayUnit(item.name);
+        var leftVal = toDisplayQty(item.name, item.left);
+        var boughtVal = toDisplayQty(item.name, item.bought);
+        var usedVal = toDisplayQty(item.name, item.used);
+        var leftText = item.left <= 0 ? '用完' : '剩'+leftVal+displayUnit;
 
         html += '<div class="surplus-row">';
         html += '<span class="surplus-name">'+item.name+'</span>';
-        html += '<span class="surplus-val bought">'+item.bought+'g</span>';
+        html += '<span class="surplus-val bought">'+boughtVal+displayUnit+'</span>';
         html += '<span class="surplus-arrow">→</span>';
-        html += '<span class="surplus-val used">用'+item.used+'g</span>';
+        html += '<span class="surplus-val used">用'+usedVal+displayUnit+'</span>';
         html += '<span class="surplus-arrow">→</span>';
         html += '<span class="surplus-val left '+leftClass+'">'+leftText+'</span>';
         html += '<div class="surplus-bar-wrap"><div class="surplus-bar-fill '+barClass+'" style="width:'+Math.min(pct,100)+'%"></div></div>';
@@ -821,15 +824,13 @@ h1 { font-size: 20px; text-align: center; padding: 12px 0 0; color: var(--primar
     renderIngredientSelector();
     updateAssignBtn();
 
-    // 绑定自动分配按钮
+    // 绑定自动分配按钮（只用 click，避免移动端 touchend+click 双触发）
     var assignBtn = document.getElementById('autoAssignBtn');
     assignBtn.addEventListener('click', function(e) { e.preventDefault(); autoAssign(); });
-    assignBtn.addEventListener('touchend', function(e) { e.preventDefault(); autoAssign(); });
 
     // 绑定重新分配按钮
     var regenBtn = document.getElementById('regenerateBtn');
     regenBtn.addEventListener('click', function(e) { e.preventDefault(); autoAssign(); });
-    regenBtn.addEventListener('touchend', function(e) { e.preventDefault(); autoAssign(); });
 
     // 显示已有计划
     if (weeklySel && Object.keys(weeklySel).length > 0) {
