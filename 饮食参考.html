@@ -30,21 +30,7 @@ h1 { font-size: 20px; text-align: center; padding: 12px 0 0; color: var(--primar
 .goal-val { font-size: 17px; font-weight: 800; }
 .goal-label { font-size: 10px; color: var(--sub); margin-top: 1px; }
 
-/* 星期按钮 */
-.weekday-bar { display: flex; gap: 4px; margin: 0 10px 8px; justify-content: center; flex-wrap: wrap; padding: 0 4px; }
-.weekday-btn {
-  flex: 1; min-width: 40px; max-width: 50px; padding: 8px 0;
-  border: 1.5px solid var(--border); border-radius: 10px;
-  background: #fff; font-size: 11px; font-weight: 700; color: var(--text);
-  cursor: pointer; text-align: center; transition: all .15s; user-select: none;
-  -webkit-tap-highlight-color: transparent;
-}
-.weekday-btn.active { background: var(--pull); color: #fff; border-color: var(--pull); font-weight: 800; }
-.weekday-btn.today { border-color: var(--primary); }
-.weekday-btn.today.active { border-color: var(--pull); }
-.weekday-btn:active { transform: scale(.94); }
-
-/* 食材选择卡片 */
+/* ===== 食材选择卡片 ===== */
 .ingredient-card {
   margin: 0 10px 10px; padding: 14px;
   background: #fff; border: 2px solid var(--primary); border-radius: 12px;
@@ -53,9 +39,60 @@ h1 { font-size: 20px; text-align: center; padding: 12px 0 0; color: var(--primar
 .ing-title { font-size: 16px; font-weight: 800; color: var(--primary); margin-bottom: 2px; }
 .ing-sub { font-size: 11px; color: var(--sub); margin-bottom: 12px; line-height: 1.5; }
 
-.ing-cat { margin-bottom: 8px; }
-.ing-cat-label { font-size: 11px; font-weight: 700; color: var(--sub); margin-bottom: 4px; padding-left: 2px; }
-.ing-chips { display: flex; flex-wrap: wrap; gap: 5px; }
+.ing-cat { margin-bottom: 10px; }
+.ing-cat-label {
+  font-size: 12px; font-weight: 800; color: var(--sub); margin-bottom: 4px;
+  padding-left: 2px; display: flex; align-items: center; gap: 6px;
+}
+.ing-cat-label .cat-icon { font-size: 16px; }
+
+/* 食材行 */
+.ing-rows { display: flex; flex-direction: column; gap: 3px; }
+.ing-row {
+  display: flex; align-items: center; gap: 5px;
+  padding: 5px 6px; border-radius: 8px;
+  background: var(--surface); border: 1px solid transparent;
+  transition: all .15s; flex-wrap: wrap;
+}
+.ing-row.has-stock { border-color: var(--border); background: #fff; }
+
+/* 选择chip */
+.ing-chip {
+  flex-shrink: 0; padding: 4px 10px; border-radius: 14px;
+  border: 1.5px solid var(--border); background: #fff;
+  font-size: 12px; font-weight: 600; color: var(--text);
+  cursor: pointer; user-select: none; transition: all .15s;
+  -webkit-tap-highlight-color: transparent;
+}
+.ing-chip:active { transform: scale(.95); }
+.ing-chip.selected { font-weight: 700; border-width: 2px; }
+.ing-chip.meat-chip.selected   { background: rgba(96,165,250,.10);  border-color: var(--pull); color: var(--pull); }
+.ing-chip.soy-chip.selected    { background: rgba(167,139,250,.10); border-color: var(--recovery); color: var(--recovery); }
+.ing-chip.veg-chip.selected    { background: rgba(74,222,128,.10);  border-color: var(--cardio); color: #166534; }
+.ing-chip.staple-chip.selected { background: rgba(245,158,11,.10);  border-color: var(--warn); color: #92400e; }
+
+/* 营养提示 */
+.ing-tip {
+  font-size: 10px; color: var(--sub); flex-shrink: 0;
+  display: none;
+}
+.ing-row.has-stock .ing-tip { display: inline; }
+
+/* 分量输入 */
+.ing-qty-wrap {
+  display: flex; align-items: center; gap: 2px;
+  font-size: 11px; color: var(--sub); margin-left: auto; flex-shrink: 0;
+}
+.ing-qty {
+  width: 56px; padding: 4px 2px; border: 1.5px solid var(--border);
+  border-radius: 6px; font-size: 12px; text-align: center;
+  background: #fff; color: var(--text); font-weight: 600;
+  -webkit-appearance: none; -moz-appearance: textfield;
+}
+.ing-qty::-webkit-inner-spin-button, .ing-qty::-webkit-outer-spin-button { -webkit-appearance: none; }
+.ing-qty:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 2px rgba(224,112,64,.15); }
+.ing-qty:disabled { opacity: .3; background: var(--surface); }
+.ing-qty-unit { font-size: 10px; color: var(--sub); }
 
 .auto-assign-btn {
   display: block; width: 100%; margin-top: 14px; padding: 12px;
@@ -63,13 +100,12 @@ h1 { font-size: 20px; text-align: center; padding: 12px 0 0; color: var(--primar
   color: #fff; border: none; border-radius: 12px;
   font-size: 15px; font-weight: 800; cursor: pointer;
   transition: all .15s; user-select: none;
-  -webkit-tap-highlight-color: transparent;
-  letter-spacing: 1px;
+  -webkit-tap-highlight-color: transparent; letter-spacing: 1px;
 }
 .auto-assign-btn:active { transform: scale(.97); opacity: .9; }
-.auto-assign-btn:disabled { opacity: .4; cursor: not-allowed; transform: none; }
+.auto-assign-btn:disabled { background: #e5e7eb; color: var(--sub); cursor: not-allowed; transform: none; letter-spacing: 0; }
 
-/* 周计划展示 */
+/* ===== 周计划展示 ===== */
 .weekly-plan-card {
   margin: 0 10px 12px; background: #fff;
   border: 1px solid var(--border); border-radius: 12px;
@@ -108,26 +144,33 @@ h1 { font-size: 20px; text-align: center; padding: 12px 0 0; color: var(--primar
 .wp-meal-staple { color: var(--warn); }
 .wp-meal-soy { color: var(--recovery); }
 
-/* 全天汇总 */
-/* food-chip 复用 */
-.food-chip {
-  display: inline-flex; align-items: center; justify-content: center;
-  padding: 5px 11px; border-radius: 16px; border: 1.5px solid var(--border);
-  background: var(--surface); font-size: 12px; font-weight: 600;
-  color: var(--text); cursor: pointer; user-select: none;
-  transition: all .15s; white-space: nowrap;
-  -webkit-tap-highlight-color: transparent;
+/* ===== 食材结余卡片 ===== */
+.surplus-card {
+  margin: 0 10px 16px; padding: 14px;
+  background: #fff; border: 2px solid var(--recovery); border-radius: 12px;
+  box-shadow: 0 1px 6px rgba(0,0,0,.04);
 }
-.food-chip:active { transform: scale(.95); background: #eee; }
-.food-chip.selected { font-weight: 700; border-width: 2px; }
-.food-chip.selected::before { content: '✓ '; font-size: 10px; }
-.food-chip.meat-chip.selected   { background: rgba(96,165,250,.10);  border-color: var(--pull); color: var(--pull); }
-.food-chip.soy-chip.selected    { background: rgba(167,139,250,.10); border-color: var(--recovery); color: var(--recovery); }
-.food-chip.veg-chip.selected    { background: rgba(74,222,128,.10);  border-color: var(--cardio); color: #166534; }
-.food-chip.staple-chip.selected { background: rgba(245,158,11,.10);  border-color: var(--warn); color: #92400e; }
-
-/* 全天汇总 (保留用于兼容) */
-.daily-summary-panel { display: none; }
+.surplus-title { font-size: 16px; font-weight: 800; color: #6d28d9; margin: 0 0 10px; text-align: center; }
+.surplus-cat { margin-bottom: 8px; }
+.surplus-cat-title { font-size: 13px; font-weight: 800; margin: 0 0 6px; padding-bottom: 4px; border-bottom: 1px solid var(--border); }
+.surplus-row {
+  display: flex; align-items: center; gap: 5px;
+  padding: 5px 0; border-bottom: 1px dashed rgba(0,0,0,.04); font-size: 12px;
+}
+.surplus-name { font-weight: 700; min-width: 70px; flex-shrink: 0; }
+.surplus-arrow { font-size: 10px; color: var(--sub); margin: 0 2px; }
+.surplus-val { font-weight: 600; text-align: right; min-width: 50px; flex-shrink: 0; }
+.surplus-val.bought { color: var(--sub); }
+.surplus-val.used { color: var(--pull); }
+.surplus-val.left { font-weight: 800; min-width: 55px; }
+.surplus-val.left-ok { color: var(--cardio); }
+.surplus-val.left-warn { color: var(--warn); }
+.surplus-val.left-zero { color: var(--danger); }
+.surplus-bar-wrap { flex: 1; min-width: 60px; height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; }
+.surplus-bar-fill { height: 100%; border-radius: 3px; transition: width .4s; }
+.surplus-bar-fill.bar-ok { background: var(--cardio); }
+.surplus-bar-fill.bar-warn { background: var(--warn); }
+.surplus-bar-fill.bar-zero { background: var(--danger); }
 
 /* 保存状态栏 */
 .save-status-bar {
@@ -147,28 +190,13 @@ h1 { font-size: 20px; text-align: center; padding: 12px 0 0; color: var(--primar
 }
 .save-status-icon { font-size: 15px; line-height: 1; }
 .save-status-time { font-size: 10px; color: #6b7280; margin-left: 4px; }
-.actions-row { text-align: center; margin: 2px 0 6px; }
-.save-btn {
-  padding: 8px 32px; background: #e5e7eb; color: #6b7280; border: 1px solid #d1d5db;
-  border-radius: 10px; font-size: 13px; font-weight: 600; cursor: default;
-  transition: all .15s; user-select: none;
-}
-
-/* 采购清单 */
-.shopping-list { margin: 0 10px 16px; background: #fff; border: 2px solid var(--cardio); border-radius: 12px; padding: 14px; }
-.shopping-title { font-size: 16px; font-weight: 800; color: #166534; margin: 0 0 10px; text-align: center; }
-.shop-cat-title { font-size: 13px; font-weight: 800; margin: 12px 0 6px; padding-bottom: 4px; border-bottom: 1px solid var(--border); }
-.shop-row { display: flex; justify-content: space-between; align-items: center; padding: 5px 0; border-bottom: 1px dashed rgba(0,0,0,.05); font-size: 12px; }
-.shop-name { font-weight: 700; flex: 1; min-width: 60px; }
-.shop-detail { font-size: 11px; color: var(--sub); white-space: nowrap; margin: 0 8px; }
-.shop-total { font-weight: 700; font-size: 12px; color: var(--primary); text-align: right; min-width: 55px; }
-.shop-empty { text-align: center; font-size: 12px; color: var(--sub); padding: 12px; }
 
 .footer { padding: 12px 0 8px; text-align: center; font-size: 11px; color: var(--sub); }
 
 @media(max-width:360px) {
   body { font-size: 13px; }
-  .food-chip { padding: 4px 9px; font-size: 11px; }
+  .ing-chip { padding: 3px 8px; font-size: 11px; }
+  .ing-qty { width: 48px; font-size: 11px; }
   .goal-val { font-size: 15px; }
 }
 </style>
@@ -184,7 +212,7 @@ h1 { font-size: 20px; text-align: center; padding: 12px 0 0; color: var(--primar
 </nav>
 
 <h1>一周饮食设置</h1>
-<div class="subtitle">设置入口 · 全天目标：<b style="color:var(--primary)">1700-2000 kcal</b> · 蛋白质 <b style="color:var(--pull)">&#8805;98g</b> · 碳水 <b style="color:var(--warn)">150-200g</b> · 脂肪 <b style="color:var(--cardio)">50-65g</b><br>选好本周买的食材 → 自动分配 → <a href="今日计划.html" style="color:var(--primary);font-weight:700">今日页面</a>查看当天安排</div>
+<div class="subtitle">设置入口 · 全天目标：<b style="color:var(--primary)">1700-2000 kcal</b> · 蛋白质 <b style="color:var(--pull)">≥98g</b> · 碳水 <b style="color:var(--warn)">150-200g</b> · 脂肪 <b style="color:var(--cardio)">50-65g</b><br>选好本周买的食材并填写分量 → 自动分配 → <a href="今日计划.html" style="color:var(--primary);font-weight:700">今日页面</a>查看当天安排</div>
 
 <div class="goal-card">
   <div class="goal-row">
@@ -198,9 +226,9 @@ h1 { font-size: 20px; text-align: center; padding: 12px 0 0; color: var(--primar
 <!-- 食材选择 -->
 <div class="ingredient-card" id="ingredientCard">
   <div class="ing-title">📦 本周买了什么？</div>
-  <div class="ing-sub">早餐固定：鸡蛋 + 牛奶 + 燕麦片。选好午晚餐食材后点「自动分配」，系统会安排好周一至周日。</div>
+  <div class="ing-sub">早餐固定：鸡蛋2个 + 牛奶250ml + 燕麦片50g（每天相同）。选好午晚餐食材、填好购买分量后点「自动分配」，系统会安排好周一至周日。</div>
   <div id="ingredientSelector"></div>
-  <button class="auto-assign-btn" id="autoAssignBtn" disabled>🔄 请先选食材</button>
+  <button class="auto-assign-btn" id="autoAssignBtn" disabled>请至少各选1样蛋白质、蔬菜、主食，并填写分量</button>
 </div>
 
 <!-- 周计划展示 -->
@@ -212,9 +240,10 @@ h1 { font-size: 20px; text-align: center; padding: 12px 0 0; color: var(--primar
   <div id="weeklyPlanGrid"></div>
 </div>
 
-<div class="daily-summary-panel" id="daySummary">
-  <div class="ds-title">全天汇总</div>
-  <div id="dsContent"></div>
+<!-- 食材结余 -->
+<div class="surplus-card" id="surplusCard" style="display:none">
+  <h2 class="surplus-title">📊 食材消耗 & 结余</h2>
+  <div id="surplusContent"></div>
 </div>
 
 <div class="save-status-bar" id="saveStatus">
@@ -223,12 +252,7 @@ h1 { font-size: 20px; text-align: center; padding: 12px 0 0; color: var(--primar
   <span class="save-status-time" id="saveStatusTime"></span>
 </div>
 
-<div class="shopping-list" id="shoppingList">
-  <h2 class="shopping-title">&#128722; 本周采购清单</h2>
-  <div id="shoppingContent"></div>
-</div>
-
-<div class="footer">减脂计划 · 饮食设置 v7.0 · 2026-06-30<br>食材选择 · 自动分配 · 采购清单智能单位 · <a href="今日计划.html" style="color:var(--primary)">今日页面</a>查看当天安排</div>
+<div class="footer">减脂计划 · 饮食设置 v8.0 · 2026-06-30<br>食材选择 + 分量标注 + 自动分配 + 结余追踪 · <a href="今日计划.html" style="color:var(--primary)">今日页面</a>查看当天安排</div>
 
 <nav class="bottom-nav">
   <a href="今日计划.html">今日</a>
@@ -242,57 +266,85 @@ h1 { font-size: 20px; text-align: center; padding: 12px 0 0; color: var(--primar
 (function() {
   'use strict';
 
+  // ========== 食材数据库（扩展版 v8.0） ==========
   var FOODS = {
-    '鸡蛋':         { cat:'meat', cal:144,pro:13,  carb:1.5, fat:9,   portion:100, unit:'g&#8776;2个', tip:'全蛋营养', meals:['breakfast','lunch','dinner'] },
-    '牛奶':         { cat:'meat', cal:54, pro:3,   carb:3.4, fat:3.2, portion:250, unit:'ml',         tip:'补钙·全脂', meals:['breakfast'] },
-    '无糖酸奶':     { cat:'meat', cal:63, pro:3.5, carb:4.5, fat:3.2, portion:200, unit:'ml',         tip:'补钙·益生菌', meals:['breakfast'] },
-    '鸡胸肉':       { cat:'meat', cal:133,pro:30,  carb:0,   fat:1.5, portion:150, unit:'g生重',       tip:'高蛋白低脂', meals:['lunch','dinner'] },
-    '瘦猪肉':       { cat:'meat', cal:143,pro:20,  carb:1,   fat:7,   portion:180, unit:'g生重',       tip:'里脊/后腿',  meals:['lunch','dinner'] },
-    '瘦牛肉':       { cat:'meat', cal:125,pro:22,  carb:0,   fat:4,   portion:180, unit:'g生重',       tip:'补铁最佳',   meals:['lunch','dinner'] },
-    '虾仁':         { cat:'meat', cal:99, pro:20,  carb:0,   fat:1,   portion:180, unit:'g生重',       tip:'几乎零脂肪', meals:['lunch','dinner'] },
-    '草鱼块':       { cat:'meat', cal:113,pro:18,  carb:0,   fat:4.5, portion:180, unit:'g',           tip:'清蒸最佳',   meals:['lunch','dinner'] },
-    '鸭腿':         { cat:'meat', cal:135,pro:18,  carb:0,   fat:6.5, portion:180, unit:'g生重',       tip:'去皮·焖/炖',meals:['lunch','dinner'] },
-    '无糖豆浆':     { cat:'soy',  cal:31, pro:3,   carb:1.2, fat:1.6, portion:250, unit:'ml',         tip:'无糖·低热量',meals:['breakfast'] },
-    '燕麦片':       { cat:'staple',cal:377,pro:13.5,carb:66, fat:6.5, portion:50, unit:'g干重',       tip:'高纤维饱腹', meals:['breakfast'] },
-    '嫩豆腐':       { cat:'soy',  cal:62, pro:6.5, carb:2,   fat:3.5, portion:200, unit:'g',           tip:'做汤/凉拌',   meals:['lunch','dinner'] },
-    '老豆腐':       { cat:'soy',  cal:81, pro:8.1, carb:2.8, fat:3.7, portion:180, unit:'g',           tip:'炒/煎不散',   meals:['lunch','dinner'] },
-    '豆干':         { cat:'soy',  cal:142,pro:16.2,carb:2.8, fat:7,   portion:100, unit:'g',           tip:'蛋白密度高',  meals:['lunch','dinner'] },
-    '千张':         { cat:'soy',  cal:260,pro:24.5,carb:5.5, fat:16,  portion:70,  unit:'g',           tip:'热量偏高',    meals:['lunch','dinner'] },
-    '番茄':     { cat:'veg',cal:20, pro:0.9,carb:4,  fat:0.2,portion:200,unit:'g', tip:'炒蛋/煮汤',     meals:['lunch','dinner'] },
-    '丝瓜':     { cat:'veg',cal:20, pro:1,  carb:3,  fat:0.2,portion:250,unit:'g', tip:'当季·清炒',     meals:['lunch','dinner'] },
-    '空心菜':   { cat:'veg',cal:23, pro:2.2,carb:2.2,fat:0.3,portion:250,unit:'g', tip:'株洲天天有',    meals:['lunch','dinner'] },
-    '苋菜':     { cat:'veg',cal:25, pro:2.8,carb:3,  fat:0.3,portion:250,unit:'g', tip:'红苋菜·补铁',   meals:['lunch','dinner'] },
-    '茄子':     { cat:'veg',cal:25, pro:1.1,carb:4.9,fat:0.2,portion:250,unit:'g', tip:'少油蒸拌',      meals:['lunch','dinner'] },
-    '豆角':     { cat:'veg',cal:34, pro:2.5,carb:6,  fat:0.3,portion:200,unit:'g', tip:'务必炒熟',      meals:['lunch','dinner'] },
-    '黄瓜':     { cat:'veg',cal:16, pro:0.8,carb:2.9,fat:0.2,portion:250,unit:'g', tip:'生吃凉拌',      meals:['lunch','dinner'] },
-    '冬瓜':     { cat:'veg',cal:12, pro:0.4,carb:2.6,fat:0.1,portion:300,unit:'g', tip:'热量最低',      meals:['lunch','dinner'] },
-    '韭菜':     { cat:'veg',cal:26, pro:2.4,carb:3.2,fat:0.4,portion:150,unit:'g', tip:'炒蛋经典',      meals:['lunch','dinner'] },
-    '蘑菇类':   { cat:'veg',cal:25, pro:2.5,carb:2,  fat:0.3,portion:200,unit:'g', tip:'热量极低',      meals:['lunch','dinner'] },
-    '玉米':       { cat:'staple',cal:112,pro:4,   carb:22.8,fat:1.2,portion:200,unit:'g&#8776;1根', tip:'优质粗粮', meals:['breakfast','lunch','dinner'] },
-    '红薯':       { cat:'staple',cal:102,pro:1.6, carb:23.1,fat:0.2,portion:200,unit:'g生重', tip:'慢碳水',     meals:['lunch','dinner'] },
-    '全麦面包':   { cat:'staple',cal:265,pro:10.5,carb:47,  fat:4,  portion:80, unit:'g&#8776;2~3片',tip:'膳食纤维', meals:['breakfast'] },
-    '南瓜':       { cat:'staple',cal:26, pro:1,   carb:6,   fat:0.1,portion:300,unit:'g',     tip:'碳水偏低',   meals:['lunch','dinner'] },
-    '杂粮饭':     { cat:'staple',cal:140,pro:3.5, carb:28,  fat:0.8,portion:150,unit:'g熟重', tip:'大米小米糙米', meals:['lunch','dinner'] },
-    '米饭':       { cat:'staple',cal:116,pro:2.6, carb:25.9,fat:0.3,portion:150,unit:'g熟重', tip:'优先杂粮饭', meals:['lunch','dinner'] },
-    '土豆':       { cat:'staple',cal:81, pro:2,   carb:17.5,fat:0.2,portion:250,unit:'g',     tip:'蒸煮最好',   meals:['lunch','dinner'] },
+    // --- 蛋白质 ---
+    '鸡蛋':         { cat:'meat', cal:144,pro:13,  carb:1.5, fat:9,   portion:100, unit:'g≈2个', tip:'全蛋营养', meals:['breakfast','lunch','dinner'] },
+    '牛奶':         { cat:'meat', cal:54, pro:3,   carb:3.4, fat:3.2, portion:250, unit:'ml',     tip:'补钙·全脂', meals:['breakfast'] },
+    '无糖酸奶':     { cat:'meat', cal:63, pro:3.5, carb:4.5, fat:3.2, portion:200, unit:'ml',     tip:'补钙·益生菌', meals:['breakfast'] },
+    '鸡胸肉':       { cat:'meat', cal:133,pro:30,  carb:0,   fat:1.5, portion:150, unit:'g生重',  tip:'高蛋白低脂', meals:['lunch','dinner'] },
+    '瘦猪肉':       { cat:'meat', cal:143,pro:20,  carb:1,   fat:7,   portion:180, unit:'g生重',  tip:'里脊/后腿',  meals:['lunch','dinner'] },
+    '瘦牛肉':       { cat:'meat', cal:125,pro:22,  carb:0,   fat:4,   portion:180, unit:'g生重',  tip:'补铁最佳·炒', meals:['lunch','dinner'] },
+    '虾仁':         { cat:'meat', cal:99, pro:20,  carb:0,   fat:1,   portion:180, unit:'g生重',  tip:'几乎零脂肪', meals:['lunch','dinner'] },
+    '草鱼块':       { cat:'meat', cal:113,pro:18,  carb:0,   fat:4.5, portion:180, unit:'g',      tip:'清蒸最佳',   meals:['lunch','dinner'] },
+    '鸭腿':         { cat:'meat', cal:135,pro:18,  carb:0,   fat:6.5, portion:180, unit:'g生重',  tip:'去皮·焖/炖', meals:['lunch','dinner'] },
+    '龙利鱼':       { cat:'meat', cal:88, pro:18,  carb:0,   fat:1.5, portion:200, unit:'g',      tip:'便宜无刺·清蒸', meals:['lunch','dinner'] },
+    '鸭胸':         { cat:'meat', cal:155,pro:15,  carb:0.5, fat:10,  portion:180, unit:'g生重',  tip:'去皮·稍肥', meals:['lunch','dinner'] },
+    '鲈鱼':         { cat:'meat', cal:105,pro:18.6,carb:0,   fat:3.4, portion:200, unit:'g',      tip:'清蒸·肉嫩', meals:['lunch','dinner'] },
+    '羊肉':         { cat:'meat', cal:118,pro:19,  carb:0,   fat:4.5, portion:180, unit:'g生重',  tip:'选瘦·补铁', meals:['lunch','dinner'] },
+    '鸡腿(去皮)':   { cat:'meat', cal:119,pro:20,  carb:0,   fat:4,   portion:200, unit:'g生重',  tip:'比鸡胸嫩',   meals:['lunch','dinner'] },
+
+    // --- 豆制品 ---
+    '无糖豆浆':     { cat:'soy',  cal:31, pro:3,   carb:1.2, fat:1.6, portion:250, unit:'ml',     tip:'无糖·低热量', meals:['breakfast'] },
+    '嫩豆腐':       { cat:'soy',  cal:62, pro:6.5, carb:2,   fat:3.5, portion:200, unit:'g',      tip:'做汤/凉拌',   meals:['lunch','dinner'] },
+    '老豆腐':       { cat:'soy',  cal:81, pro:8.1, carb:2.8, fat:3.7, portion:180, unit:'g',      tip:'炒/煎不散',   meals:['lunch','dinner'] },
+    '豆干':         { cat:'soy',  cal:142,pro:16.2,carb:2.8, fat:7,   portion:100, unit:'g',      tip:'蛋白密度高',  meals:['lunch','dinner'] },
+    '千张':         { cat:'soy',  cal:260,pro:24.5,carb:5.5, fat:16,  portion:70,  unit:'g',      tip:'热量偏高',    meals:['lunch','dinner'] },
+    '毛豆':         { cat:'soy',  cal:131,pro:13.1,carb:10,  fat:5,   portion:100, unit:'g',      tip:'植物蛋白高',  meals:['lunch','dinner'] },
+    '素鸡':         { cat:'soy',  cal:165,pro:17,  carb:5,   fat:9,   portion:80,  unit:'g',      tip:'口感像肉',    meals:['lunch','dinner'] },
+
+    // --- 蔬菜 ---
+    '番茄':         { cat:'veg',cal:20, pro:0.9,carb:4,   fat:0.2,portion:200,unit:'g', tip:'炒蛋/煮汤',     meals:['lunch','dinner'] },
+    '丝瓜':         { cat:'veg',cal:20, pro:1,  carb:3,   fat:0.2,portion:250,unit:'g', tip:'当季·清炒',     meals:['lunch','dinner'] },
+    '空心菜':       { cat:'veg',cal:23, pro:2.2,carb:2.2, fat:0.3,portion:250,unit:'g', tip:'株洲天天有',    meals:['lunch','dinner'] },
+    '苋菜':         { cat:'veg',cal:25, pro:2.8,carb:3,   fat:0.3,portion:250,unit:'g', tip:'红苋菜·补铁',   meals:['lunch','dinner'] },
+    '茄子':         { cat:'veg',cal:25, pro:1.1,carb:4.9, fat:0.2,portion:250,unit:'g', tip:'少油蒸拌',      meals:['lunch','dinner'] },
+    '豆角':         { cat:'veg',cal:34, pro:2.5,carb:6,   fat:0.3,portion:200,unit:'g', tip:'务必炒熟',      meals:['lunch','dinner'] },
+    '黄瓜':         { cat:'veg',cal:16, pro:0.8,carb:2.9, fat:0.2,portion:250,unit:'g', tip:'生吃凉拌',      meals:['lunch','dinner'] },
+    '冬瓜':         { cat:'veg',cal:12, pro:0.4,carb:2.6, fat:0.1,portion:300,unit:'g', tip:'热量最低',      meals:['lunch','dinner'] },
+    '韭菜':         { cat:'veg',cal:26, pro:2.4,carb:3.2, fat:0.4,portion:150,unit:'g', tip:'炒蛋经典',      meals:['lunch','dinner'] },
+    '蘑菇类':       { cat:'veg',cal:25, pro:2.5,carb:2,   fat:0.3,portion:200,unit:'g', tip:'热量极低',      meals:['lunch','dinner'] },
+    '西兰花':       { cat:'veg',cal:34, pro:2.8,carb:4,   fat:0.4,portion:200,unit:'g', tip:'健身标配',      meals:['lunch','dinner'] },
+    '白菜':         { cat:'veg',cal:13, pro:1.5,carb:2,   fat:0.2,portion:300,unit:'g', tip:'便宜量足',      meals:['lunch','dinner'] },
+    '芹菜':         { cat:'veg',cal:14, pro:0.8,carb:2.5, fat:0.1,portion:200,unit:'g', tip:'炒牛肉绝配',    meals:['lunch','dinner'] },
+    '菠菜':         { cat:'veg',cal:28, pro:2.6,carb:2.8, fat:0.3,portion:200,unit:'g', tip:'补铁补叶酸',    meals:['lunch','dinner'] },
+    '生菜':         { cat:'veg',cal:15, pro:1.4,carb:2,   fat:0.2,portion:250,unit:'g', tip:'生吃凉拌',      meals:['lunch','dinner'] },
+    '秋葵':         { cat:'veg',cal:31, pro:2,  carb:4,   fat:0.2,portion:150,unit:'g', tip:'白灼最佳',      meals:['lunch','dinner'] },
+    '荷兰豆':       { cat:'veg',cal:42, pro:4.5,carb:4,   fat:0.4,portion:150,unit:'g', tip:'蛋白较高',      meals:['lunch','dinner'] },
+
+    // --- 主食 ---
+    '燕麦片':       { cat:'staple',cal:377,pro:13.5,carb:66, fat:6.5, portion:50, unit:'g干重',   tip:'高纤维饱腹', meals:['breakfast'] },
+    '玉米':         { cat:'staple',cal:112,pro:4,   carb:22.8,fat:1.2, portion:200, unit:'g≈1根', tip:'优质粗粮', meals:['breakfast','lunch','dinner'] },
+    '红薯':         { cat:'staple',cal:102,pro:1.6, carb:23.1,fat:0.2, portion:200, unit:'g生重', tip:'慢碳水',     meals:['lunch','dinner'] },
+    '全麦面包':     { cat:'staple',cal:265,pro:10.5,carb:47,  fat:4,   portion:80, unit:'g≈2~3片',tip:'膳食纤维', meals:['breakfast'] },
+    '南瓜':         { cat:'staple',cal:26, pro:1,   carb:6,   fat:0.1, portion:300, unit:'g',     tip:'碳水偏低',   meals:['lunch','dinner'] },
+    '杂粮饭':       { cat:'staple',cal:140,pro:3.5, carb:28,  fat:0.8, portion:150, unit:'g熟重', tip:'大米小米糙米', meals:['lunch','dinner'] },
+    '米饭':         { cat:'staple',cal:116,pro:2.6, carb:25.9,fat:0.3, portion:150, unit:'g熟重', tip:'优先杂粮饭', meals:['lunch','dinner'] },
+    '土豆':         { cat:'staple',cal:81, pro:2,   carb:17.5,fat:0.2, portion:250, unit:'g',     tip:'蒸煮最好',   meals:['lunch','dinner'] },
+    '紫薯':         { cat:'staple',cal:82, pro:2.5, carb:17,  fat:0.2, portion:200, unit:'g生重', tip:'花青素·慢碳水', meals:['lunch','dinner'] },
+    '山药':         { cat:'staple',cal:57, pro:1.9, carb:12.4,fat:0.2, portion:200, unit:'g',     tip:'养胃·蒸着吃', meals:['lunch','dinner'] },
+    '芋头':         { cat:'staple',cal:75, pro:2.2, carb:16,  fat:0.2, portion:200, unit:'g',     tip:'替代部分主食', meals:['lunch','dinner'] },
+    '荞麦面':       { cat:'staple',cal:350,pro:11,  carb:66,  fat:2.5, portion:80, unit:'g干重',  tip:'低GI·饱腹', meals:['lunch','dinner'] },
   };
 
-  var CAT_ICONS = { meat:'&#129385;', soy:'&#129656;', veg:'&#129388;', staple:'&#127834;' };
+  var CAT_COLORS = { meat:'var(--pull)', soy:'var(--recovery)', veg:'var(--cardio)', staple:'var(--warn)' };
+  var CAT_ICONS = { meat:'🥩', soy:'🫘', veg:'🥬', staple:'🍚' };
+  var CAT_LABEL = { meat:'蛋白质', soy:'豆制品（可选）', veg:'蔬菜', staple:'主食' };
+  var CAT_HINT = { meat:'至少选1样', soy:'可不选', veg:'至少选1样', staple:'至少选1样' };
+  var CAT_ORDER = ['meat','veg','staple','soy'];
   var MEALS = ['breakfast','lunch','dinner'];
-  var MEAL_LABELS = { breakfast:'早餐', lunch:'午餐', dinner:'晚餐' };
-  var CAT_ORDER = ['meat','soy','veg','staple'];
-  var CAT_LABELS = { meat:'&#129385; 蛋白质', soy:'&#129656; 豆制品', veg:'&#129388; 蔬菜', staple:'&#127834; 主食' };
   var DAY_IDS = ['mon','tue','wed','thu','fri','sat','sun'];
   var DAY_ZH  = ['周一','周二','周三','周四','周五','周六','周日'];
 
   // ========== 全局状态 ==========
   var weeklySel = {};
-  var selectedIngredients = { meats:[], veggies:[], staples:[], soys:[] };
+  var ingredientStock = {};  // {name: {bought, used}}
   var shuffleSeed = 0;
 
-  // ========== 计算 ==========
+  // ========== 分量计算 ==========
   function calcPortion(food, meal) {
     var f = FOODS[food];
+    if (!f) return { g:150 };
     if (f.cat === 'meat') {
       if (food === '鸡蛋') return { g:100, note:'2个蛋≈26g蛋白' };
       if (food === '牛奶') return { g:250, note:'全脂牛奶≈135kcal' };
@@ -306,6 +358,8 @@ h1 { font-size: 20px; text-align: center; padding: 12px 0 0; color: var(--primar
       if (food === '无糖豆浆') return { g:250, note:'无糖·低热量' };
       if (food === '千张') return { g:70, note:'热量偏高·配蔬菜' };
       if (food === '豆干') return { g:100 };
+      if (food === '素鸡') return { g:80 };
+      if (food === '毛豆') return { g:100 };
       return { g:f.portion };
     }
     if (f.cat === 'veg') return { g:f.portion };
@@ -313,6 +367,7 @@ h1 { font-size: 20px; text-align: center; padding: 12px 0 0; color: var(--primar
       if (food === '燕麦片') return { g:50, note:'50g干重≈一碗粥' };
       if (food === '全麦面包') return { g:80, note:'≈2~3片' };
       if (food === '南瓜') return { g:300, note:'碳水偏低·搭配其他' };
+      if (food === '荞麦面') return { g:80, note:'80g干重≈280kcal' };
       var calTarget = (meal === 'lunch') ? 280 : 230;
       var raw = Math.round(calTarget / f.cal * 100 / 5) * 5;
       if (raw > 350) raw = 350; if (raw < 50) raw = 50;
@@ -326,96 +381,200 @@ h1 { font-size: 20px; text-align: center; padding: 12px 0 0; color: var(--primar
     return { cal:Math.round(f.cal*r), pro:Number((f.pro*r).toFixed(1)), carb:Number((f.carb*r).toFixed(1)), fat:Number((f.fat*r).toFixed(1)) };
   }
 
-  // ========== 食材选择器 ==========
+  // ========== 食材选择器渲染 ==========
   function renderIngredientSelector() {
     var wrap = document.getElementById('ingredientSelector');
-    var cats = ['meat','veg','staple','soy'];
-    var catLabelsI = { meat:'🥩 蛋白质（买了哪几样？）', veg:'🥬 蔬菜（买了哪几样？）', staple:'🍚 主食（买了哪几样？）', soy:'🫘 豆制品（可选）' };
-    var catHints = { meat:'至少选1样', veg:'至少选1样', staple:'至少选1样', soy:'可不选' };
+    if (!wrap) return;
 
     var html = '';
-    cats.forEach(function(cat) {
-      html += '<div class="ing-cat"><div class="ing-cat-label">'+catLabelsI[cat]+' <span style="font-weight:400;font-size:10px">'+catHints[cat]+'</span></div><div class="ing-chips" id="ing_'+cat+'"></div></div>';
+    CAT_ORDER.forEach(function(cat) {
+      var catClass = cat+'-chip';
+      html += '<div class="ing-cat">';
+      html += '<div class="ing-cat-label">';
+      html += '<span class="cat-icon">'+CAT_ICONS[cat]+'</span>';
+      html += CAT_LABEL[cat];
+      html += ' <span style="font-weight:400;font-size:10px;color:var(--sub)">'+CAT_HINT[cat]+'</span>';
+      html += '</div>';
+      html += '<div class="ing-rows" id="ing_'+cat+'"></div>';
+      html += '</div>';
     });
     wrap.innerHTML = html;
 
-    // 填充chips
-    cats.forEach(function(cat) {
+    // 填充每个分类的食材行
+    CAT_ORDER.forEach(function(cat) {
       var container = document.getElementById('ing_'+cat);
+      if (!container) return;
+
+      // 遍历FOODS，按cat筛选午晚餐可用食材
+      var foods = [];
       Object.keys(FOODS).forEach(function(name) {
         var f = FOODS[name];
         if (f.cat !== cat) return;
-        // 过滤：食材选择器只显示午晚餐可用食材（跳过纯早餐食材如牛奶/全麦面包等）
-        var hasLunchDinner = f.meals && (f.meals.indexOf('lunch')>=0 || f.meals.indexOf('dinner')>=0);
-        if (!hasLunchDinner) return;
+        var hasLD = f.meals && (f.meals.indexOf('lunch')>=0 || f.meals.indexOf('dinner')>=0);
+        if (!hasLD) return;
+        foods.push(name);
+      });
+
+      foods.forEach(function(name) {
+        var f = FOODS[name];
+        var stock = ingredientStock[name];
+        var hasStock = stock && stock.bought > 0;
+        var selected = !!hasStock;
+
+        var row = document.createElement('div');
+        row.className = 'ing-row' + (hasStock ? ' has-stock' : '');
+        row.setAttribute('data-food', name);
+        row.setAttribute('data-cat', cat);
+
+        // Chip按钮
         var chip = document.createElement('button');
-        chip.className = 'food-chip '+cat+'-chip';
-        chip.textContent = name;
+        chip.className = 'ing-chip '+cat+'-chip' + (selected ? ' selected' : '');
+        chip.textContent = CAT_ICONS[cat] + ' ' + name;
         chip.setAttribute('data-food', name);
-        (function(n,c) {
-          chip.addEventListener('click', function(e){ e.preventDefault(); toggleIngredient(n,c); });
-          chip.addEventListener('touchend', function(e){ e.preventDefault(); toggleIngredient(n,c); });
-        })(name, cat);
-        container.appendChild(chip);
+        chip.setAttribute('data-cat', cat);
+
+        // 营养提示
+        var tip = document.createElement('span');
+        tip.className = 'ing-tip';
+        tip.textContent = f.tip;
+
+        // 分量输入
+        var qtyWrap = document.createElement('span');
+        qtyWrap.className = 'ing-qty-wrap';
+        var qtyInput = document.createElement('input');
+        qtyInput.type = 'number';
+        qtyInput.className = 'ing-qty';
+        qtyInput.setAttribute('data-food', name);
+        qtyInput.min = '0';
+        qtyInput.step = '50';
+        qtyInput.value = stock ? stock.bought : '';
+        qtyInput.placeholder = '0';
+        qtyInput.disabled = !selected;
+        qtyInput.inputMode = 'numeric';
+
+        qtyWrap.appendChild(qtyInput);
+        var unitSpan = document.createElement('span');
+        unitSpan.className = 'ing-qty-unit';
+        unitSpan.textContent = 'g';
+        qtyWrap.appendChild(unitSpan);
+
+        row.appendChild(chip);
+        row.appendChild(tip);
+        row.appendChild(qtyWrap);
+        container.appendChild(row);
+
+        // 事件绑定
+        (function(n, c, r, ci, qi) {
+          ci.addEventListener('click', function(e) { e.preventDefault(); toggleIngredient(n, c); });
+          ci.addEventListener('touchend', function(e) { e.preventDefault(); toggleIngredient(n, c); });
+          qi.addEventListener('input', function() { updateStockQty(n); });
+          qi.addEventListener('change', function() { updateStockQty(n); });
+        })(name, cat, row, chip, qtyInput);
       });
     });
-
-    refreshIngChips();
   }
 
   function toggleIngredient(name, cat) {
-    var arr;
-    if (cat === 'meat') arr = selectedIngredients.meats;
-    else if (cat === 'veg') arr = selectedIngredients.veggies;
-    else if (cat === 'staple') arr = selectedIngredients.staples;
-    else arr = selectedIngredients.soys;
-
-    var idx = arr.indexOf(name);
-    if (idx >= 0) { arr.splice(idx, 1); }
-    else { arr.push(name); }
-
-    refreshIngChips();
+    var stock = ingredientStock[name];
+    if (stock && stock.bought > 0) {
+      // 已选 → 取消选择（清零）
+      delete ingredientStock[name];
+    } else {
+      // 未选 → 选中（默认分量待填写）
+      ingredientStock[name] = { bought: 0, used: 0 };
+    }
+    refreshIngredientUI();
     updateAssignBtn();
   }
 
-  function refreshIngChips() {
-    ['meat','veg','staple','soy'].forEach(function(cat) {
-      var container = document.getElementById('ing_'+cat);
-      if (!container) return;
-      var chips = container.querySelectorAll('.food-chip');
-      chips.forEach(function(c) {
-        var selArr;
-        if (cat==='meat') selArr=selectedIngredients.meats;
-        else if (cat==='veg') selArr=selectedIngredients.veggies;
-        else if (cat==='staple') selArr=selectedIngredients.staples;
-        else selArr=selectedIngredients.soys;
-        c.classList.toggle('selected', selArr.indexOf(c.getAttribute('data-food')) >= 0);
-      });
+  function updateStockQty(name) {
+    var input = document.querySelector('.ing-qty[data-food="'+name+'"]');
+    if (!input) return;
+    var val = parseInt(input.value) || 0;
+    if (val > 0) {
+      ingredientStock[name] = { bought: val, used: ingredientStock[name] ? ingredientStock[name].used || 0 : 0 };
+    } else {
+      // 数量为0 → 取消选择
+      delete ingredientStock[name];
+      refreshIngredientUI();
+    }
+    updateAssignBtn();
+  }
+
+  function refreshIngredientUI() {
+    // 遍历所有行，更新chip选中状态和qty启用状态
+    var rows = document.querySelectorAll('.ing-row');
+    rows.forEach(function(row) {
+      var name = row.getAttribute('data-food');
+      var cat = row.getAttribute('data-cat');
+      var stock = ingredientStock[name];
+      var hasStock = stock && stock.bought > 0;
+
+      row.classList.toggle('has-stock', hasStock);
+
+      var chip = row.querySelector('.ing-chip');
+      if (chip) chip.classList.toggle('selected', hasStock);
+
+      var qty = row.querySelector('.ing-qty');
+      if (qty) {
+        qty.disabled = !hasStock;
+        if (!hasStock) qty.value = '';
+      }
     });
   }
 
   function updateAssignBtn() {
     var btn = document.getElementById('autoAssignBtn');
-    var can = selectedIngredients.meats.length > 0 && selectedIngredients.veggies.length > 0 && selectedIngredients.staples.length > 0;
+    if (!btn) return;
+
+    // 检查各分类是否有已选且有分量的食材
+    var hasMeat = false, hasVeg = false, hasStaple = false;
+    Object.keys(ingredientStock).forEach(function(name) {
+      var f = FOODS[name];
+      if (!f || !ingredientStock[name] || ingredientStock[name].bought <= 0) return;
+      if (f.cat === 'meat') hasMeat = true;
+      if (f.cat === 'veg') hasVeg = true;
+      if (f.cat === 'staple') hasStaple = true;
+    });
+
+    var can = hasMeat && hasVeg && hasStaple;
     btn.disabled = !can;
-    btn.textContent = can ? '🔄 自动分配一周' : '请至少各选1样蛋白质、蔬菜、主食';
+    if (can) {
+      btn.textContent = '🔄 自动分配一周';
+    } else {
+      var missing = [];
+      if (!hasMeat) missing.push('蛋白质');
+      if (!hasVeg) missing.push('蔬菜');
+      if (!hasStaple) missing.push('主食');
+      btn.textContent = '请选择' + missing.join('、') + '并填写分量';
+    }
   }
 
   // ========== 自动分配 ==========
   function autoAssign() {
-    var meats = selectedIngredients.meats;
-    var veggies = selectedIngredients.veggies;
-    var staples = selectedIngredients.staples;
-    var soys = selectedIngredients.soys;
+    // 收集已选食材
+    var meats = [], veggies = [], staples = [], soys = [];
+    Object.keys(ingredientStock).forEach(function(name) {
+      var f = FOODS[name];
+      if (!f || ingredientStock[name].bought <= 0) return;
+      if (f.cat === 'meat') meats.push(name);
+      if (f.cat === 'veg') veggies.push(name);
+      if (f.cat === 'staple') staples.push(name);
+      if (f.cat === 'soy') soys.push(name);
+    });
+
     if (meats.length===0 || veggies.length===0 || staples.length===0) return;
 
-    // 14个餐次：Mon_lunch, Mon_dinner, Tue_lunch, Tue_dinner, ...
-    // 用shuffleSeed做偏移实现"重新分配"变化
+    // 重置所有食材的used计数
+    Object.keys(ingredientStock).forEach(function(name) {
+      ingredientStock[name].used = 0;
+    });
+
     var off = shuffleSeed;
 
     weeklySel = {};
     DAY_IDS.forEach(function(dayId, d) {
-      // 蛋白质：交替分配，确保同一天午晚餐不同（当≥2样时）
+      // 蛋白质：交替分配
       var luMeat = meats[(d*2 + off) % meats.length];
       var diMeat = meats[(d*2 + 1 + off) % meats.length];
 
@@ -429,7 +588,7 @@ h1 { font-size: 20px; text-align: center; padding: 12px 0 0; color: var(--primar
       var diVeg2 = veggies[(vi+1) % veggies.length];
       var diVegs = diVeg1===diVeg2 ? [diVeg1] : [diVeg1, diVeg2];
 
-      // 主食：午晚错开
+      // 主食：午晚不同
       var luStaple = staples[(d + off) % staples.length];
       var diStaple = staples[(d + 1 + off) % staples.length];
 
@@ -444,13 +603,29 @@ h1 { font-size: 20px; text-align: center; padding: 12px 0 0; color: var(--primar
         lunch:     {meat: luMeat, soy: null, veg: luVegs, staple: luStaple},
         dinner:    {meat: diMeat, soy: diSoy, veg: diVegs, staple: diStaple}
       };
+
+      // 累计消耗量
+      addUsage(luMeat, 'lunch');
+      addUsage(diMeat, 'dinner');
+      luVegs.forEach(function(v) { addUsage(v, 'lunch'); });
+      diVegs.forEach(function(v) { addUsage(v, 'dinner'); });
+      addUsage(luStaple, 'lunch');
+      addUsage(diStaple, 'dinner');
+      if (diSoy) addUsage(diSoy, 'dinner');
     });
 
     shuffleSeed++;
     localStorage.setItem('jf_weekly_plan_v3', JSON.stringify(weeklySel));
+    localStorage.setItem('jf_ingredient_stock', JSON.stringify(ingredientStock));
     renderWeeklyPlan();
-    renderShopList();
+    renderSurplus();
     updateSaveStatus();
+  }
+
+  function addUsage(name, meal) {
+    if (!ingredientStock[name]) return;
+    var p = calcPortion(name, meal);
+    ingredientStock[name].used = (ingredientStock[name].used || 0) + p.g;
   }
 
   // ========== 周计划展示 ==========
@@ -459,9 +634,8 @@ h1 { font-size: 20px; text-align: center; padding: 12px 0 0; color: var(--primar
     var grid = document.getElementById('weeklyPlanGrid');
     if (!card || !grid) return;
 
-    var hasData = false;
-    DAY_IDS.forEach(function(d) {
-      if (weeklySel[d] && weeklySel[d].lunch && weeklySel[d].lunch.meat) hasData = true;
+    var hasData = DAY_IDS.some(function(d) {
+      return weeklySel[d] && weeklySel[d].lunch && weeklySel[d].lunch.meat;
     });
 
     if (!hasData) { card.style.display = 'none'; return; }
@@ -472,32 +646,34 @@ h1 { font-size: 20px; text-align: center; padding: 12px 0 0; color: var(--primar
       var s = weeklySel[dayId];
       if (!s) return;
 
-      // 午餐
       var luParts = [];
       if (s.lunch && s.lunch.meat) {
         var luP = calcPortion(s.lunch.meat, 'lunch');
-        luParts.push('<span class="wp-meal-pro">'+s.lunch.meat+' '+luP.g+FOODS[s.lunch.meat].unit+'</span>');
+        var u = FOODS[s.lunch.meat] ? FOODS[s.lunch.meat].unit : 'g';
+        luParts.push('<span class="wp-meal-pro">'+s.lunch.meat+' '+luP.g+u+'</span>');
       }
       if (s.lunch && s.lunch.veg && s.lunch.veg.length>0) {
         luParts.push('<span>'+s.lunch.veg.map(function(v){ var p=calcPortion(v,'lunch'); return v+p.g+'g'; }).join(' ')+'</span>');
       }
       if (s.lunch && s.lunch.staple) {
         var sp = calcPortion(s.lunch.staple, 'lunch');
-        luParts.push('<span class="wp-meal-staple">'+s.lunch.staple+' '+sp.g+FOODS[s.lunch.staple].unit+'</span>');
+        var su = FOODS[s.lunch.staple] ? FOODS[s.lunch.staple].unit : 'g';
+        luParts.push('<span class="wp-meal-staple">'+s.lunch.staple+' '+sp.g+su+'</span>');
       }
 
-      // 晚餐
       var diParts = [];
       if (s.dinner && s.dinner.meat) {
         var diP = calcPortion(s.dinner.meat, 'dinner');
-        diParts.push('<span class="wp-meal-pro">'+s.dinner.meat+' '+diP.g+FOODS[s.dinner.meat].unit+'</span>');
+        var du = FOODS[s.dinner.meat] ? FOODS[s.dinner.meat].unit : 'g';
+        diParts.push('<span class="wp-meal-pro">'+s.dinner.meat+' '+diP.g+du+'</span>');
       }
       if (s.dinner && s.dinner.veg && s.dinner.veg.length>0) {
         diParts.push('<span>'+s.dinner.veg.map(function(v){ var p=calcPortion(v,'dinner'); return v+p.g+'g'; }).join(' ')+'</span>');
       }
       if (s.dinner && s.dinner.staple) {
         var sp2 = calcPortion(s.dinner.staple, 'dinner');
-        diParts.push('<span class="wp-meal-staple">'+s.dinner.staple+' '+sp2.g+FOODS[s.dinner.staple].unit+'</span>');
+        var su2 = FOODS[s.dinner.staple] ? FOODS[s.dinner.staple].unit : 'g';
+        diParts.push('<span class="wp-meal-staple">'+s.dinner.staple+' '+sp2.g+su2+'</span>');
       }
       if (s.dinner && s.dinner.soy) {
         var syp = calcPortion(s.dinner.soy, 'dinner');
@@ -513,17 +689,94 @@ h1 { font-size: 20px; text-align: center; padding: 12px 0 0; color: var(--primar
       '</div>';
     });
 
-    // 早餐固定提示
     html += '<div style="padding:8px 14px;font-size:11px;color:var(--sub);background:rgba(245,158,11,.04);border-top:1px dashed var(--border)">'+
       '🌅 早餐固定：鸡蛋2个 + 牛奶250ml + 燕麦片50g（每天相同）</div>';
 
     grid.innerHTML = html;
   }
 
-  // ========== 从已保存计划提取食材预填选择器 ==========
+  // ========== 食材结余展示 ==========
+  function renderSurplus() {
+    var card = document.getElementById('surplusCard');
+    var content = document.getElementById('surplusContent');
+    if (!card || !content) return;
+
+    // 统计分类
+    var catData = { meat:[], soy:[], veg:[], staple:[] };
+
+    Object.keys(ingredientStock).forEach(function(name) {
+      var stock = ingredientStock[name];
+      if (!stock || stock.bought <= 0) return;
+      var f = FOODS[name];
+      var cat = f ? f.cat : 'veg';
+      var used = stock.used || 0;
+      var left = stock.bought - used;
+      catData[cat].push({ name:name, bought:stock.bought, used:used, left:left });
+    });
+
+    var hasAnyData = CAT_ORDER.some(function(c) { return catData[c].length > 0; });
+    if (!hasAnyData) { card.style.display = 'none'; return; }
+    card.style.display = 'block';
+
+    var catColors = { meat:'var(--pull)', soy:'var(--recovery)', veg:'var(--cardio)', staple:'var(--warn)' };
+    var html = '';
+
+    CAT_ORDER.forEach(function(cat) {
+      var items = catData[cat];
+      if (items.length === 0) return;
+
+      html += '<div class="surplus-cat">';
+      html += '<div class="surplus-cat-title" style="color:'+catColors[cat]+'">'+CAT_ICONS[cat]+' '+CAT_LABEL[cat]+'</div>';
+
+      items.forEach(function(item) {
+        var pct = item.bought > 0 ? Math.round(item.used / item.bought * 100) : 0;
+        var leftClass;
+        if (item.left <= 0) leftClass = 'left-zero';
+        else if (pct >= 80) leftClass = 'left-warn';
+        else leftClass = 'left-ok';
+
+        var barClass;
+        if (item.left <= 0) barClass = 'bar-zero';
+        else if (pct >= 80) barClass = 'bar-warn';
+        else barClass = 'bar-ok';
+
+        var leftText = item.left <= 0 ? '用完' : '剩'+item.left+'g';
+
+        html += '<div class="surplus-row">';
+        html += '<span class="surplus-name">'+item.name+'</span>';
+        html += '<span class="surplus-val bought">'+item.bought+'g</span>';
+        html += '<span class="surplus-arrow">→</span>';
+        html += '<span class="surplus-val used">用'+item.used+'g</span>';
+        html += '<span class="surplus-arrow">→</span>';
+        html += '<span class="surplus-val left '+leftClass+'">'+leftText+'</span>';
+        html += '<div class="surplus-bar-wrap"><div class="surplus-bar-fill '+barClass+'" style="width:'+Math.min(pct,100)+'%"></div></div>';
+        html += '</div>';
+      });
+
+      html += '</div>';
+    });
+
+    content.innerHTML = html;
+  }
+
+  // ========== 从已保存数据恢复状态 ==========
   function syncIngredientsFromPlan() {
-    // 清空
-    selectedIngredients = { meats:[], veggies:[], staples:[], soys:[] };
+    if (!weeklySel || Object.keys(weeklySel).length === 0) return;
+
+    // 先尝试恢复 ingredientStock
+    var savedStock = localStorage.getItem('jf_ingredient_stock');
+    if (savedStock) {
+      try {
+        var parsed = JSON.parse(savedStock);
+        if (parsed && Object.keys(parsed).length > 0) {
+          ingredientStock = parsed;
+          return; // 有存储的stock就用它
+        }
+      } catch(e) {}
+    }
+
+    // 没有stock存储：从周计划反推（bought设为used值，表示刚好用完）
+    ingredientStock = {};
     var seen = {};
     DAY_IDS.forEach(function(dayId) {
       var s = weeklySel[dayId];
@@ -531,10 +784,20 @@ h1 { font-size: 20px; text-align: center; padding: 12px 0 0; color: var(--primar
       ['lunch','dinner'].forEach(function(meal) {
         var m = s[meal];
         if (!m) return;
-        if (m.meat && !seen[m.meat]) { seen[m.meat]=true; selectedIngredients.meats.push(m.meat); }
-        if (m.soy && !seen[m.soy]) { seen[m.soy]=true; selectedIngredients.soys.push(m.soy); }
-        if (m.staple && !seen[m.staple]) { seen[m.staple]=true; selectedIngredients.staples.push(m.staple); }
-        if (m.veg) m.veg.forEach(function(v) { if (!seen[v]) { seen[v]=true; selectedIngredients.veggies.push(v); } });
+        var items = [];
+        if (m.meat) items.push({name:m.meat, ml:meal});
+        if (m.soy) items.push({name:m.soy, ml:meal});
+        if (m.veg) m.veg.forEach(function(v){ items.push({name:v, ml:meal}); });
+        if (m.staple) items.push({name:m.staple, ml:meal});
+
+        items.forEach(function(item) {
+          var p = calcPortion(item.name, item.ml);
+          if (!ingredientStock[item.name]) {
+            ingredientStock[item.name] = { bought: p.g, used: 0 };
+          } else {
+            ingredientStock[item.name].bought += p.g;
+          }
+        });
       });
     });
   }
@@ -542,38 +805,39 @@ h1 { font-size: 20px; text-align: center; padding: 12px 0 0; color: var(--primar
   // ========== 初始化 ==========
   function init() {
     // 读存储
-    var saved = localStorage.getItem('jf_weekly_plan_v3');
-    if (saved) { try { weeklySel = JSON.parse(saved); } catch(e) {} }
+    var savedPlan = localStorage.getItem('jf_weekly_plan_v3');
+    if (savedPlan) { try { weeklySel = JSON.parse(savedPlan); } catch(e) {} }
 
-    if (saved && weeklySel && Object.keys(weeklySel).length > 0) {
-      // 有已保存计划 → 从计划提取食材预填选择器
+    var savedStock = localStorage.getItem('jf_ingredient_stock');
+    if (savedStock) {
+      try { ingredientStock = JSON.parse(savedStock); } catch(e) { ingredientStock = {}; }
+    }
+
+    // 如果有计划但没stock，反推
+    if (weeklySel && Object.keys(weeklySel).length > 0 && (!ingredientStock || Object.keys(ingredientStock).length === 0)) {
       syncIngredientsFromPlan();
     }
 
     renderIngredientSelector();
     updateAssignBtn();
 
-    // 绑定按钮
-    document.getElementById('autoAssignBtn').addEventListener('click', function(e) {
-      e.preventDefault(); autoAssign();
-    });
-    document.getElementById('autoAssignBtn').addEventListener('touchend', function(e) {
-      e.preventDefault(); autoAssign();
-    });
+    // 绑定自动分配按钮
+    var assignBtn = document.getElementById('autoAssignBtn');
+    assignBtn.addEventListener('click', function(e) { e.preventDefault(); autoAssign(); });
+    assignBtn.addEventListener('touchend', function(e) { e.preventDefault(); autoAssign(); });
 
-    if (saved && weeklySel && Object.keys(weeklySel).length > 0) {
+    // 绑定重新分配按钮
+    var regenBtn = document.getElementById('regenerateBtn');
+    regenBtn.addEventListener('click', function(e) { e.preventDefault(); autoAssign(); });
+    regenBtn.addEventListener('touchend', function(e) { e.preventDefault(); autoAssign(); });
+
+    // 显示已有计划
+    if (weeklySel && Object.keys(weeklySel).length > 0) {
       renderWeeklyPlan();
-      renderShopList();
+      renderSurplus();
     }
 
-    document.getElementById('regenerateBtn').addEventListener('click', function(e) {
-      e.preventDefault(); autoAssign();
-    });
-    document.getElementById('regenerateBtn').addEventListener('touchend', function(e) {
-      e.preventDefault(); autoAssign();
-    });
-
-    if (saved) { updateSaveStatus(); }
+    if (savedPlan) updateSaveStatus();
   }
 
   // ========== 保存状态 ==========
@@ -584,110 +848,14 @@ h1 { font-size: 20px; text-align: center; padding: 12px 0 0; color: var(--primar
     if (!bar || !txt) return;
 
     var now = new Date();
-    var h = now.getHours().toString().padStart(2,'0');
-    var m = now.getMinutes().toString().padStart(2,'0');
-    var s = now.getSeconds().toString().padStart(2,'0');
-    time.textContent = h+':'+m+':'+s;
+    time.textContent = now.getHours().toString().padStart(2,'0')+':'+now.getMinutes().toString().padStart(2,'0')+':'+now.getSeconds().toString().padStart(2,'0');
 
     bar.classList.remove('unsaved');
-    setTimeout(function() {
-      bar.classList.add('unsaved');
-    }, 20);
-    setTimeout(function() {
-      bar.classList.remove('unsaved');
-    }, 1500);
-  }
-
-  // ========== 采购清单单位转换 ==========
-  function formatShopTotal(name, totalGrams, mealCount) {
-    var perMeal = Math.round(totalGrams / mealCount);
-    // 鸡蛋 → 个数（1个≈50g）
-    if (name === '鸡蛋') {
-      var totalEggs = Math.ceil(totalGrams / 50);
-      var perMealEggs = Math.round(totalGrams / mealCount / 50);
-      return { detail: perMealEggs + '个 × ' + mealCount + '餐', total: totalEggs + '个' };
-    }
-    // 液体 → ml
-    if (name === '牛奶' || name === '无糖酸奶' || name === '无糖豆浆') {
-      return { detail: perMeal + 'ml × ' + mealCount + '餐', total: Math.round(totalGrams) + 'ml' };
-    }
-    // 米饭/杂粮饭 → 生重+熟重都标
-    if (name === '米饭' || name === '杂粮饭') {
-      var dryPerMeal = Math.round(perMeal / 2.5);
-      var dryTotal = Math.round(totalGrams / 2.5);
-      return { detail: dryPerMeal + 'g(生)=' + perMeal + 'g(熟) × ' + mealCount + '餐', total: dryTotal + 'g（生重，熟重' + Math.round(totalGrams) + 'g）' };
-    }
-    // 其他 → g
-    return { detail: perMeal + 'g × ' + mealCount + '餐', total: Math.round(totalGrams) + 'g' };
-  }
-
-  // ========== 采购清单 ==========
-  function renderShopList() {
-    var content = document.getElementById('shoppingContent');
-    var totals = {};
-    var hasData = false;
-
-    DAY_IDS.forEach(function(day) {
-      var sel = weeklySel[day];
-      if (!sel) return;
-      MEALS.forEach(function(meal) {
-        var msel = sel[meal];
-        var hasMeatS = (meal==='breakfast' && Array.isArray(msel.meat)) ? (msel.meat.length>0) : !!msel.meat;
-        if (!msel || !hasMeatS) return;
-        hasData = true;
-
-        var items;
-        if (meal==='breakfast' && Array.isArray(msel.meat)) {
-          items = msel.meat.map(function(mn){ return {name:mn,cat:'meat',ml:meal}; });
-        } else {
-          items = [{name:msel.meat,cat:'meat',ml:meal}];
-        }
-        if (msel.soy) items.push({name:msel.soy,cat:'soy',ml:meal});
-        msel.veg.forEach(function(v){ items.push({name:v,cat:'veg',ml:meal}); });
-        if (msel.staple) items.push({name:msel.staple,cat:'staple',ml:meal});
-
-        items.forEach(function(item) {
-          var p = calcPortion(item.name, item.ml);
-          if (!totals[item.name]) totals[item.name] = {cat:item.cat, grams:0, meals:0};
-          totals[item.name].grams += p.g;
-          totals[item.name].meals += 1;
-        });
-      });
-    });
-
-    if (!hasData) {
-      content.innerHTML = '<div class="shop-empty">选好食材后点「自动分配一周」，这里会显示需要采购的食材总量</div>';
-      return;
-    }
-
-    var catOrder = ['meat','soy','veg','staple'];
-    var catNames = {meat:'\uD83E\uDD69 蛋白质类',soy:'\uD83E\uDED8 豆制品',veg:'\uD83E\uDD6C 蔬菜类',staple:'\uD83C\uDF5A 主食类'};
-    var catColors = {meat:'var(--pull)',soy:'var(--recovery)',veg:'var(--cardio)',staple:'var(--warn)'};
-
-    var html = '';
-    catOrder.forEach(function(cat) {
-      var catItems = [];
-      Object.keys(totals).forEach(function(name) {
-        if (totals[name].cat === cat) catItems.push({name:name, d:totals[name]});
-      });
-      if (catItems.length === 0) return;
-
-      html += '<div class="shop-cat-title" style="color:'+catColors[cat]+'">'+catNames[cat]+'</div>';
-      catItems.forEach(function(item) {
-        var fmt = formatShopTotal(item.name, item.d.grams, item.d.meals);
-        html += '<div class="shop-row">'+
-          '<span class="shop-name">'+item.name+'</span>'+
-          '<span class="shop-detail">'+fmt.detail+'</span>'+
-          '<span class="shop-total"><b>'+fmt.total+'</b></span>'+
-          '</div>';
-      });
-    });
-
-    content.innerHTML = html;
+    setTimeout(function() { bar.classList.add('unsaved'); }, 20);
+    setTimeout(function() { bar.classList.remove('unsaved'); }, 1500);
   }
 
   init();
-
 })();
 </script>
 

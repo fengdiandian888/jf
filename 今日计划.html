@@ -623,8 +623,9 @@ function renderTimeline() {
 
 // ========== 今日饮食 + 补剂提醒 ==========
 
-// ---- FOODS 数据（与饮食参考页同步） ----
+// ---- FOODS 数据（与饮食参考页同步 v8.0） ----
 const FOODS = {
+  // 蛋白质
   '鸡蛋':     { cat:'meat', cal:144,pro:13,  carb:1.5, fat:9,   unit:'g≈2个',  meals:['breakfast','lunch','dinner'] },
   '牛奶':     { cat:'meat', cal:54, pro:3,   carb:3.4, fat:3.2, unit:'ml',     meals:['breakfast'] },
   '无糖酸奶':  { cat:'meat', cal:63, pro:3.5, carb:4.5, fat:3.2, unit:'ml',     meals:['breakfast'] },
@@ -633,12 +634,21 @@ const FOODS = {
   '瘦牛肉':   { cat:'meat', cal:125,pro:22,  carb:0,   fat:4,   unit:'g生重',  meals:['lunch','dinner'] },
   '虾仁':     { cat:'meat', cal:99, pro:20,  carb:0,   fat:1,   unit:'g生重',  meals:['lunch','dinner'] },
   '草鱼块':   { cat:'meat', cal:113,pro:18,  carb:0,   fat:4.5, unit:'g',      meals:['lunch','dinner'] },
+  '鸭腿':     { cat:'meat', cal:135,pro:18,  carb:0,   fat:6.5, unit:'g生重',  meals:['lunch','dinner'] },
+  '龙利鱼':   { cat:'meat', cal:88, pro:18,  carb:0,   fat:1.5, unit:'g',      meals:['lunch','dinner'] },
+  '鸭胸':     { cat:'meat', cal:155,pro:15,  carb:0.5, fat:10,  unit:'g生重',  meals:['lunch','dinner'] },
+  '鲈鱼':     { cat:'meat', cal:105,pro:18.6,carb:0,   fat:3.4, unit:'g',      meals:['lunch','dinner'] },
+  '羊肉':     { cat:'meat', cal:118,pro:19,  carb:0,   fat:4.5, unit:'g生重',  meals:['lunch','dinner'] },
+  '鸡腿(去皮)':{ cat:'meat', cal:119,pro:20,  carb:0,   fat:4,   unit:'g生重',  meals:['lunch','dinner'] },
+  // 豆制品
   '无糖豆浆':  { cat:'soy',  cal:31, pro:3,   carb:1.2, fat:1.6, unit:'ml',     meals:['breakfast'] },
-  '燕麦片':   { cat:'staple',cal:377,pro:13.5,carb:66, fat:6.5, unit:'g干重',  meals:['breakfast'] },
   '嫩豆腐':   { cat:'soy',  cal:62, pro:6.5, carb:2,   fat:3.5, unit:'g',      meals:['lunch','dinner'] },
   '老豆腐':   { cat:'soy',  cal:81, pro:8.1, carb:2.8, fat:3.7, unit:'g',      meals:['lunch','dinner'] },
   '豆干':     { cat:'soy',  cal:142,pro:16.2,carb:2.8, fat:7,   unit:'g',      meals:['lunch','dinner'] },
   '千张':     { cat:'soy',  cal:260,pro:24.5,carb:5.5, fat:16,  unit:'g',      meals:['lunch','dinner'] },
+  '毛豆':     { cat:'soy',  cal:131,pro:13.1,carb:10,  fat:5,   unit:'g',      meals:['lunch','dinner'] },
+  '素鸡':     { cat:'soy',  cal:165,pro:17,  carb:5,   fat:9,   unit:'g',      meals:['lunch','dinner'] },
+  // 蔬菜
   '番茄':     { cat:'veg',cal:20, pro:0.9,carb:4,  fat:0.2,unit:'g', meals:['lunch','dinner'] },
   '丝瓜':     { cat:'veg',cal:20, pro:1,  carb:3,  fat:0.2,unit:'g', meals:['lunch','dinner'] },
   '空心菜':   { cat:'veg',cal:23, pro:2.2,carb:2.2,fat:0.3,unit:'g', meals:['lunch','dinner'] },
@@ -649,6 +659,15 @@ const FOODS = {
   '冬瓜':     { cat:'veg',cal:12, pro:0.4,carb:2.6,fat:0.1,unit:'g', meals:['lunch','dinner'] },
   '韭菜':     { cat:'veg',cal:26, pro:2.4,carb:3.2,fat:0.4,unit:'g', meals:['lunch','dinner'] },
   '蘑菇类':   { cat:'veg',cal:25, pro:2.5,carb:2,  fat:0.3,unit:'g', meals:['lunch','dinner'] },
+  '西兰花':   { cat:'veg',cal:34, pro:2.8,carb:4,  fat:0.4,unit:'g', meals:['lunch','dinner'] },
+  '白菜':     { cat:'veg',cal:13, pro:1.5,carb:2,  fat:0.2,unit:'g', meals:['lunch','dinner'] },
+  '芹菜':     { cat:'veg',cal:14, pro:0.8,carb:2.5,fat:0.1,unit:'g', meals:['lunch','dinner'] },
+  '菠菜':     { cat:'veg',cal:28, pro:2.6,carb:2.8,fat:0.3,unit:'g', meals:['lunch','dinner'] },
+  '生菜':     { cat:'veg',cal:15, pro:1.4,carb:2,  fat:0.2,unit:'g', meals:['lunch','dinner'] },
+  '秋葵':     { cat:'veg',cal:31, pro:2,  carb:4,  fat:0.2,unit:'g', meals:['lunch','dinner'] },
+  '荷兰豆':   { cat:'veg',cal:42, pro:4.5,carb:4,  fat:0.4,unit:'g', meals:['lunch','dinner'] },
+  // 主食
+  '燕麦片':   { cat:'staple',cal:377,pro:13.5,carb:66, fat:6.5, unit:'g干重',  meals:['breakfast'] },
   '玉米':     { cat:'staple',cal:112,pro:4,  carb:22.8,fat:1.2,unit:'g≈1根', meals:['breakfast','lunch','dinner'] },
   '红薯':     { cat:'staple',cal:102,pro:1.6,carb:23.1,fat:0.2,unit:'g生重', meals:['lunch','dinner'] },
   '全麦面包':  { cat:'staple',cal:265,pro:10.5,carb:47,fat:4,  unit:'g≈2~3片',meals:['breakfast'] },
@@ -656,6 +675,10 @@ const FOODS = {
   '杂粮饭':   { cat:'staple',cal:140,pro:3.5,carb:28, fat:0.8,unit:'g熟重', meals:['lunch','dinner'] },
   '米饭':     { cat:'staple',cal:116,pro:2.6,carb:25.9,fat:0.3,unit:'g熟重',meals:['lunch','dinner'] },
   '土豆':     { cat:'staple',cal:81, pro:2,  carb:17.5,fat:0.2,unit:'g',    meals:['lunch','dinner'] },
+  '紫薯':     { cat:'staple',cal:82, pro:2.5,carb:17,  fat:0.2,unit:'g生重', meals:['lunch','dinner'] },
+  '山药':     { cat:'staple',cal:57, pro:1.9,carb:12.4,fat:0.2,unit:'g',    meals:['lunch','dinner'] },
+  '芋头':     { cat:'staple',cal:75, pro:2.2,carb:16,  fat:0.2,unit:'g',    meals:['lunch','dinner'] },
+  '荞麦面':   { cat:'staple',cal:350,pro:11,  carb:66,  fat:2.5,unit:'g干重',meals:['lunch','dinner'] },
 };
 const CAT_ICONS_T = { meat:'🥩', soy:'🫘', veg:'🥬', staple:'🍚' };
 const MEAL_LABELS_T = { breakfast:'早餐', lunch:'午餐', dinner:'晚餐' };
@@ -677,6 +700,8 @@ function calcPortion(food, meal) {
     if (food === '无糖豆浆') return { g:250, note:'无糖·低热量' };
     if (food === '千张') return { g:70, note:'热量偏高·配蔬菜' };
     if (food === '豆干') return { g:100 };
+    if (food === '素鸡') return { g:80 };
+    if (food === '毛豆') return { g:100 };
     return { g:200 };
   }
   if (f.cat === 'veg') return { g:250 };
@@ -684,6 +709,7 @@ function calcPortion(food, meal) {
     if (food === '燕麦片') return { g:50, note:'50g干重≈一碗粥' };
     if (food === '全麦面包') return { g:80, note:'≈2~3片' };
     if (food === '南瓜') return { g:300, note:'碳水偏低·搭配其他' };
+    if (food === '荞麦面') return { g:80, note:'80g干重≈280kcal' };
     const calTarget = (meal === 'lunch') ? 280 : 230;
     let raw = Math.round(calTarget / f.cal * 100 / 5) * 5;
     if (raw > 350) raw = 350; if (raw < 50) raw = 50;
