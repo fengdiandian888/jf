@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <meta name="theme-color" content="#faf8f5">
 <link rel="manifest" href="/jf/manifest.json">
-<title>一天两练 · 每日跟练</title>
+<title>全天候减脂节奏 · 休假版</title>
 <style>
  :root {
  --bg: #faf8f5;
@@ -56,6 +56,36 @@
  .mode-toggle a.active { background: #fff; color: var(--text); box-shadow: 0 1px 4px rgba(0,0,0,.08); }
  .mode-toggle a.holiday { color: #059669; }
  .mode-toggle a.holiday.active { background: #ecfdf5; color: #059669; box-shadow: 0 1px 6px rgba(5,150,105,.15); }
+
+ /* Daily Rhythm Card */
+ .rhythm-card { background: linear-gradient(135deg,#f0fdf4 0%,#faf8f5 50%,#eff6ff 100%); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; margin-bottom: 16px; }
+ .rhythm-card .rhythm-header { padding: 12px 16px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 10px; }
+ .rhythm-card .rhythm-header .rh-icon { font-size: 22px; }
+ .rhythm-card .rhythm-header .rh-title { font-size: 17px; font-weight: 700; color: var(--text); }
+ .rhythm-card .rhythm-header .rh-sub { font-size: 12px; color: var(--sub); margin-top: 1px; }
+ .rhythm-timeline { display: flex; overflow-x: auto; gap: 0; padding: 10px 0; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+ .rhythm-timeline::-webkit-scrollbar { display: none; }
+ .rh-step { flex: 0 0 auto; text-align: center; padding: 8px 10px; border-right: 1px dashed var(--border); min-width: 72px; }
+ .rh-step:last-child { border-right: none; }
+ .rh-step .rh-time { font-size: 11px; font-weight: 700; color: var(--sub); margin-bottom: 4px; }
+ .rh-step .rh-dot { width: 10px; height: 10px; border-radius: 50%; margin: 0 auto 4px; }
+ .rh-step .rh-dot.walk { background: #22c55e; }
+ .rh-step .rh-dot.train { background: #f97316; }
+ .rh-step .rh-dot.rehab { background: #3b82f6; }
+ .rh-step .rh-dot.eat { background: #f59e0b; }
+ .rh-step .rh-dot.sleep { background: #8b5cf6; }
+ .rh-step .rh-act { font-size: 12px; font-weight: 600; color: var(--text); line-height: 1.3; }
+ .rh-step .rh-dur { font-size: 10px; color: var(--sub); margin-top: 1px; }
+
+ /* Compact walk/rehab cards */
+ .compact-card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 12px 16px; margin-bottom: 12px; display: flex; align-items: center; gap: 12px; }
+ .compact-card .cc-icon { font-size: 28px; flex-shrink: 0; }
+ .compact-card .cc-info { flex: 1; }
+ .compact-card .cc-info .cc-title { font-size: 15px; font-weight: 700; color: var(--text); }
+ .compact-card .cc-info .cc-sub { font-size: 12px; color: var(--sub); margin-top: 2px; }
+ .compact-card.walk-card { border-left: 4px solid #22c55e; }
+ .compact-card.rehab-card { border-left: 4px solid #3b82f6; }
+ .compact-card.sleep-card { border-left: 4px solid #8b5cf6; }
 
  /* Tab Bar */
  .tab-wrap { position: sticky; top: 0; z-index: 10; background: var(--bg); padding: 0 0 10px; }
@@ -609,37 +639,40 @@
 <div class="container">
 
 <div class="header">
- <h1>💪 每日跟练 · 一天两练</h1>
- <p>早上 7:00–7:30 &emsp;|&emsp; 晚上 21:00–22:00</p>
+ <h1>全天候减脂节奏</h1>
+ <p>不上班的日子 · 12,000步 + 1练 + 康复 + 8.5h睡眠</p>
  <div class="tags">
- <span>🏠 居家为主</span><span>💪 4次力量/周</span><span>⚠️ 右肩保护</span><span>🛵 小电动通勤</span>
+ <span>晨间快走 45min</span><span>主训练 60-70min</span><span>肩康复 20min</span><span>晚间散步 30min</span>
  </div>
 </div>
 
 <div class="mode-toggle-wrap">
  <div class="mode-toggle">
-  <a href="减脂训练日跟练_三分化.html" class="active">工作日</a>
-  <a href="减脂训练日跟练_休假版.html" class="holiday">休假日</a>
+  <a href="减脂训练日跟练_三分化.html">工作日</a>
+  <a href="减脂训练日跟练_休假版.html" class="active holiday">休假日</a>
  </div>
 </div>
 
-<!-- 器材说明 + 跳绳风险警示 -->
-<div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:14px;margin:0 0 12px;overflow:hidden;">
- <div style="font-size:15px;font-weight:700;margin-bottom:8px;color:var(--text);">🎽 我的器材清单</div>
- <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;">
-  <span style="background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.3);color:#16a34a;padding:4px 12px;border-radius:8px;font-size:13px;font-weight:600;">✅ 弹力绳（阻力带）</span>
-  <span style="background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.3);color:#d97706;padding:4px 12px;border-radius:8px;font-size:13px;font-weight:600;">⚠️ 跳绳（暂缓）</span>
-  <span style="background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.3);color:#16a34a;padding:4px 12px;border-radius:8px;font-size:13px;font-weight:600;">✅ 瑜伽垫</span>
-  <span style="background:rgba(59,130,246,0.1);border:1px solid rgba(59,130,246,0.3);color:#2563eb;padding:4px 12px;border-radius:8px;font-size:13px;font-weight:600;">🆕 哑铃（最重20KG/手·可组杠铃）</span>
+<div class="rhythm-card">
+ <div class="rhythm-header">
+  <span class="rh-icon"></span>
+  <div>
+   <div class="rh-title">每日节奏 · 全天候减脂</div>
+   <div class="rh-sub">12,000步目标 · 3次步行 · 1次主训练 · 肩康复 · 8.5h睡眠</div>
+  </div>
  </div>
- <div style="background:rgba(245,158,11,0.08);border:1px solid rgba(245,158,11,0.25);border-radius:8px;padding:10px 12px;">
-  <div style="font-size:13px;font-weight:700;color:var(--warn);margin-bottom:4px;">⚠️ 关于跳绳（BMI 28.1 注意！）</div>
-  <p style="font-size:12px;color:#78350f;line-height:1.6;">
-   体重 81.5kg 跳绳时，每次落地膝盖承受冲击力 <b>约 163–245kg（体重 2–3 倍）</b>。<br>
-   国家体育总局建议：BMI ≥ 25 的人群应暂缓跳绳，先从低冲击有氧开始。<br>
-   <b style="color:var(--warn);">当前阶段：跳绳作为备用手段，不列为常规训练。等体重降到 75kg 以下再考虑。</b><br>
-   替代方案：哑铃力量训练（零冲击）、原地踏步、哑铃有氧组合、小电动骑行。
-  </p>
+ <div class="rhythm-timeline">
+  <div class="rh-step"><div class="rh-time">06:30</div><div class="rh-dot eat"></div><div class="rh-act">起床补水</div><div class="rh-dur">500ml</div></div>
+  <div class="rh-step"><div class="rh-time">07:00</div><div class="rh-dot walk"></div><div class="rh-act">晨间快走</div><div class="rh-dur">45min LISS</div></div>
+  <div class="rh-step"><div class="rh-time">08:00</div><div class="rh-dot eat"></div><div class="rh-act">早餐</div><div class="rh-dur">~450kcal</div></div>
+  <div class="rh-step"><div class="rh-time">09:30</div><div class="rh-dot train"></div><div class="rh-act">主训练</div><div class="rh-dur">60-70min</div></div>
+  <div class="rh-step"><div class="rh-time">12:00</div><div class="rh-dot eat"></div><div class="rh-act">午餐</div><div class="rh-dur">~650kcal</div></div>
+  <div class="rh-step"><div class="rh-time">14:00</div><div class="rh-dot rehab"></div><div class="rh-act">肩康复</div><div class="rh-dur">20min</div></div>
+  <div class="rh-step"><div class="rh-time">16:00</div><div class="rh-dot walk"></div><div class="rh-act">下午步行</div><div class="rh-dur">30min</div></div>
+  <div class="rh-step"><div class="rh-time">18:00</div><div class="rh-dot eat"></div><div class="rh-act">晚餐</div><div class="rh-dur">~550kcal</div></div>
+  <div class="rh-step"><div class="rh-time">19:30</div><div class="rh-dot walk"></div><div class="rh-act">晚间散步</div><div class="rh-dur">30min</div></div>
+  <div class="rh-step"><div class="rh-time">21:00</div><div class="rh-dot sleep"></div><div class="rh-act">睡眠准备</div><div class="rh-dur">关屏侧卧</div></div>
+  <div class="rh-step"><div class="rh-time">22:00</div><div class="rh-dot sleep"></div><div class="rh-act">睡眠</div><div class="rh-dur">8.5h</div></div>
  </div>
 </div>
 
@@ -661,49 +694,21 @@
 
 <!-- 周一 -->
 <div class="day-panel" id="panel-0">
- <div class="day-section">
- <div class="day-header">
- <div class="day-badge morning"></div>
- <div class="day-info">
- <div class="day-name">早上 · 空腹有氧 20′ + 肩康复 10′</div>
- <div class="day-sub">7:00–7:30 | 空腹燃脂 + 肩袖保护</div>
- </div>
- </div>
- <div class="day-body">
- <div class="video-box">
- <div class="video-label"> 空腹有氧</div>
- <div class="vid-lazy" data-bvid="BV1e541197y8" onclick="loadVid(this)"><div class="vid-play-btn">▶ 点击加载视频</div></div>
- </div>
- <div class="video-meta">
- <span class="vm-title">刘畊宏 · 18分钟晨间暖身训练 | 254.6万播放</span>
- <a class="vm-link" href="https://www.bilibili.com/video/BV1e541197y8" target="_blank">打开B站 →</a>
- </div>
- <p class="tip"> 18分钟晨间暖身。提高代谢提升心率。空腹效果更好。做完接肩康复。<br>备选：<a href="https://www.bilibili.com/video/BV1pr4y1t7BZ" target="_blank" style="color:var(--info);">刘畊宏 30′ 有氧快乐健身操</a></p>
 
- <div class="video-box">
- <div class="video-label"> 肩康复</div>
- <div class="vid-lazy" data-bvid="BV1WM411U7yq" onclick="loadVid(this)"><div class="vid-play-btn">▶ 点击加载视频</div></div>
+<div class="compact-card walk-card">
+ <div class="cc-icon">🚶</div>
+ <div class="cc-info">
+  <div class="cc-title">07:00 晨间快走 45min</div>
+  <div class="cc-sub">心率 110-130 纯燃脂区间 · 空腹或早餐后 · 不拿手机专注走</div>
  </div>
- <div class="video-meta">
- <span class="vm-title">倍他运动康复 · 肩关节弹力带训练 | 99万播放</span>
- <a class="vm-link" href="https://www.bilibili.com/video/BV1WM411U7yq" target="_blank">打开B站 →</a>
- </div>
- <div class="rehab">
- <strong> 用法：</strong>3分钟循环2-3遍（约10分钟）<br>
- ① 轻哑铃肩外旋（1-2KG）— 肘贴身体，向外旋转，最重要<br>
- ② 轻哑铃肩内旋（1-2KG）— 同理反向，极轻阻力<br>
- ③ 肩胛骨后缩 — 激活中下斜方肌，无器械<br>
- ④ 右肩疼则减幅或跳过
- </div>
- </div>
- </div>
+</div>
 
- <div class="day-section">
+<div class="day-section">
  <div class="day-header">
- <div class="day-badge evening pull"></div>
+ <div class="day-badge pull"></div>
  <div class="day-info">
- <div class="day-name">晚上 · 拉日力量 45′ + 拉伸 15′</div>
- <div class="day-sub">21:00–22:00 | 背部+三角肌后束+肱二头肌</div>
+ <div class="day-name">09:30 拉日力量训练 60-70min</div>
+ <div class="day-sub">背部+三角肌后束+肱二头肌 | 哑铃8KG</div>
  <div class="day-tags"><span>哑铃训练</span><span>无肩部风险</span></div>
  </div>
  </div>
@@ -716,7 +721,6 @@
  <span class="vm-title">梅林FIT · 二分化拉日 哑铃增肌 | 52′ 一对哑铃 背+二头</span>
  <a class="vm-link" href="https://www.bilibili.com/video/BV1uZ42127Gz" target="_blank">打开B站 →</a>
  </div>
-
 <div style="background:rgba(59,130,246,0.06);border:1px solid rgba(59,130,246,0.2);border-radius:8px;padding:8px 12px;margin-bottom:8px;font-size:12px;color:#1e40af;">💡 <b>器材选择：</b>哑铃为主跟练（12.8万播放）。统一使用单只8KG哑铃，全程不换片，先跟视频找动作感觉再逐步加重。</div>
  <button class="btn-start-training" data-day="pull-evening"><span class="btn-icon">▶</span> 开始拉日计时训练</button>
  <div class="tm-estimate-row">
@@ -733,57 +737,43 @@
  <div class="caution"><strong> 升级条件：</strong>连续 2 周完成全部组数 → 每动作加 1 组（4×）+ 哑铃重量递增（每次+2.5KG）</div>
  <p class="tip"> 哑铃跟练52分钟一对哑铃全程口令。统一8KG不换片，先跟视频找感觉再逐步加重。</p>
  </div>
+</div>
+
+<div class="compact-card rehab-card">
+ <div class="cc-icon">🩹</div>
+ <div class="cc-info">
+  <div class="cc-title">14:00 肩关节康复 20min</div>
+  <div class="cc-sub">肩袖外旋 + 肩胛稳定 + 胸椎活动度 + 泡沫轴 · 1-2KG轻哑铃</div>
  </div>
+</div>
+
+<div class="compact-card walk-card">
+ <div class="cc-icon">🌙</div>
+ <div class="cc-info">
+  <div class="cc-title">19:30 晚间散步 30min</div>
+  <div class="cc-sub">助消化 + 补步数 · 不看手机 · 放松心情</div>
+ </div>
+</div>
+
 </div>
 
 <!-- 周二 -->
 <div class="day-panel" id="panel-1">
- <div class="day-section">
+
+<div class="compact-card walk-card">
+ <div class="cc-icon">🚶</div>
+ <div class="cc-info">
+  <div class="cc-title">07:00 晨间快走 45min</div>
+  <div class="cc-sub">心率 110-130 纯燃脂区间 · 空腹或早餐后 · 不拿手机专注走</div>
+ </div>
+</div>
+
+<div class="day-section">
  <div class="day-header">
- <div class="day-badge morning"></div>
+ <div class="day-badge"></div>
  <div class="day-info">
- <div class="day-name">早上 · 核心训练 15′ + 肩康复 15′</div>
- <div class="day-sub">7:00–7:30 | 核心激活 + 肩袖保护</div>
- </div>
- </div>
- <div class="day-body">
- <div class="video-box">
- <div class="video-label"> 核心训练</div>
- <div class="vid-lazy" data-bvid="BV182eRzuEMD" onclick="loadVid(this)"><div class="vid-play-btn">▶ 点击加载视频</div></div>
- </div>
- <div class="video-meta">
- <span class="vm-title">游书庭 · 20分钟瘦腰腹核心 | 全程站立·无跳跃</span>
- <a class="vm-link" href="https://www.bilibili.com/video/BV182eRzuEMD" target="_blank">打开B站 →</a>
- </div>
- <p class="tip"> 15分钟核心激活，专为初学者设计。做完接肩康复15分钟（循环2-3遍）。</p>
-
- <div class="moves-title"> 核心关键动作图解（不用视频时自练）</div>
- <div class="svg-grid">
- <div style="background:rgba(0,0,0,0.03);border:1px solid var(--border);border-radius:8px;padding:10px;text-align:center;">
- <svg viewBox="0 0 260 130" style="width:100%;height:auto;"><defs><linearGradient id="d1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4ade80"/><stop offset="1" stop-color="#166534"/></linearGradient></defs><rect x="0" y="0" width="260" height="130" rx="8" fill="#111"/><text x="130" y="16" text-anchor="middle" fill="#4ade80" font-size="10" font-weight="bold">死虫式 Dead Bug</text><circle cx="95" cy="45" r="9" fill="url(#d1)" stroke="#4ade80" stroke-width="1"/><line x1="95" y1="54" x2="95" y2="80" stroke="#888" stroke-width="3" stroke-linecap="round"/><line x1="80" y1="63" x2="110" y2="63" stroke="#888" stroke-width="3" stroke-linecap="round"/><line x1="95" y1="80" x2="86" y2="102" stroke="#4ade80" stroke-width="2.5"/><line x1="95" y1="80" x2="104" y2="102" stroke="#4ade80" stroke-width="2.5"/><text x="130" y="48" fill="#aaa" font-size="9" text-anchor="middle">仰卧四肢朝天</text><text x="130" y="60" fill="#aaa" font-size="9" text-anchor="middle">对侧手脚交替伸展</text><text x="130" y="72" fill="#4ade80" font-size="9" text-anchor="middle">腰部紧贴地面!</text><text x="130" y="88" fill="#888" font-size="9" text-anchor="middle">3×10-12/侧, 慢速控制</text></svg>
- </div>
- <div style="background:rgba(0,0,0,0.03);border:1px solid var(--border);border-radius:8px;padding:10px;text-align:center;">
- <svg viewBox="0 0 260 130" style="width:100%;height:auto;"><rect x="0" y="0" width="260" height="130" rx="8" fill="#111"/><text x="130" y="16" text-anchor="middle" fill="#4ade80" font-size="10" font-weight="bold">鸟狗式 Bird Dog</text><circle cx="90" cy="42" r="7" fill="#16a34a"/><circle cx="170" cy="88" r="7" fill="#16a34a"/><line x1="90" y1="42" x2="130" y2="62" stroke="#888" stroke-width="3"/><line x1="170" y1="88" x2="130" y2="62" stroke="#888" stroke-width="3"/><line x1="130" y1="62" x2="82" y2="88" stroke="#4ade80" stroke-width="2" stroke-dasharray="3,3"/><line x1="130" y1="62" x2="162" y2="42" stroke="#4ade80" stroke-width="2" stroke-dasharray="3,3"/><circle cx="130" cy="62" r="4" fill="#4ade80"/><text x="130" y="115" fill="#aaa" font-size="9" text-anchor="middle">四肢着地→对侧手脚抬平→稳住3秒</text><text x="130" y="126" fill="#4ade80" font-size="9" text-anchor="middle">核心收紧, 不塌腰!</text></svg>
- </div>
- </div>
-
- <div class="video-box">
- <div class="video-label"> 肩康复</div>
- <div class="vid-lazy" data-bvid="BV1WM411U7yq" onclick="loadVid(this)"><div class="vid-play-btn">▶ 点击加载视频</div></div>
- </div>
- <div class="video-meta">
- <span class="vm-title">倍他运动康复 · 肩关节弹力带训练 | 99万播放</span>
- <a class="vm-link" href="https://www.bilibili.com/video/BV1WM411U7yq" target="_blank">打开B站 →</a>
- </div>
- </div>
- </div>
-
- <div class="day-section">
- <div class="day-header">
- <div class="day-badge evening"></div>
- <div class="day-info">
- <div class="day-name">晚上 · 低强度有氧 40′ + 拉伸 20′</div>
- <div class="day-sub">21:00–22:00 | 不追求力竭，动起来就行</div>
+ <div class="day-name">09:30 有氧训练 40min + 拉伸 20min</div>
+ <div class="day-sub">不追求力竭，动起来就行 | 低冲击无跳跃</div>
  </div>
  </div>
  <div class="day-body">
@@ -822,56 +812,42 @@
  </div>
  </div>
  </div>
+
+<div class="compact-card rehab-card">
+ <div class="cc-icon">🩹</div>
+ <div class="cc-info">
+  <div class="cc-title">14:00 肩关节康复 20min</div>
+  <div class="cc-sub">肩袖外旋 + 肩胛稳定 + 胸椎活动度 + 泡沫轴 · 1-2KG轻哑铃</div>
+ </div>
+</div>
+
+<div class="compact-card walk-card">
+ <div class="cc-icon">🌙</div>
+ <div class="cc-info">
+  <div class="cc-title">19:30 晚间散步 30min</div>
+  <div class="cc-sub">助消化 + 补步数 · 不看手机 · 放松心情</div>
+ </div>
+</div>
+
 </div>
 
 <!-- 周三 -->
 <div class="day-panel" id="panel-2">
- <div class="day-section">
+
+<div class="compact-card walk-card">
+ <div class="cc-icon">🚶</div>
+ <div class="cc-info">
+  <div class="cc-title">07:00 晨间快走 45min</div>
+  <div class="cc-sub">心率 110-130 纯燃脂区间 · 空腹或早餐后 · 不拿手机专注走</div>
+ </div>
+</div>
+
+<div class="day-section">
  <div class="day-header">
- <div class="day-badge morning"></div>
+ <div class="day-badge push"></div>
  <div class="day-info">
- <div class="day-name">早上 · 柔韧拉伸 20′ + 肩康复 10′</div>
- <div class="day-sub">7:00–7:30 | 力量日蓄力，不消耗体能</div>
- <div class="day-tags"><span class="warn"> 今天不做有氧，把体力留给晚上推日</span></div>
- </div>
- </div>
- <div class="day-body">
- <div class="video-box">
- <div class="video-label"> 柔韧拉伸</div>
- <div class="vid-lazy" data-bvid="BV1gVLFzBEBN" onclick="loadVid(this)"><div class="vid-play-btn">▶ 点击加载视频</div></div>
- </div>
- <div class="video-meta">
- <span class="vm-title">张德琪 · 晨间柔韧性拉伸跟练 | 6′50″</span>
- <a class="vm-link" href="https://www.bilibili.com/video/BV1gVLFzBEBN" target="_blank">打开B站 →</a>
- </div>
- <p class="tip"> 力量训练日早上不做空腹有氧，柔韧拉伸+肩康复即可。<br>备选：<a href="https://www.bilibili.com/video/BV1gVLFzBEBN" target="_blank" style="color:var(--info);">张德琪 6′拉伸 | 6.5万</a></p>
-
- <details open><summary style="cursor:pointer;color:var(--info);font-size: 14px;"> 无视频时：手动柔韧5步</summary>
- <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:6px;font-size: 13px;color:var(--sub);line-height:1.5;">
- <div style="background:rgba(96,165,250,0.05);border:1px solid rgba(96,165,250,0.2);border-radius:6px;padding:6px 8px;"><b style="color:#60a5fa;">① 猫牛式</b><br>四肢着地，吸气弓背、呼气塌腰 · 8次</div>
- <div style="background:rgba(96,165,250,0.05);border:1px solid rgba(96,165,250,0.2);border-radius:6px;padding:6px 8px;"><b style="color:#60a5fa;">② 坐姿前屈</b><br>坐地双腿伸直，上身向前趴 · 30″</div>
- <div style="background:rgba(96,165,250,0.05);border:1px solid rgba(96,165,250,0.2);border-radius:6px;padding:6px 8px;"><b style="color:#60a5fa;">③ 蝴蝶式</b><br>脚底相对膝盖下落，上身前倾 · 30″</div>
- <div style="background:rgba(96,165,250,0.05);border:1px solid rgba(96,165,250,0.2);border-radius:6px;padding:6px 8px;"><b style="color:#60a5fa;">④ 仰卧扭转</b><br>仰卧双臂展开，单腿跨向对侧 · 每侧30″</div>
- <div style="background:rgba(96,165,250,0.05);border:1px solid rgba(96,165,250,0.2);border-radius:6px;padding:6px 8px;grid-column:1/3;"><b style="color:#60a5fa;">⑤ 婴儿式</b><br>跪坐趴地双臂前伸，完全放松 · 保持1′</div>
- </div></details>
-
- <div class="video-box">
- <div class="video-label"> 肩康复</div>
- <div class="vid-lazy" data-bvid="BV1WM411U7yq" onclick="loadVid(this)"><div class="vid-play-btn">▶ 点击加载视频</div></div>
- </div>
- <div class="video-meta">
- <span class="vm-title">倍他运动康复 · 肩关节弹力带训练 | 99万播放</span>
- <a class="vm-link" href="https://www.bilibili.com/video/BV1WM411U7yq" target="_blank">打开B站 →</a>
- </div>
- </div>
- </div>
-
- <div class="day-section">
- <div class="day-header">
- <div class="day-badge evening push"></div>
- <div class="day-info">
- <div class="day-name">晚上 · 推日力量 45′ + 拉伸 15′ 右肩保护</div>
- <div class="day-sub">21:00–22:00 | 胸+三角肌前中束+肱三头肌</div>
+ <div class="day-name">09:30 推日力量训练 60-70min</div>
+ <div class="day-sub">胸+三角肌前中束+肱三头肌 | 哑铃8KG · 右肩保护</div>
  <div class="day-tags"><span class="warn">禁用推举/宽距俯卧撑/飞鸟</span><span>哑铃训练</span></div>
  </div>
  </div>
@@ -905,46 +881,42 @@
  <div class="caution"><strong> 升级条件：</strong>连续 2 周完成 → 哑铃卧推加重（+2.5KG/次）+ 标准俯卧撑 3×力竭</div>
  </div>
  </div>
+
+<div class="compact-card rehab-card">
+ <div class="cc-icon">🩹</div>
+ <div class="cc-info">
+  <div class="cc-title">14:00 肩关节康复 20min</div>
+  <div class="cc-sub">肩袖外旋 + 肩胛稳定 + 胸椎活动度 + 泡沫轴 · 1-2KG轻哑铃</div>
+ </div>
+</div>
+
+<div class="compact-card walk-card">
+ <div class="cc-icon">🌙</div>
+ <div class="cc-info">
+  <div class="cc-title">19:30 晚间散步 30min</div>
+  <div class="cc-sub">助消化 + 补步数 · 不看手机 · 放松心情</div>
+ </div>
+</div>
+
 </div>
 
 <!-- 周四 -->
 <div class="day-panel" id="panel-3">
- <div class="day-section">
- <div class="day-header">
- <div class="day-badge morning"></div>
- <div class="day-info">
- <div class="day-name">早上 · 空腹有氧 20′ + 肩康复 10′</div>
- <div class="day-sub">7:00–7:30 | 非力量日，放心空腹燃脂</div>
- </div>
- </div>
- <div class="day-body">
- <div class="video-box">
- <div class="video-label"> 空腹有氧</div>
- <div class="vid-lazy" data-bvid="BV1e541197y8" onclick="loadVid(this)"><div class="vid-play-btn">▶ 点击加载视频</div></div>
- </div>
- <div class="video-meta">
- <span class="vm-title">刘畊宏 · 18分钟晨间暖身训练 | 254.6万播放</span>
- <a class="vm-link" href="https://www.bilibili.com/video/BV1e541197y8" target="_blank">打开B站 →</a>
- </div>
- <p class="tip"> 周四没有力量训练，早上放心空腹有氧。做完接10分钟肩康复。</p>
 
- <div class="video-box">
- <div class="video-label"> 肩康复</div>
- <div class="vid-lazy" data-bvid="BV1WM411U7yq" onclick="loadVid(this)"><div class="vid-play-btn">▶ 点击加载视频</div></div>
+<div class="compact-card walk-card">
+ <div class="cc-icon">🚶</div>
+ <div class="cc-info">
+  <div class="cc-title">07:00 晨间快走 45min</div>
+  <div class="cc-sub">心率 110-130 纯燃脂区间 · 空腹或早餐后 · 不拿手机专注走</div>
  </div>
- <div class="video-meta">
- <span class="vm-title">倍他运动康复 · 肩关节弹力带训练 | 99万播放</span>
- <a class="vm-link" href="https://www.bilibili.com/video/BV1WM411U7yq" target="_blank">打开B站 →</a>
- </div>
- </div>
- </div>
+</div>
 
- <div class="day-section">
+<div class="day-section">
  <div class="day-header">
- <div class="day-badge evening"></div>
+ <div class="day-badge"></div>
  <div class="day-info">
- <div class="day-name">晚上 · 核心 20′ + 有氧 20′ + 拉伸 20′</div>
- <div class="day-sub">21:00–22:00 | 核心唤醒 + 低强度燃脂 + 放松</div>
+ <div class="day-name">09:30 核心 20min + 有氧 20min + 拉伸 20min</div>
+ <div class="day-sub">核心唤醒 + 低强度燃脂 + 放松</div>
  </div>
  </div>
  <div class="day-body">
@@ -969,47 +941,42 @@
  <div class="mini-card"><div class="mc-title">凯圣王 · 躯干+四肢拉伸组合</div><div class="mc-sub">增肌拉伸系列</div><a class="mc-link" href="https://www.bilibili.com/video/BV1Eu41187oU" target="_blank">打开B站 →</a></div>
  </div>
  </div>
+
+<div class="compact-card rehab-card">
+ <div class="cc-icon">🩹</div>
+ <div class="cc-info">
+  <div class="cc-title">14:00 肩关节康复 20min</div>
+  <div class="cc-sub">肩袖外旋 + 肩胛稳定 + 胸椎活动度 + 泡沫轴 · 1-2KG轻哑铃</div>
+ </div>
+</div>
+
+<div class="compact-card walk-card">
+ <div class="cc-icon">🌙</div>
+ <div class="cc-info">
+  <div class="cc-title">19:30 晚间散步 30min</div>
+  <div class="cc-sub">助消化 + 补步数 · 不看手机 · 放松心情</div>
+ </div>
+</div>
+
 </div>
 
 <!-- 周五 -->
 <div class="day-panel" id="panel-4">
- <div class="day-section">
- <div class="day-header">
- <div class="day-badge morning"></div>
- <div class="day-info">
- <div class="day-name">早上 · 核心训练 15′ + 肩康复 15′</div>
- <div class="day-sub">7:00–7:30 | 力量日不做有氧，蓄力给晚上腿日</div>
- <div class="day-tags"><span class="warn"> 今天不做空腹有氧</span></div>
- </div>
- </div>
- <div class="day-body">
- <div class="video-box">
- <div class="video-label"> 核心训练</div>
- <div class="vid-lazy" data-bvid="BV182eRzuEMD" onclick="loadVid(this)"><div class="vid-play-btn">▶ 点击加载视频</div></div>
- </div>
- <div class="video-meta">
- <span class="vm-title">游书庭 · 20分钟瘦腰腹核心 | 全程站立·无跳跃</span>
- <a class="vm-link" href="https://www.bilibili.com/video/BV182eRzuEMD" target="_blank">打开B站 →</a>
- </div>
- <p class="tip"> 腿日不需要早上空腹有氧消耗体力。核心激活+肩康复，把能量留给晚上。</p>
 
- <div class="video-box">
- <div class="video-label"> 肩康复</div>
- <div class="vid-lazy" data-bvid="BV1WM411U7yq" onclick="loadVid(this)"><div class="vid-play-btn">▶ 点击加载视频</div></div>
+<div class="compact-card walk-card">
+ <div class="cc-icon">🚶</div>
+ <div class="cc-info">
+  <div class="cc-title">07:00 晨间快走 45min</div>
+  <div class="cc-sub">心率 110-130 纯燃脂区间 · 空腹或早餐后 · 不拿手机专注走</div>
  </div>
- <div class="video-meta">
- <span class="vm-title">倍他运动康复 · 肩关节弹力带训练 | 99万播放</span>
- <a class="vm-link" href="https://www.bilibili.com/video/BV1WM411U7yq" target="_blank">打开B站 →</a>
- </div>
- </div>
- </div>
+</div>
 
- <div class="day-section">
+<div class="day-section">
  <div class="day-header">
- <div class="day-badge evening leg"><svg width="20" height="14" viewBox="0 0 20 14" fill="none"><rect x="0" y="4" width="3" height="6" rx="1" fill="#ef4444"/><rect x="4" y="2" width="2" height="10" rx="0.5" fill="#ef4444"/><rect x="7" y="0" width="6" height="3" rx="1.5" fill="#ef4444"/><rect x="7" y="11" width="6" height="3" rx="1.5" fill="#ef4444"/><rect x="7" y="3" width="6" height="8" rx="1" fill="rgba(239,68,68,0.3)"/><rect x="14" y="2" width="2" height="10" rx="0.5" fill="#ef4444"/><rect x="17" y="4" width="3" height="6" rx="1" fill="#ef4444"/></svg></div>
+ <div class="day-badge leg"></div>
  <div class="day-info">
- <div class="day-name">晚上 · 腿日力量 45′ + 拉伸 15′</div>
- <div class="day-sub">21:00–22:00 | 臀腿+核心稳定</div>
+ <div class="day-name">09:30 腿日力量训练 60-70min</div>
+ <div class="day-sub">臀腿+核心稳定 | 哑铃+杠铃</div>
  <div class="day-tags"><span>哑铃+杠铃</span><span>无肩部压力</span><span class="warn">做完别开车</span></div>
  </div>
  </div>
@@ -1057,45 +1024,42 @@
 
  </div>
  </div>
+
+<div class="compact-card rehab-card">
+ <div class="cc-icon">🩹</div>
+ <div class="cc-info">
+  <div class="cc-title">14:00 肩关节康复 20min</div>
+  <div class="cc-sub">肩袖外旋 + 肩胛稳定 + 胸椎活动度 + 泡沫轴 · 1-2KG轻哑铃</div>
+ </div>
+</div>
+
+<div class="compact-card walk-card">
+ <div class="cc-icon">🌙</div>
+ <div class="cc-info">
+  <div class="cc-title">19:30 晚间散步 30min</div>
+  <div class="cc-sub">助消化 + 补步数 · 不看手机 · 放松心情</div>
+ </div>
+</div>
+
 </div>
 
 <!-- 周六 -->
 <div class="day-panel" id="panel-5">
- <div class="day-section">
- <div class="day-header">
- <div class="day-badge morning"></div>
- <div class="day-info">
- <div class="day-name">早上 · 空腹有氧 20′ + 肩康复 10′</div>
- <div class="day-sub">7:00–7:30 | 周末早起空腹燃脂</div>
- </div>
- </div>
- <div class="day-body">
- <div class="video-box">
- <div class="video-label"> 空腹有氧</div>
- <div class="vid-lazy" data-bvid="BV1e541197y8" onclick="loadVid(this)"><div class="vid-play-btn">▶ 点击加载视频</div></div>
- </div>
- <div class="video-meta">
- <span class="vm-title">刘畊宏 · 18分钟晨间暖身训练 | 254.6万播放</span>
- <a class="vm-link" href="https://www.bilibili.com/video/BV1e541197y8" target="_blank">打开B站 →</a>
- </div>
 
- <div class="video-box">
- <div class="video-label"> 肩康复</div>
- <div class="vid-lazy" data-bvid="BV1WM411U7yq" onclick="loadVid(this)"><div class="vid-play-btn">▶ 点击加载视频</div></div>
+<div class="compact-card walk-card">
+ <div class="cc-icon">🚶</div>
+ <div class="cc-info">
+  <div class="cc-title">07:00 晨间快走 45min</div>
+  <div class="cc-sub">心率 110-130 纯燃脂区间 · 空腹或早餐后 · 不拿手机专注走</div>
  </div>
- <div class="video-meta">
- <span class="vm-title">倍他运动康复 · 肩关节弹力带训练 | 99万播放</span>
- <a class="vm-link" href="https://www.bilibili.com/video/BV1WM411U7yq" target="_blank">打开B站 →</a>
- </div>
- </div>
- </div>
+</div>
 
- <div class="day-section">
+<div class="day-section">
  <div class="day-header">
- <div class="day-badge evening"></div>
+ <div class="day-badge"></div>
  <div class="day-info">
- <div class="day-name">晚上 · 轻量全身力量 30′ + 瑜伽 30′</div>
- <div class="day-sub">21:00–22:00 | 肌肉保存信号 + 放松恢复</div>
+ <div class="day-name">09:30 轻量全身力量 30min + 瑜伽 30min</div>
+ <div class="day-sub">肌肉保存信号 + 放松恢复</div>
  <div class="day-tags"><span class="warn"> 不求力竭！永远不升级！</span></div>
  </div>
  </div>
@@ -1138,68 +1102,82 @@
  </div>
  </div>
  </div>
+
+<div class="compact-card rehab-card">
+ <div class="cc-icon">🩹</div>
+ <div class="cc-info">
+  <div class="cc-title">14:00 肩关节康复 20min</div>
+  <div class="cc-sub">肩袖外旋 + 肩胛稳定 + 胸椎活动度 + 泡沫轴 · 1-2KG轻哑铃</div>
+ </div>
+</div>
+
+<div class="compact-card walk-card">
+ <div class="cc-icon">🌙</div>
+ <div class="cc-info">
+  <div class="cc-title">19:30 晚间散步 30min</div>
+  <div class="cc-sub">助消化 + 补步数 · 不看手机 · 放松心情</div>
+ </div>
+</div>
+
 </div>
 
 <!-- 周日 -->
 <div class="day-panel" id="panel-6">
- <div class="day-section">
+
+<div class="compact-card walk-card">
+ <div class="cc-icon">🚶</div>
+ <div class="cc-info">
+  <div class="cc-title">07:00 晨间快走 45min</div>
+  <div class="cc-sub">心率 110-130 纯燃脂区间 · 不拿手机专注走</div>
+ </div>
+</div>
+
+<div class="day-section">
  <div class="day-header">
- <div class="day-badge morning"></div>
+ <div class="day-badge rest"></div>
  <div class="day-info">
- <div class="day-name">早上 · 柔韧瑜伽 20′ + 肩康复 10′</div>
- <div class="day-sub">7:00–7:30 | 纯恢复日，温和伸展</div>
+ <div class="day-name">09:30 完整瑜伽拉伸 30-45min</div>
+ <div class="day-sub">纯恢复日 · 不碰哑铃 · 神经系统彻底休息</div>
+ <div class="day-tags"><span class="warn">不做任何力量训练</span></div>
  </div>
  </div>
  <div class="day-body">
  <div class="video-box">
- <div class="video-label"> 柔韧拉伸</div>
- <div class="vid-lazy" data-bvid="BV1gVLFzBEBN" onclick="loadVid(this)"><div class="vid-play-btn">▶ 点击加载视频</div></div>
- </div>
- <div class="video-meta">
- <span class="vm-title">张德琪 · 晨间柔韧性拉伸跟练 | 6′50″</span>
- <a class="vm-link" href="https://www.bilibili.com/video/BV1gVLFzBEBN" target="_blank">打开B站 →</a>
- </div>
- <p class="tip"> 周日纯恢复日，温和瑜伽+肩康复即可。让神经系统彻底休息，为周一蓄力。</p>
-
- <div class="video-box">
- <div class="video-label"> 肩康复</div>
- <div class="vid-lazy" data-bvid="BV1WM411U7yq" onclick="loadVid(this)"><div class="vid-play-btn">▶ 点击加载视频</div></div>
- </div>
- <div class="video-meta">
- <span class="vm-title">倍他运动康复 · 肩关节弹力带训练 | 99万播放</span>
- <a class="vm-link" href="https://www.bilibili.com/video/BV1WM411U7yq" target="_blank">打开B站 →</a>
- </div>
- </div>
- </div>
-
- <div class="day-section">
- <div class="day-header">
- <div class="day-badge evening rest"></div>
- <div class="day-info">
- <div class="day-name">晚上 · 散步 30′ + 全身拉伸 30′</div>
- <div class="day-sub">21:00–22:00 | 纯恢复 · 为周一储蓄能量</div>
- <div class="day-tags"><span class="warn"> 不做任何高心率运动</span></div>
- </div>
- </div>
- <div class="day-body">
- <div class="moves-title"> 散步 30′（21:00–21:30）</div>
- <div style="background:rgba(74,222,128,0.05);border:1px solid rgba(74,222,128,0.2);border-radius:8px;padding:10px;margin-bottom:10px;">
- <svg viewBox="0 0 600 80" style="width:100%;height:auto;"><rect x="0" y="0" width="600" height="80" rx="8" fill="#111"/><circle cx="55" cy="40" r="7" fill="#4ade80" opacity="0.6"/><text x="75" y="44" fill="#4ade80" font-size="11">出门</text><line x1="120" y1="40" x2="220" y2="40" stroke="#4ade80" stroke-width="2" stroke-dasharray="5,3"/><text x="170" y="34" fill="#888" font-size="9">慢走5′热身</text><line x1="220" y1="40" x2="330" y2="40" stroke="#4ade80" stroke-width="3"/><text x="275" y="34" fill="#4ade80" font-size="10">中速走20′</text><text x="275" y="52" fill="#888" font-size="9">心率微升·能聊天·专注身体</text><line x1="330" y1="40" x2="430" y2="40" stroke="#4ade80" stroke-width="2" stroke-dasharray="5,3"/><text x="380" y="34" fill="#888" font-size="9">慢走5′缓和</text><circle cx="485" cy="40" r="7" fill="#4ade80" opacity="0.6"/><text x="505" y="44" fill="#4ade80" font-size="11">到家</text></svg>
- </div>
- <div class="rehab"><strong> 为什么散步：</strong>一周4次力量训练后，神经系统需要彻底休息。散步降低皮质醇、促进修复。<br><strong> 不要做：</strong>跑步、跳绳、骑车——今天是"关机日"。</div>
-
- <div class="moves-title"> 全身拉伸 30′（21:30–22:00）</div>
- <div class="video-box">
- <div class="video-label">跟练</div>
+ <div class="video-label">瑜伽跟练</div>
  <div class="vid-lazy" data-bvid="BV1MjXZBGEVt" onclick="loadVid(this)"><div class="vid-play-btn">▶ 点击加载视频</div></div>
  </div>
  <div class="video-meta">
  <span class="vm-title">阿见见 · 20分钟拉伸全身 | 5.8万播放·新手友好</span>
  <a class="vm-link" href="https://www.bilibili.com/video/BV1MjXZBGEVt" target="_blank">打开B站 →</a>
  </div>
- <p class="tip"> 散步→拉伸→00:00关灯睡觉。完美周日恢复闭环。<br>备选：<a href="https://www.bilibili.com/video/BV1skaizGEqH" target="_blank" style="color:var(--info);">暴躁小细菌 40′全身拉伸 | 3.5万播放</a></p>
+ <p class="tip">周日纯恢复：不设闹钟睡到自然醒，完整瑜伽+散步。让神经系统彻底休息为周一蓄力。</p>
  </div>
+</div>
+
+<div class="compact-card rehab-card">
+ <div class="cc-icon">🩹</div>
+ <div class="cc-info">
+  <div class="cc-title">14:00 肩关节康复 20min</div>
+  <div class="cc-sub">肩袖外旋 + 肩胛稳定 + 胸椎活动度 + 泡沫轴 · 1-2KG轻哑铃</div>
  </div>
+</div>
+
+<div class="compact-card walk-card">
+ <div class="cc-icon">🌙</div>
+ <div class="cc-info">
+  <div class="cc-title">19:30 晚间散步 30min</div>
+  <div class="cc-sub">助消化 + 补步数 · 不看手机 · 放松心情</div>
+ </div>
+</div>
+
+<div class="compact-card sleep-card">
+ <div class="cc-icon">😴</div>
+ <div class="cc-info">
+  <div class="cc-title">21:00 睡眠准备 · 22:00 入睡</div>
+  <div class="cc-sub">关屏幕 · 室温20-22°C · 甘氨酸镁2.7g · 必须侧卧</div>
+ </div>
+</div>
+
 </div>
 
 <!-- ====== 热身 & 拉伸参考（折叠） ====== -->
@@ -3166,9 +3144,15 @@ var TimeEstimator = (function() {
 <nav class="bottom-nav">
  <a href="今日计划.html">今日</a>
  <a href="减脂全面计划.html">计划</a>
- <a href="减脂训练日跟练_三分化.html" class="active">跟练</a>
+ <a href="减脂训练日跟练_休假版.html" class="active">跟练</a>
  <a href="每日必做清单.html">清单</a>
  <a href="饮食参考.html">饮食</a>
 </nav>
+<div style="text-align:center;padding:0 16px 24px;">
+ <div class="mode-toggle" style="display:inline-flex;">
+  <a href="减脂训练日跟练_三分化.html">工作日</a>
+  <a href="减脂训练日跟练_休假版.html" class="active holiday">休假日</a>
+ </div>
+</div>
 </body>
 </html>
