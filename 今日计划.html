@@ -834,12 +834,18 @@ const SUPPS = [
   { id:'protein', icon:'💪', name:'乳清蛋白粉', dose:'30g（1勺）',
     time:'训练日：训练后30分钟内 · 休息日：下午15:00-16:00加餐',
     tip:'训练后肌肉吸收率最高；休息日下午补蛋白合成低谷' },
+  { id:'creatine', icon:'🔋', name:'一水肌酸', dose:'5g（1茶匙）',
+    time:'每天任意时间，建议固定 · 可混水或蛋白粉一起喝',
+    tip:'每天5g不用停，配合训练增肌增力；关键是每天吃，不挑时间' },
   { id:'fishoil', icon:'🐟', name:'鱼油', dose:'2颗',
     time:'午餐1颗 + 晚餐1颗',
     tip:'随餐服用吸收好，分两次减少鱼腥打嗝' },
   { id:'vd3', icon:'☀️', name:'维生素D3', dose:'1颗',
     time:'随早餐服用（牛奶+鸡蛋含脂肪，帮助吸收）',
-    tip:'脂溶性维生素，必须随含脂肪的餐食吃' }
+    tip:'脂溶性维生素，必须随含脂肪的餐食吃' },
+  { id:'magnesium', icon:'🌙', name:'甘氨酸镁', dose:'约2.7g粉（300mg元素镁）',
+    time:'睡前30-60分钟，温水冲服',
+    tip:'甘氨酸本身有镇静效果，助眠+放松肌肉；别和钙/铁同时吃' }
 ];
 
 function getTodayKeySupp() {
@@ -891,7 +897,7 @@ function renderSuppCard() {
   html += `</div>
     <div class="supp-progress">
       <div class="supp-progress-track"><div class="supp-progress-fill" style="width:${doneCount/SUPPS.length*100}%"></div></div>
-      <span class="supp-progress-text">${doneCount}/${SUPPS.length}${doneCount===3 ? ' ✅' : ''}</span>
+      <span class="supp-progress-text">${doneCount}/${SUPPS.length}${doneCount===SUPPS.length ? ' ✅' : ''}</span>
     </div>
   `;
 
