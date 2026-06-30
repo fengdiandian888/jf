@@ -223,37 +223,21 @@ details .inner { padding: 6px 0; }
   display: flex; align-items: flex-start; gap: 10px;
   padding: 10px 12px; background: rgba(255,255,255,.75);
   border: 1px solid #fde68a; border-radius: 10px;
-  transition: all .2s; cursor: pointer; user-select: none;
-  -webkit-tap-highlight-color: transparent;
 }
-.supp-item:active { transform: scale(.98); }
-.supp-item.done { background: #f0fdf4; border-color: #bbf7d0; }
-.supp-check {
-  flex-shrink: 0; width: 24px; height: 24px; margin-top: 1px;
-  border: 2px solid #d6d3cd; border-radius: 7px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 14px; font-weight: 800; color: transparent;
-  transition: all .15s;
+.supp-period {
+  flex-shrink: 0; padding: 4px 8px; margin-top: 1px;
+  border-radius: 6px; font-size: 10px; font-weight: 800;
+  white-space: nowrap; min-width: 52px; text-align: center; line-height: 1.3;
 }
-.supp-item.done .supp-check { background: #22c55e; border-color: #22c55e; color: #fff; }
 .supp-info { flex: 1; min-width: 0; }
 .supp-name-row { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin-bottom: 3px; }
 .supp-name { font-size: 13px; font-weight: 800; color: var(--text); }
-.supp-item.done .supp-name { text-decoration: line-through; color: var(--sub); }
 .supp-dose {
   padding: 1px 8px; font-size: 11px; font-weight: 700; border-radius: 4px;
   background: rgba(59,130,246,0.12); color: var(--pull);
 }
-.supp-item.done .supp-dose { opacity: .5; }
 .supp-time { font-size: 11px; color: #78716c; line-height: 1.5; }
 .supp-tip { font-size: 10px; color: var(--sub); line-height: 1.5; margin-top: 2px; }
-.supp-progress { margin-top: 10px; display: flex; align-items: center; gap: 8px; }
-.supp-progress-track { flex: 1; height: 6px; background: rgba(0,0,0,.06); border-radius: 3px; overflow: hidden; }
-.supp-progress-fill {
-  height: 100%; background: linear-gradient(90deg, #f59e0b 0%, #22c55e 100%);
-  border-radius: 3px; transition: width .3s ease; width: 0%;
-}
-.supp-progress-text { font-size: 11px; font-weight: 700; color: #92400e; white-space: nowrap; }
 </style>
 <script src="data.js"></script>
 </head>
@@ -829,58 +813,48 @@ function renderTodayMeals() {
   card.innerHTML = html;
 }
 
-// ---- 补剂提醒 ----
+// ---- 补剂提醒（按时间顺序，静态展示） ----
 const SUPPS = [
+  { id:'vd3', icon:'☀️', name:'维生素D3', dose:'1颗',
+    period:'早餐', periodBg:'rgba(245,158,11,.15)', periodColor:'#92400e',
+    time:'随早餐服用（牛奶+鸡蛋含脂肪，帮助吸收）',
+    tip:'脂溶性维生素，必须随含脂肪的餐食吃' },
+  { id:'fishoil', icon:'🐟', name:'鱼油', dose:'2颗',
+    period:'午/晚餐', periodBg:'rgba(74,222,128,.15)', periodColor:'#166534',
+    time:'午餐1颗 + 晚餐1颗',
+    tip:'随餐服用吸收好，分两次减少鱼腥打嗝' },
   { id:'protein', icon:'💪', name:'乳清蛋白粉', dose:'30g（1勺）',
+    period:'训练后', periodBg:'rgba(96,165,250,.15)', periodColor:'#1e40af',
     time:'训练日：训练后30分钟内 · 休息日：下午15:00-16:00加餐',
     tip:'训练后肌肉吸收率最高；休息日下午补蛋白合成低谷' },
   { id:'creatine', icon:'🔋', name:'一水肌酸', dose:'5g（1茶匙）',
-    time:'每天任意时间，建议固定 · 可混水或蛋白粉一起喝',
+    period:'任意时间', periodBg:'rgba(167,139,250,.15)', periodColor:'#5b21b6',
+    time:'每天固定一个时间即可 · 可混水或蛋白粉一起喝',
     tip:'每天5g不用停，配合训练增肌增力；关键是每天吃，不挑时间' },
-  { id:'fishoil', icon:'🐟', name:'鱼油', dose:'2颗',
-    time:'午餐1颗 + 晚餐1颗',
-    tip:'随餐服用吸收好，分两次减少鱼腥打嗝' },
-  { id:'vd3', icon:'☀️', name:'维生素D3', dose:'1颗',
-    time:'随早餐服用（牛奶+鸡蛋含脂肪，帮助吸收）',
-    tip:'脂溶性维生素，必须随含脂肪的餐食吃' },
   { id:'magnesium', icon:'🌙', name:'甘氨酸镁', dose:'约2.7g粉（300mg元素镁）',
+    period:'睡前', periodBg:'rgba(99,102,241,.15)', periodColor:'#3730a3',
     time:'睡前30-60分钟，温水冲服',
     tip:'甘氨酸本身有镇静效果，助眠+放松肌肉；别和钙/铁同时吃' }
 ];
-
-function getTodayKeySupp() {
-  return now.getFullYear()+'-'+(now.getMonth()+1).toString().padStart(2,'0')+'-'+now.getDate().toString().padStart(2,'0');
-}
-
-function getSuppState() {
-  try { return JSON.parse(localStorage.getItem('jf_supp_'+getTodayKeySupp()) || '{}'); }
-  catch(e) { return {}; }
-}
-
-function saveSuppState(state) {
-  localStorage.setItem('jf_supp_'+getTodayKeySupp(), JSON.stringify(state));
-}
 
 function renderSuppCard() {
   const card = document.getElementById('suppTodayCard');
   if (!card) return;
 
-  const state = getSuppState();
   const weekDay = DAYS[DI];
   const dateStr = (now.getMonth()+1) + '月' + now.getDate() + '日 周' + weekDay;
 
   let html = `
     <div class="supp-title-row">
-      <span class="supp-title">💊 每日补剂提醒</span>
+      <span class="supp-title">💊 每日补剂</span>
       <span class="supp-date">${dateStr}</span>
     </div>
     <div class="supp-list">
   `;
 
   SUPPS.forEach(function(s) {
-    const done = state[s.id];
-    html += `<div class="supp-item${done ? ' done' : ''}" data-supp="${s.id}">
-      <div class="supp-check">${done ? '✓' : ''}</div>
+    html += `<div class="supp-item">
+      <div class="supp-period" style="background:${s.periodBg};color:${s.periodColor}">${s.period}</div>
       <div class="supp-info">
         <div class="supp-name-row">
           <span style="font-size:16px">${s.icon}</span>
@@ -893,29 +867,8 @@ function renderSuppCard() {
     </div>`;
   });
 
-  const doneCount = SUPPS.filter(function(s) { return state[s.id]; }).length;
-  html += `</div>
-    <div class="supp-progress">
-      <div class="supp-progress-track"><div class="supp-progress-fill" style="width:${doneCount/SUPPS.length*100}%"></div></div>
-      <span class="supp-progress-text">${doneCount}/${SUPPS.length}${doneCount===SUPPS.length ? ' ✅' : ''}</span>
-    </div>
-  `;
-
+  html += `</div>`;
   card.innerHTML = html;
-
-  // 绑定点击
-  card.querySelectorAll('.supp-item').forEach(function(item) {
-    const sid = item.getAttribute('data-supp');
-    item.addEventListener('click', function(e) { e.preventDefault(); toggleSupp(sid); });
-    item.addEventListener('touchend', function(e) { e.preventDefault(); toggleSupp(sid); });
-  });
-}
-
-function toggleSupp(id) {
-  const state = getSuppState();
-  state[id] = !state[id];
-  saveSuppState(state);
-  renderSuppCard();
 }
 
 // ========== MASTER RENDER ==========

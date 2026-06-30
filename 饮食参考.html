@@ -227,7 +227,7 @@ h1 { font-size: 20px; text-align: center; padding: 12px 0 0; color: var(--primar
   <div id="shoppingContent"></div>
 </div>
 
-<div class="footer">减脂计划 · 饮食设置 v6.4 · 2026-06-30<br>设置入口 · 热量预算控份 · 自动保存 · 当日饮食与补剂请看<a href="今日计划.html" style="color:var(--primary)">今日页面</a></div>
+<div class="footer">减脂计划 · 饮食设置 v6.5 · 2026-06-30<br>设置入口 · 热量预算控份 · 自动保存 · 采购清单智能单位 · 当日饮食与补剂请看<a href="今日计划.html" style="color:var(--primary)">今日页面</a></div>
 
 <nav class="bottom-nav">
   <a href="今日计划.html">今日</a>
@@ -649,6 +649,29 @@ h1 { font-size: 20px; text-align: center; padding: 12px 0 0; color: var(--primar
     updateSaveStatus();
   };
 
+  // ========== 采购清单单位转换 ==========
+  function formatShopTotal(name, totalGrams, mealCount) {
+    var perMeal = Math.round(totalGrams / mealCount);
+    // 鸡蛋 → 个数（1个≈50g）
+    if (name === '鸡蛋') {
+      var totalEggs = Math.ceil(totalGrams / 50);
+      var perMealEggs = Math.round(totalGrams / mealCount / 50);
+      return { detail: perMealEggs + '个 × ' + mealCount + '餐', total: totalEggs + '个' };
+    }
+    // 液体 → ml
+    if (name === '牛奶' || name === '无糖酸奶' || name === '无糖豆浆') {
+      return { detail: perMeal + 'ml × ' + mealCount + '餐', total: Math.round(totalGrams) + 'ml' };
+    }
+    // 米饭/杂粮饭 → 干重（熟重÷2.5）
+    if (name === '米饭' || name === '杂粮饭') {
+      var dryPerMeal = Math.round(perMeal / 2.5);
+      var dryTotal = Math.round(totalGrams / 2.5);
+      return { detail: dryPerMeal + 'g(干) × ' + mealCount + '餐', total: dryTotal + 'g（干重）' };
+    }
+    // 其他 → g
+    return { detail: perMeal + 'g × ' + mealCount + '餐', total: Math.round(totalGrams) + 'g' };
+  }
+
   // ========== 采购清单 ==========
   function renderShopList() {
     var content = document.getElementById('shoppingContent');
@@ -702,10 +725,11 @@ h1 { font-size: 20px; text-align: center; padding: 12px 0 0; color: var(--primar
 
       html += '<div class="shop-cat-title" style="color:'+catColors[cat]+'">'+catNames[cat]+'</div>';
       catItems.forEach(function(item) {
+        var fmt = formatShopTotal(item.name, item.d.grams, item.d.meals);
         html += '<div class="shop-row">'+
           '<span class="shop-name">'+item.name+'</span>'+
-          '<span class="shop-detail">'+item.d.grams+'g &times; '+item.d.meals+'餐</span>'+
-          '<span class="shop-total"><b>'+item.d.grams+'g</b></span>'+
+          '<span class="shop-detail">'+fmt.detail+'</span>'+
+          '<span class="shop-total"><b>'+fmt.total+'</b></span>'+
           '</div>';
       });
     });
