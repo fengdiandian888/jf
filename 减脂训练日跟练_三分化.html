@@ -270,7 +270,7 @@
   padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 700;
 }
 
-/* 休息倒计时大屏 */
+/* 休息/热身倒计时大屏（共用） */
 .tm-rest-screen {
   display: none; flex-direction: column; align-items: center; justify-content: center;
   flex: 1 1 auto; gap: 12px;
@@ -284,7 +284,10 @@
   text-shadow: 0 0 40px rgba(249,115,22,.3);
 }
 .tm-rest-countdown.warning { color: #ef4444; animation: tmPulse .8s ease-in-out infinite; }
+.tm-rest-countdown.warmup { color: #f59e0b; text-shadow: 0 0 40px rgba(245,158,11,.35); }
+.tm-rest-countdown.warmup.warning { color: #ef4444; animation: tmPulse .8s ease-in-out infinite; }
 .tm-rest-hint { font-size: 14px; color: rgba(255,255,255,.35); }
+.tm-warmup-stage { font-size: 14px; color: rgba(255,255,255,.4); margin-bottom: -6px; }
 
 /* 动作标题区 */
 .tm-exercise-info {
@@ -1429,12 +1432,13 @@ if('serviceWorker' in navigator){
     <div class="tm-video-badge" id="tmVideoBadge">第1组</div>
   </div>
 
-  <!-- 休息倒计时大屏 -->
+  <!-- 休息/热身倒计时大屏（共用） -->
   <div class="tm-rest-screen" id="tmRestScreen">
-    <div class="tm-rest-icon">☕</div>
-    <div class="tm-rest-label">间组休息</div>
+    <div class="tm-rest-icon" id="tmRestIcon">☕</div>
+    <div class="tm-rest-label" id="tmRestLabel">间组休息</div>
+    <div class="tm-warmup-stage" id="tmWarmupStage" style="display:none">1 / 4</div>
     <div class="tm-rest-countdown" id="tmRestCountdown">90</div>
-    <div class="tm-rest-hint">放松肌肉，调整呼吸</div>
+    <div class="tm-rest-hint" id="tmRestHint">放松肌肉，调整呼吸</div>
   </div>
 
   <!-- 动作信息（训练中/休息中） -->
@@ -1558,7 +1562,7 @@ var WorkoutTimer = (function() {
   var progressFill, exercisesList, controls;
   var btnPause, btnComplete, btnSkip, btnClose;
   var completeScreen;
-  var restScreen, restCountdown;
+  var restScreen, restCountdown, restIcon, restLabel, restHint, warmupStageEl;
   var remainingEst;
   var totalDuration;
 
@@ -1805,6 +1809,12 @@ var WorkoutTimer = (function() {
         btnSkip.style.display = '';
         btnSkip.textContent = '跳过休息 →';
         break;
+      case STATE.WARMUP:
+        btnPause.style.display = '';
+        btnComplete.style.display = 'none';
+        btnSkip.style.display = '';
+        btnSkip.textContent = '跳过热身 →';
+        break;
       default:
         controls.style.display = 'none';
     }
@@ -1910,9 +1920,15 @@ var WorkoutTimer = (function() {
 
     // 隐藏视频，显示休息倒计时大屏
     videoArea.style.display = 'none';
-    restScreen.classList.add('active');
+    // 重置为休息样式（清除热身状态）
+    restIcon.textContent = '☕';
+    restLabel.textContent = '间组休息';
+    warmupStageEl.style.display = 'none';
+    restCountdown.className = 'tm-rest-countdown';
     restCountdown.textContent = restTime;
-    restCountdown.classList.remove('warning');
+    restHint.textContent = '放松肌肉，调整呼吸';
+    restScreen.classList.add('active');
+    restScreen.classList.remove('warmup-mode');
 
     showControlsForState();
     updateDisplay();
@@ -2124,6 +2140,10 @@ var WorkoutTimer = (function() {
     completeScreen = $('tmCompleteScreen');
     restScreen = $('tmRestScreen');
     restCountdown = $('tmRestCountdown');
+    restIcon = $('tmRestIcon');
+    restLabel = $('tmRestLabel');
+    restHint = $('tmRestHint');
+    warmupStageEl = $('tmWarmupStage');
     remainingEst = $('tmRemainingEst');
     totalDuration = $('tmTotalDuration');
 
@@ -2188,28 +2208,53 @@ var WorkoutTimer = (function() {
     var wEx = warmupExercises[0];
     timeLeft = wEx.duration;
 
-    // 显示热身UI
+    // 显示热身UI — 用休息大屏样式
+    restIcon.textContent = '🔥';
+    restLabel.textContent = wEx.name + ' ' + wEx.icon;
+    warmupStageEl.style.display = '';
+    warmupStageEl.textContent = '热身 ' + (warmupStage + 1) + ' / ' + warmupExercises.length;
+    restCountdown.textContent = timeLeft;
+    restCountdown.className = 'tm-rest-countdown warmup';
+    restHint.textContent = '活动关节，预防受伤';
+
+    // 显示大屏 + 控制栏（暂停/跳过热身）
+    restScreen.classList.add('active');
+    restScreen.classList.add('warmup-mode');
+    controls.style.display = '';
+    showControlsForState();
+
+    // 隐藏训练UI
+    document.getElementById('tmExerciseInfo').style.display = 'none';
+    videoArea.style.display = 'none';
+    progressFill.parentElement.parentElement.style.display = 'none';
+    overlay.classList.remove('rest-mode');
+
+    // header信息
     exerciseName.textContent = '🔥 热身准备';
     exerciseMeta.textContent = '';
     setInfo.textContent = '总时长 3分钟';
     timerLabel.textContent = '⏱ 热身倒计时';
+    timerDisplay.textContent = formatTime(timeLeft);
     timerDisplay.classList.remove('warning', 'rest-mode');
-    overlay.classList.remove('rest-mode');
 
-    // 隐藏视频、进度条
-    document.getElementById('tmExerciseInfo').style.display = '';
-    videoArea.style.display = 'none';
-    restScreen.classList.remove('active');
-    progressFill.parentElement.parentElement.style.display = 'none';
-    controls.style.display = 'none';
-
-    updateWarmupDisplay();
     speak('先热身3分钟，保护关节！');
     startTicker();
   }
 
   function updateWarmupDisplay() {
     var wEx = warmupExercises[warmupStage];
+    restLabel.textContent = wEx.name + ' ' + wEx.icon;
+    warmupStageEl.textContent = '热身 ' + (warmupStage + 1) + ' / ' + warmupExercises.length;
+    restCountdown.textContent = timeLeft;
+
+    // 最后5秒变红闪烁
+    if (timeLeft <= 5) {
+      restCountdown.classList.add('warning');
+    } else {
+      restCountdown.classList.remove('warning');
+    }
+
+    // 同步header信息
     exerciseName.textContent = '🔥 ' + wEx.name + ' ' + wEx.icon;
     exerciseMeta.textContent = '热身 ' + (warmupStage + 1) + '／' + warmupExercises.length;
     setInfo.textContent = '还剩 ' + formatTime(timeLeft);
@@ -2241,8 +2286,15 @@ var WorkoutTimer = (function() {
 
   function finishWarmup() {
     state = STATE.TRAINING;
+    // 隐藏热身大屏
+    restScreen.classList.remove('active', 'warmup-mode');
+    warmupStageEl.style.display = 'none';
+    restCountdown.className = 'tm-rest-countdown';
+    // 恢复训练UI
+    document.getElementById('tmExerciseInfo').style.display = '';
     progressFill.parentElement.parentElement.style.display = '';
     controls.style.display = '';
+    showControlsForState();
     videoArea.style.display = '';
     speak('热身完毕！开始正式训练！加油！');
     loadExercise(0);
