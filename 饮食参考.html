@@ -662,11 +662,11 @@ h1 { font-size: 20px; text-align: center; padding: 12px 0 0; color: var(--primar
     if (name === '牛奶' || name === '无糖酸奶' || name === '无糖豆浆') {
       return { detail: perMeal + 'ml × ' + mealCount + '餐', total: Math.round(totalGrams) + 'ml' };
     }
-    // 米饭/杂粮饭 → 干重（熟重÷2.5）
+    // 米饭/杂粮饭 → 生重+熟重都标
     if (name === '米饭' || name === '杂粮饭') {
       var dryPerMeal = Math.round(perMeal / 2.5);
       var dryTotal = Math.round(totalGrams / 2.5);
-      return { detail: dryPerMeal + 'g(干) × ' + mealCount + '餐', total: dryTotal + 'g（干重）' };
+      return { detail: dryPerMeal + 'g(生)=' + perMeal + 'g(熟) × ' + mealCount + '餐', total: dryTotal + 'g（生重，熟重' + Math.round(totalGrams) + 'g）' };
     }
     // 其他 → g
     return { detail: perMeal + 'g × ' + mealCount + '餐', total: Math.round(totalGrams) + 'g' };
