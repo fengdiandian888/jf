@@ -240,6 +240,7 @@ details .inner { padding: 6px 0; }
 .supp-tip { font-size: 10px; color: var(--sub); line-height: 1.5; margin-top: 2px; }
 </style>
 <script src="data.js"></script>
+<script src="exercise_db.js"></script>
 </head>
 <body>
 
@@ -268,6 +269,15 @@ details .inner { padding: 6px 0; }
 <script>
 // ========== CORE DATA ==========
 const DAYS = ['日','一','二','三','四','五','六'];
+// Exercise DB name lookup
+function getExKey(name) {
+  if (!window.EXERCISE_DB) return '';
+  const clean = name.replace(/[（(]\s*(轻量[^）)]*|负重)\s*[）)]/g,'').replace('（双腿）','').trim();
+  const overrides = {'哑铃地板卧推':'哑铃卧推','哑铃臀桥':'臀桥','高脚杯深蹲（轻量哑铃）':'高脚杯深蹲','哑铃罗马尼亚硬拉':'罗马尼亚硬拉','前平举':'哑铃前平举','侧平举':'哑铃侧平举'};
+  if (overrides[clean]) return overrides[clean];
+  const ex = window.EXERCISE_DB.find(e => e.name === clean || clean.includes(e.name) || e.name.includes(clean));
+  return ex ? ex.name : '';
+}
 const now = new Date();
 const DI = now.getDay();
 const todayStr = now.toISOString().slice(0,10);
@@ -502,7 +512,7 @@ function renderToday(d) {
  let trHTML = '';
  if (p.tx) {
  trHTML = `<div class="th-block move-item">
- ${p.tx.moves.map(m => `<div class="move-row"><span class="move-name">${m[0]}</span><span class="move-sets">${m[1]}</span></div>`).join('')}
+ ${p.tx.moves.map(m => `<div class="move-row" data-exercise="${getExKey(m[0])}"><span class="move-name">${m[0]}</span><span class="move-sets">${m[1]}</span></div>`).join('')}
  ${p.tx.caution ? `<div style="font-size: 12px;color:var(--warn);margin-top:4px"> ${p.tx.caution}</div>` : ''}
  </div>`;
  }
