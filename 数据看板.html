@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>数据看板 · 减脂</title>
+<link rel="stylesheet" href="shared.css">
+<style>
+  .dash-wrap { max-width: 560px; margin: 0 auto; padding: 16px 14px 90px; }
+  .dash-h { font-size: 22px; font-weight: 800; margin: 8px 4px 16px; display:flex; align-items:center; gap:8px; }
+  .card {
+    background: var(--card); border: 1px solid var(--border); border-radius: 16px;
+    padding: 16px; margin-bottom: 14px; box-shadow: 0 1px 3px rgba(0,0,0,.04);
+  }
+  .card-h { font-size: 15px; font-weight: 700; margin-bottom: 12px; display:flex; align-items:center; gap:6px; }
+  .card-h small { font-weight: 400; color: var(--sub); font-size: 12px; }
+
+  /* 快速体重录入 */
+  .quick-row { display: flex; gap: 10px; align-items: stretch; }
+  .quick-row input[type=number] {
+    flex: 1; font-size: 28px; font-weight: 800; text-align: center;
+    border: 2px solid var(--border); border-radius: 12px; padding: 8px; background: var(--bg); color: var(--text);
+  }
+  .quick-row input[type=date] {
+    border: 1px solid var(--border); border-radius: 10px; padding: 8px; background: var(--bg); color: var(--text); font-size: 13px;
+  }
+  .btn-primary {
+    background: var(--primary); color: #fff; border: none; border-radius: 12px;
+    padding: 0 18px; font-size: 15px; font-weight: 700; cursor: pointer; white-space: nowrap;
+  }
+  .btn-primary:active { transform: scale(.97); }
+  .quick-meta { margin-top: 10px; font-size: 13px; color: var(--sub); display:flex; justify-content:space-between; flex-wrap:wrap; gap:6px; }
+  .quick-meta b { color: var(--text); }
+  .delta-up { color: #ef4444; } .delta-down { color: #22c55e; } .delta-flat { color: var(--sub); }
+
+  /* TDEE */
+  .tdee-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .tdee-grid label { font-size: 12px; color: var(--sub); display:block; margin-bottom:4px; }
+  .tdee-grid input, .tdee-grid select {
+    width: 100%; border: 1px solid var(--border); border-radius: 10px; padding: 9px 10px;
+    background: var(--bg); color: var(--text); font-size: 14px; box-sizing: border-box;
+  }
+  .tdee-results { margin-top: 12px; display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; }
+  .tdee-results .r {
+    background: var(--bg); border-radius: 10px; padding: 10px 6px; text-align: center;
+  }
+  .tdee-results .r .v { font-size: 18px; font-weight: 800; color: var(--primary); }
+  .tdee-results .r .k { font-size: 11px; color: var(--sub); margin-top: 2px; }
+  .tdee-sub { margin-top: 10px; font-size: 12px; color: var(--sub); line-height:1.6; }
+
+  /* 计划vs目标 */
+  .pv-row { margin-bottom: 12px; }
+  .pv-row .pv-top { display:flex; justify-content:space-between; font-size: 13px; margin-bottom: 5px; }
+  .pv-bar { height: 14px; background: var(--bg); border-radius: 7px; overflow: hidden; position: relative; }
+  .pv-bar .fill { height: 100%; border-radius: 7px; transition: width .4s; }
+  .pv-bar .target-mark { position:absolute; top:-3px; bottom:-3px; width:2px; background:#1a1a2e; opacity:.55; }
+  .pv-hint { font-size: 12px; color: var(--sub); margin-top: 4px; }
+
+  /* 趋势图 */
+  .toggle-row { display:flex; gap:6px; margin-bottom: 10px; }
+  .toggle-row button {
+    flex:1; border:1px solid var(--border); background:var(--bg); color:var(--sub);
+    border-radius: 9px; padding: 7px; font-size: 13px; cursor: pointer; font-weight:600;
+  }
+  .toggle-row button.active { background: var(--primary); color:#fff; border-color: var(--primary); }
+  .chart-box { width: 100%; overflow: hidden; }
+  .chart-box svg { width: 100%; height: auto; display:block; }
+  .chart-note { font-size: 12px; color: var(--sub); margin-top: 8px; line-height:1.6; }
+  .comp-toggle { font-size:12px; color:var(--primary); cursor:pointer; user-select:none; margin-top:8px; display:inline-block; }
+
+  /* 训练 */
+  .streak-big { font-size: 34px; font-weight: 900; color: var(--primary); }
+  .streak-sub { font-size: 13px; color: var(--sub); }
+  .week-dots { display:flex; gap:6px; margin-top:12px; }
+  .week-dots .d { flex:1; aspect-ratio:1; border-radius:8px; background:var(--bg); border:1px solid var(--border); display:flex; align-items:center; justify-content:center; font-size:11px; color:var(--sub); }
+  .week-dots .d.done { background: var(--primary); color:#fff; border-color:var(--primary); font-weight:700; }
+  .stat-row { display:flex; gap:10px; margin-top:12px; }
+  .stat-row .s { flex:1; background:var(--bg); border-radius:10px; padding:10px; text-align:center; }
+  .stat-row .s .v { font-size:18px; font-weight:800; }
+  .stat-row .s .k { font-size:11px; color:var(--sub); margin-top:2px; }
+
+  .empty-hint { color: var(--sub); font-size: 13px; text-align:center; padding: 14px 0; }
+  .section-divider { height:1px; background:var(--border); margin:4px 0 14px; }
+</style>
+</head>
+<body>
+<div class="dash-wrap">
+  <div class="dash-h">📊 数据看板</div>
+
+  <!-- 1. 快速体重录入（偶尔填） -->
+  <div class="card">
+    <div class="card-h">⚖️ 记录体重 <small>想起来就填，日/周都行</small></div>
+    <div class="quick-row">
+      <input type="number" id="weightInput" step="0.01" placeholder="82.05" inputmode="decimal">
+      <input type="date" id="weightDate">
+      <button class="btn-primary" id="weightSave">记录</button>
+    </div>
+    <div class="quick-meta" id="weightMeta"></div>
+    <span class="comp-toggle" id="compToggle">＋ 补充体成分（脂肪率 / 肌肉量，可选）</span>
+    <div id="compBox" style="display:none; margin-top:10px;">
+      <div class="tdee-grid">
+        <div><label>脂肪率 %</label><input type="number" id="fatInput" step="0.1" placeholder="25.5" inputmode="decimal"></div>
+        <div><label>肌肉量 kg</label><input type="number" id="muscleInput" step="0.1" placeholder="32.9" inputmode="decimal"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. TDEE 一次性计算器 -->
+  <div class="card">
+    <div class="card-h">🔥 我的热量目标 <small>只设一次</small></div>
+    <div class="tdee-grid">
+      <div><label>身高 cm</label><input type="number" id="tHeight" placeholder="175" inputmode="decimal"></div>
+      <div><label>体重 kg</label><input type="number" id="tWeight" placeholder="82" inputmode="decimal"></div>
+      <div><label>年龄</label><input type="number" id="tAge" placeholder="40" inputmode="numeric"></div>
+      <div><label>活动量</label>
+        <select id="tActivity">
+          <option value="1.2">久坐（少动）</option>
+          <option value="1.375">轻动（1-3次/周）</option>
+          <option value="1.55" selected>中等（3-5次/周）</option>
+          <option value="1.725">活跃（6-7次/周）</option>
+        </select>
+      </div>
+      <div style="grid-column:1/3"><label>每日缺口（减脂速度）</label>
+        <select id="tDeficit">
+          <option value="250">温和 250 kcal（慢但保肌）</option>
+          <option value="500" selected>标准 500 kcal（约0.5kg/周）</option>
+          <option value="750">激进 750 kcal（快但易掉肌）</option>
+        </select>
+      </div>
+    </div>
+    <button class="btn-primary" id="tdeeSave" style="width:100%; margin-top:12px; padding:11px;">计算并保存目标</button>
+    <div class="tdee-results" id="tdeeResults" style="display:none;">
+      <div class="r"><div class="v" id="rBmr">–</div><div class="k">BMR 基础代谢</div></div>
+      <div class="r"><div class="v" id="rTdee">–</div><div class="k">TDEE 总消耗</div></div>
+      <div class="r"><div class="v" id="rTarget">–</div><div class="k">目标热量</div></div>
+      <div class="r"><div class="v" id="rPro">–</div><div class="k">蛋白目标 g</div></div>
+    </div>
+    <div class="tdee-sub" id="tdeeSub"></div>
+  </div>
+
+  <!-- 3. 计划 vs 目标 -->
+  <div class="card">
+    <div class="card-h">🍽️ 周计划 vs 目标 <small>自动对比，无需每日记</small></div>
+    <div id="planVsTarget"></div>
+  </div>
+
+  <!-- 4. 趋势图 -->
+  <div class="card">
+    <div class="card-h">📈 趋势 <small>滚动平均抹平波动</small></div>
+    <div class="toggle-row" id="metricToggle">
+      <button data-m="weight" class="active">体重</button>
+      <button data-m="fat">脂肪率</button>
+      <button data-m="muscle">肌肉量</button>
+    </div>
+    <div class="chart-box" id="chartBox"></div>
+    <div class="chart-note" id="chartNote"></div>
+  </div>
+
+  <!-- 5. 训练打卡 -->
+  <div class="card">
+    <div class="card-h">💪 训练打卡 <small>计时器自动记录</small></div>
+    <div style="display:flex; align-items:baseline; gap:10px;">
+      <span class="streak-big" id="streakBig">0</span>
+      <span class="streak-sub">天连续打卡</span>
+    </div>
+    <div class="week-dots" id="weekDots"></div>
+    <div class="stat-row">
+      <div class="s"><div class="v" id="weekSessions">0</div><div class="k">本周训练次数</div></div>
+      <div class="s"><div class="v" id="weekMin">0</div><div class="k">本周训练分钟</div></div>
+      <div class="s"><div class="v" id="weekKcal">0</div><div class="k">本周消耗 kcal</div></div>
+    </div>
+  </div>
+
+  <div style="text-align:center; color:var(--sub); font-size:12px; padding:8px 0 4px;">
+    数据仅存本地浏览器 · 与训练计时器自动联动
+  </div>
+</div>
+
+<nav class="bottom-nav">
+  <a href="今日计划.html">今日</a>
+  <a href="减脂全面计划.html">计划</a>
+  <a href="减脂训练日跟练_三分化.html">跟练</a>
+  <a href="每日必做清单.html">清单</a>
+  <a href="饮食参考.html">饮食</a>
+  <a href="数据看板.html" class="active">看板</a>
+</nav>
+
+<script src="data.js"></script>
+<script>
+/* ============ 存储键 ============ */
+var K_BODY = 'jf_body_log';      // [{date, weight, fat?, muscle?}]
+var K_TDEE = 'jf_tdee_profile';  // {height,weight,age,activity,deficit}
+var K_LOGS = 'jf_training_logs'; // 计时器已自动写入
+
+/* ============ 工具 ============ */
+function $(id){ return document.getElementById(id); }
+function todayStr(){ return new Date().toISOString().slice(0,10); }
+function loadArr(k){ try { return JSON.parse(localStorage.getItem(k) || '[]'); } catch(e){ return []; } }
+function saveArr(k,v){ localStorage.setItem(k, JSON.stringify(v)); }
+function fmtDate(s){ var p=s.split('-'); return (p[1]&&p[2])?(p[1]+'/'+p[2]):s; }
+function daysBetween(a,b){ return Math.round((new Date(b)-new Date(a))/86400000); }
+
+/* ============ 1. 体重录入 ============ */
+function renderWeightMeta(){
+  var logs = loadArr(K_BODY).filter(function(e){ return e.weight!=null; })
+    .sort(function(a,b){ return a.date<b.date?-1:1; });
+  var meta = $('weightMeta');
+  if (!logs.length){ meta.innerHTML = '还没有记录，填上方数字开始 ✏️'; return; }
+  var last = logs[logs.length-1];
+  var prev = logs.length>1 ? logs[logs.length-2] : null;
+  var d = daysBetween(last.date, todayStr());
+  var dTxt = d===0 ? '今天' : (d+'天前');
+  var deltaHtml = '—';
+  if (prev){
+    var diff = (last.weight - prev.weight);
+    var cls = diff>0.05?'delta-up':(diff<-0.05?'delta-down':'delta-flat');
+    var sign = diff>0?'+':'';
+    deltaHtml = '变化 <b class="'+cls+'">'+sign+diff.toFixed(2)+' kg</b>';
+  }
+  meta.innerHTML = '上次 <b>'+last.weight+' kg</b> ('+dTxt+') · 共 '+logs.length+' 条 · '+deltaHtml;
+}
+$('weightDate').value = todayStr();
+$('compToggle').addEventListener('click', function(){
+  var b = $('compBox'); b.style.display = b.style.display==='none'?'block':'none';
+});
+$('weightSave').addEventListener('click', function(){
+  var w = parseFloat($('weightInput').value);
+  if (!w || w<30 || w>200){ alert('请输入有效体重（30-200kg）'); return; }
+  var date = $('weightDate').value || todayStr();
+  var fat = parseFloat($('fatInput').value);
+  var muscle = parseFloat($('muscleInput').value);
+  var logs = loadArr(K_BODY);
+  // 同日期覆盖
+  var exist = logs.find(function(e){ return e.date===date; });
+  if (exist){ exist.weight = w; if(!isNaN(fat)) exist.fat=fat; if(!isNaN(muscle)) exist.muscle=muscle; }
+  else { var rec={date:date,weight:w}; if(!isNaN(fat)) rec.fat=fat; if(!isNaN(muscle)) rec.muscle=muscle; logs.push(rec); }
+  saveArr(K_BODY, logs);
+  $('weightInput').value=''; $('fatInput').value=''; $('muscleInput').value='';
+  renderWeightMeta(); renderChart(); renderPlanVsTarget();
+});
+
+/* ============ 2. TDEE ============ */
+function calcBMR(s){ return Math.round(10*s.weight + 6.25*s.height - 5*s.age + 5); } // 男 Mifflin-St Jeor
+function computeTDEE(s){
+  var bmr = calcBMR(s);
+  var tdee = Math.round(bmr * s.activity);
+  var target = tdee - s.deficit;
+  var pro = Math.round(target * 0.30 / 4);
+  return { bmr:bmr, tdee:tdee, target:target, pro:pro };
+}
+function renderTDEE(){
+  var p = JSON.parse(localStorage.getItem(K_TDEE) || 'null');
+  if (!p) return;
+  $('tHeight').value=p.height; $('tWeight').value=p.weight; $('tAge').value=p.age;
+  $('tActivity').value=String(p.activity); $('tDeficit').value=String(p.deficit);
+  var r = computeTDEE(p);
+  $('rBmr').textContent=r.bmr; $('rTdee').textContent=r.tdee;
+  $('rTarget').textContent=r.target; $('rPro').textContent=r.pro;
+  $('tdeeResults').style.display='grid';
+  var proKg = (p.weight*1.8).toFixed(0);
+  $('tdeeSub').innerHTML = '建议蛋白 ≥ <b>'+proKg+'g</b>（1.8g/kg）· 当前目标 '+r.pro+'g 已达标 ✅<br>'+
+    '碳水 ≈ <b>'+Math.round(r.target*0.40/4)+'g</b> · 脂肪 ≈ <b>'+Math.round(r.target*0.30/9)+'g</b><br>'+
+    '<span style="color:var(--primary)">每周计划自动对比此目标，无需每日记录饮食。</span>';
+  renderPlanVsTarget();
+}
+$('tdeeSave').addEventListener('click', function(){
+  var p = {
+    height: parseFloat($('tHeight').value),
+    weight: parseFloat($('tWeight').value),
+    age: parseInt($('tAge').value),
+    activity: parseFloat($('tActivity').value),
+    deficit: parseInt($('tDeficit').value)
+  };
+  if (!p.height||!p.weight||!p.age){ alert('请填完整身高/体重/年龄'); return; }
+  localStorage.setItem(K_TDEE, JSON.stringify(p));
+  renderTDEE();
+});
+
+/* ============ 3. 计划 vs 目标 ============ */
+// 复制自 今日计划.html 的份量/营养计算（自包含）
+var DAY_IDS_T = ['mon','tue','wed','thu','fri','sat','sun'];
+var MEAL_KEYS_T = ['breakfast','lunch','dinner'];
+function calcPortion(food, meal){
+  var f = FOODS[food]; if(!f) return {g:150};
+  if (f.cat==='meat'){
+    if (food==='鸡蛋') return {g:100}; if (food==='牛奶') return {g:250}; if (food==='无糖酸奶') return {g:200};
+    var calTarget=(meal==='lunch')?250:200; var raw=Math.round(calTarget/f.cal*100/5)*5;
+    if(raw>250)raw=250; if(raw<100)raw=100; return {g:raw};
+  }
+  if (f.cat==='soy'){ if(food==='无糖豆浆')return{g:250}; if(food==='千张')return{g:70}; if(food==='豆干')return{g:100}; if(food==='素鸡')return{g:80}; if(food==='毛豆')return{g:100}; return {g:200}; }
+  if (f.cat==='veg') return {g:250};
+  if (f.cat==='staple'){ if(food==='燕麦片')return{g:50}; if(food==='全麦面包')return{g:80}; if(food==='南瓜')return{g:300}; if(food==='荞麦面')return{g:80};
+    var c2=(meal==='lunch')?280:230; var r2=Math.round(c2/f.cal*100/5)*5; if(r2>350)r2=350; if(r2<50)r2=50; return {g:r2}; }
+  return {g:150};
+}
+function calcMacros(food, grams){
+  var f=FOODS[food]; if(!f) return {cal:0,pro:0,carb:0,fat:0};
+  var r=grams/100; return {cal:Math.round(f.cal*r),pro:Number((f.pro*r).toFixed(1)),carb:Number((f.carb*r).toFixed(1)),fat:Number((f.fat*r).toFixed(1))};
+}
+function avgPlanNutrition(){
+  var sel={}; try{ sel=JSON.parse(localStorage.getItem('jf_weekly_plan_v3')||'{}'); }catch(e){}
+  var tot={cal:0,pro:0,carb:0,fat:0}, days=0;
+  DAY_IDS_T.forEach(function(day){
+    var d=sel[day]; if(!d) return; days++;
+    MEAL_KEYS_T.forEach(function(meal){
+      var s=d[meal]; if(!s) return;
+      var foods=[];
+      if(meal==='breakfast'){ var m=s.meat; if(typeof m==='string') m=[m]; if(Array.isArray(m)) m.forEach(function(x){foods.push(x);}); }
+      else if(s.meat) foods.push(s.meat);
+      if(s.soy) foods.push(s.soy);
+      if(s.veg) (Array.isArray(s.veg)?s.veg:[s.veg]).forEach(function(v){foods.push(v);});
+      if(s.staple) foods.push(s.staple);
+      foods.forEach(function(fn){
+        var g=calcPortion(fn,meal).g; var m=calcMacros(fn,g);
+        tot.cal+=m.cal; tot.pro+=m.pro; tot.carb+=m.carb; tot.fat+=m.fat;
+      });
+      if(meal!=='breakfast' && foods.length>0){ tot.cal+=45; tot.fat+=5; }
+    });
+  });
+  if(!days) return null;
+  return { cal:Math.round(tot.cal/days), pro:Math.round(tot.pro/days), carb:Math.round(tot.carb/days), fat:Math.round(tot.fat/days), days:days };
+}
+function renderPlanVsTarget(){
+  var box=$('planVsTarget');
+  var plan=avgPlanNutrition();
+  var p=JSON.parse(localStorage.getItem(K_TDEE)||'null');
+  if(!plan){ box.innerHTML='<div class="empty-hint">还没设置周计划<br><a href="饮食参考.html" style="color:var(--primary)">去饮食页规划本周三餐 →</a></div>'; return; }
+  if(!p){ box.innerHTML='<div class="empty-hint">计划日均 '+plan.cal+' kcal / 蛋白'+plan.pro+'g<br>设了「热量目标」后会自动对比 ✅</div>'; return; }
+  var r=computeTDEE(p);
+  function bar(label, planV, targetV, unit, color){
+    var max=Math.max(planV,targetV,1);
+    var planPct=Math.min(100,planV/max*100), tgtPct=Math.min(100,targetV/max*100);
+    var diff=planV-targetV; var dcls=diff>0?'delta-up':(diff<0?'delta-down':'delta-flat'); var dsign=diff>0?'+':'';
+    return '<div class="pv-row"><div class="pv-top"><span>'+label+'</span>'+
+      '<span>计划 <b>'+planV+'</b> / 目标 '+targetV+' '+unit+' '+
+      '<span class="'+dcls+'">('+dsign+diff+')</span></span></div>'+
+      '<div class="pv-bar"><div class="fill" style="width:'+planPct+'%;background:'+color+'"></div>'+
+      '<div class="target-mark" style="left:'+tgtPct+'%"></div></div>'+
+      '<div class="pv-hint">'+(diff>0?'⚠️ 计划高于目标，注意控制':'✅ 计划在目标内')+'</div></div>';
+  }
+  box.innerHTML =
+    bar('热量', plan.cal, r.target, 'kcal', '#f97316') +
+    bar('蛋白质', plan.pro, r.pro, 'g', '#22c55e') +
+    '<div class="pv-hint">基于 '+plan.days+' 天计划日均 · 竖线为目标值</div>';
+}
+
+/* ============ 4. 趋势图 ============ */
+var curMetric='weight';
+var METRIC_META={
+  weight:{key:'weight',name:'体重',unit:'kg',color:'#f97316',better:'down'},
+  fat:{key:'fat',name:'脂肪率',unit:'%',color:'#ef4444',better:'down'},
+  muscle:{key:'muscle',name:'肌肉量',unit:'kg',color:'#22c55e',better:'up'}
+};
+function getSeries(metric){
+  return loadArr(K_BODY).filter(function(e){ return e[metric]!=null; })
+    .sort(function(a,b){ return a.date<b.date?-1:1; })
+    .map(function(e){ return {date:e.date, v:Number(e[metric])}; });
+}
+function rollingAvg(arr, idx, win){
+  var s=Math.max(0, idx-win+1), sum=0,n=0;
+  for(var i=s;i<=idx;i++){ sum+=arr[i].v; n++; }
+  return sum/n;
+}
+function renderChart(){
+  var m=METRIC_META[curMetric];
+  var data=getSeries(m.key);
+  var box=$('chartBox'), note=$('chartNote');
+  if(data.length<1){ box.innerHTML='<div class="empty-hint">还没有「'+m.name+'」数据<br>在上方填一条就会出图 📈</div>'; note.textContent=''; return; }
+  if(data.length<2){ box.innerHTML='<div class="empty-hint">已有 '+data.length+' 条，再填 1 条就能画趋势线啦</div>'; }
+  var W=520,H=240,padL=38,padR=14,padT=14,padB=26;
+  var vals=data.map(function(d){return d.v;});
+  var min=Math.min.apply(null,vals), max=Math.max.apply(null,vals);
+  if(max-min<0.001){ max+=1; min-=1; }
+  var span=max-min; min-=span*0.12; max+=span*0.12;
+  function X(i){ return padL + (W-padL-padR)*(data.length===1?0.5:i/(data.length-1)); }
+  function Y(v){ return padT + (H-padT-padB)*(1-(v-min)/(max-min)); }
+  var svg='<svg viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="xMidYMid meet">';
+  // 网格 + Y标签
+  for(var g=0; g<=3; g++){
+    var gv=min+(max-min)*g/3, gy=Y(gv);
+    svg+='<line x1="'+padL+'" y1="'+gy+'" x2="'+(W-padR)+'" y2="'+gy+'" stroke="var(--border)" stroke-width="1"/>';
+    svg+='<text x="'+(padL-6)+'" y="'+(gy+4)+'" text-anchor="end" font-size="10" fill="var(--sub)">'+gv.toFixed(1)+'</text>';
+  }
+  // X标签（首尾）
+  svg+='<text x="'+padL+'" y="'+(H-8)+'" font-size="10" fill="var(--sub)">'+fmtDate(data[0].date)+'</text>';
+  svg+='<text x="'+(W-padR)+'" y="'+(H-8)+'" text-anchor="end" font-size="10" fill="var(--sub)">'+fmtDate(data[data.length-1].date)+'</text>';
+  // 原始点（浅）
+  var rawPts='';
+  data.forEach(function(d,i){ rawPts+=X(i)+','+Y(d.v)+' '; });
+  svg+='<polyline points="'+rawPts+'" fill="none" stroke="'+m.color+'" stroke-width="1.5" opacity="0.35"/>';
+  // 滚动平均（粗）
+  if(data.length>=2){
+    var avgPts='';
+    data.forEach(function(d,i){ avgPts+=X(i)+','+Y(rollingAvg(data,i,7))+' '; });
+    svg+='<polyline points="'+avgPts+'" fill="none" stroke="'+m.color+'" stroke-width="3" stroke-linejoin="round"/>';
+  }
+  // 数据点
+  data.forEach(function(d,i){
+    svg+='<circle cx="'+X(i)+'" cy="'+Y(d.v)+'" r="3" fill="'+m.color+'"/>';
+  });
+  svg+='</svg>';
+  box.innerHTML=svg;
+  // 注释
+  var first=data[0].v, last=data[data.length-1].v, diff=last-first;
+  var cls=diff>0.001?'delta-up':(diff<-0.001?'delta-down':'delta-flat');
+  var sign=diff>0?'+':'';
+  var verdict = (m.better==='down' && diff<0) ? '✅ 在下降（好）' :
+                (m.better==='up' && diff>0) ? '✅ 在上升（好）' :
+                (diff===0) ? '➖ 持平' : '⚠️ 与预期方向相反';
+  note.innerHTML = m.name+'：'+first+' → '+last+' '+m.unit+' '+
+    '(<b class="'+cls+'">'+sign+diff.toFixed(2)+'</b>) · '+verdict+
+    ' · 粗线=7点滚动平均，抹平单日波动';
+}
+$('metricToggle').addEventListener('click', function(e){
+  if(e.target.tagName!=='BUTTON') return;
+  curMetric=e.target.getAttribute('data-m');
+  Array.prototype.forEach.call(this.children, function(b){ b.classList.remove('active'); });
+  e.target.classList.add('active');
+  renderChart();
+});
+
+/* ============ 5. 训练打卡 ============ */
+function renderTraining(){
+  var logs=loadArr(K_LOGS);
+  var dates={};
+  logs.forEach(function(l){ dates[l.date]=true; });
+  var uniq=Object.keys(dates).sort().reverse();
+  // 连续打卡
+  var streak=0, cd=new Date();
+  while(dates[cd.toISOString().slice(0,10)]){ streak++; cd.setDate(cd.getDate()-1); }
+  $('streakBig').textContent=streak;
+  // 本周（周一到今天）
+  var now=new Date(); var dow=(now.getDay()+6)%7; // 周一=0
+  var mon=new Date(now); mon.setDate(now.getDate()-dow);
+  var wkStart=mon.toISOString().slice(0,10);
+  var wkLogs=logs.filter(function(l){ return l.date>=wkStart; });
+  var sess={}; wkLogs.forEach(function(l){ sess[l.date]=true; });
+  $('weekSessions').textContent=Object.keys(sess).length;
+  $('weekMin').textContent=wkLogs.reduce(function(a,l){return a+(l.duration||0);},0)/60|0;
+  $('weekKcal').textContent=wkLogs.reduce(function(a,l){return a+(l.calories||0);},0);
+  // 近7天点
+  var dots=''; var labels=['一','二','三','四','五','六','日'];
+  for(var i=6;i>=0;i--){
+    var d=new Date(now); d.setDate(now.getDate()-i);
+    var ds=d.toISOString().slice(0,10);
+    dots+='<div class="d'+(dates[ds]?' done':'')+'">'+labels[(d.getDay()+6)%7]+'</div>';
+  }
+  $('weekDots').innerHTML=dots;
+}
+
+/* ============ 初始化 ============ */
+renderWeightMeta();
+renderTDEE();
+renderChart();
+renderTraining();
+</script>
+
+<script>
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/jf/serviceWorker.js').catch(function() {});
+}
+</script>
+</body>
+</html>
