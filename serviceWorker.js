@@ -6,21 +6,14 @@
  */
 const CACHE_NAME = 'jf-v19';
 const URLS_TO_CACHE = [
-  '/jf/',
   '/jf/shared.css',
-  '/jf/今日计划.html',
-  '/jf/减脂全面计划.html',
-  '/jf/减脂训练日跟练.html',
-  '/jf/减脂完整教程_饮食运动作息动作库.html',
-  '/jf/每周小结.html',
-  '/jf/每日必做清单.html',
-  '/jf/饮食参考.html',
   '/jf/gist-storage.js',
   '/jf/data.js',
   '/jf/manifest.json',
   '/jf/icon-192.png',
   '/jf/icon-512.png'
 ];
+// 注意：HTML页面不预缓存，走运行时 Network First，确保更新后用户立即看到新版本
 
 // 安装：预缓存核心文件
 self.addEventListener('install', function(event) {
