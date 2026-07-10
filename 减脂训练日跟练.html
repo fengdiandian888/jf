@@ -80,8 +80,8 @@
  .tab-btn .tab-icon { font-size: 16px; margin-right: 2px; }
  .tab-btn .tab-label { font-size: 13px; color: inherit; opacity: 0.7; }
 
- .day-panel { display: block; animation: panelIn .35s cubic-bezier(0.4, 0, 0.2, 1); margin-bottom: 14px; }
- .day-panel.active { display: block; }
+ .day-panel { display: block; animation: panelIn .35s cubic-bezier(0.4, 0, 0.2, 1); margin-bottom: 14px; border-left: 3px solid transparent; transition: border-color .25s ease, background .25s ease; }
+ .day-panel.active { display: block; border-left-color: #fbbf24; background: rgba(251,191,36,.06); }
  @keyframes panelIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
 
  /* Day Section */
@@ -1303,16 +1303,7 @@
 
  function switchDay(idx) {
  btns.forEach((b,i) => b.classList.toggle('active', i===idx));
- // 所有面板始终可见，标签仅做滚动定位（不隐藏其他）
- const panel = panels[idx];
- if (panel) {
-  panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
- }
- // 滚动当前tab到可见位置
- const btn = btns[idx];
- if (btn) {
-  btn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
- }
+ // 所有面板始终可见，标签仅做「高亮选中」切换，不再自动滚动页面
  }
 
  // 绑定点击
