@@ -82,6 +82,8 @@
 
  .day-panel { display: block; animation: panelIn .35s cubic-bezier(0.4, 0, 0.2, 1); margin-bottom: 14px; border-left: 3px solid transparent; transition: border-color .25s ease, background .25s ease; }
  .day-panel.active { display: block; border-left-color: #fbbf24; background: rgba(251,191,36,.06); }
+ /* JS 运行后进入切换模式：只显示选中那天，其他隐藏；JS未跑则全部可见（防空白） */
+ .js-daymode .day-panel:not(.active) { display: none; }
  @keyframes panelIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
 
  /* Day Section */
@@ -1303,7 +1305,8 @@
 
  function switchDay(idx) {
  btns.forEach((b,i) => b.classList.toggle('active', i===idx));
- // 所有面板始终可见，标签仅做「高亮选中」切换，不再自动滚动页面
+ panels.forEach((p,i) => p.classList.toggle('active', i===idx));
+ // 切换只显示选中那天，不自动滚动页面
  }
 
  // 绑定点击
@@ -1313,8 +1316,9 @@
  });
  });
 
- // 自动定位今天
+ // 自动定位今天，并进入切换模式（其余面板隐藏）
  switchDay(todayIdx);
+ document.body.classList.add('js-daymode');
 
  // Today highlight
  const dayNames = ['周一·拉日','周二·有氧','周三·推日','周四·有氧+核心','周五·腿日','周六·维持+瑜伽','周日·恢复'];
