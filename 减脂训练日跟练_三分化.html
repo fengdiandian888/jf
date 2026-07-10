@@ -331,6 +331,26 @@
   font-size: 11px; font-weight: 700; margin-top: 1px;
 }
 
+/* 上次成绩锚点 */
+.tm-last-result { font-size: 12px; color: rgba(255,255,255,.42); margin-top: 7px; font-weight: 500; }
+.tm-last-result b { color: #fbbf24; font-weight: 700; }
+.tm-last-result.none { color: rgba(255,255,255,.25); }
+
+/* 训练中紧凑条 */
+.tm-workout-strip { flex: 0 0 auto; display: flex; align-items: center; gap: 10px; padding: 2px 20px 0; }
+.tm-progress-text { font-size: 12px; color: rgba(255,255,255,.5); font-weight: 700; flex: 0 0 auto; font-variant-numeric: tabular-nums; }
+.tm-next-preview { font-size: 12px; color: rgba(255,255,255,.4); font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tm-next-preview b { color: #fff; }
+.tm-strip-btns { flex: 0 0 auto; display: flex; gap: 8px; padding: 8px 20px 4px; }
+.tm-toggle-btn {
+  background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.12);
+  color: rgba(255,255,255,.72); border-radius: 9px; padding: 8px 14px;
+  font-size: 12px; font-weight: 600; cursor: pointer; font-family: var(--font);
+  transition: all .15s; -webkit-tap-highlight-color: transparent;
+}
+.tm-toggle-btn:active { transform: scale(.95); }
+.tm-exercises.collapsed { display: none; }
+
 /* 进度条 */
 .tm-progress-wrap {
   flex: 0 0 auto; padding: 0 20px; margin-bottom: 4px;
@@ -377,6 +397,7 @@
 .tm-controls {
   flex: 0 0 auto; display: flex; gap: 10px; justify-content: center;
   padding: 12px 20px 20px; padding-bottom: max(20px, env(safe-area-inset-bottom));
+  margin-top: auto;
 }
 .tm-btn {
   border: none; border-radius: 12px; padding: 14px 28px; font-size: 16px;
@@ -1413,9 +1434,20 @@ if('serviceWorker' in navigator){
     <div class="tm-exercise-name" id="tmExerciseName">准备开始</div>
     <div class="tm-exercise-meta" id="tmExerciseMeta"></div>
     <div class="tm-set-info" id="tmSetInfo"></div>
+    <div class="tm-last-result" id="tmLastResult"></div>
   </div>
 
-  <!-- 分步动作指令 -->
+  <!-- 训练中紧凑条：进度 + 下一动作 -->
+  <div class="tm-workout-strip" id="tmWorkoutStrip">
+    <span class="tm-progress-text" id="tmProgressText"></span>
+    <span class="tm-next-preview" id="tmNextPreview"></span>
+  </div>
+  <div class="tm-strip-btns">
+    <button class="tm-toggle-btn" id="tmToggleList">📋 全部动作</button>
+    <button class="tm-toggle-btn" id="tmToggleTips">💡 动作要领</button>
+  </div>
+
+  <!-- 分步动作指令（默认收起） -->
   <div class="tm-instructions-area" id="tmInstructionsArea" style="display:none"></div>
 
   <!-- 进度条 -->
@@ -1423,8 +1455,8 @@ if('serviceWorker' in navigator){
     <div class="tm-progress-bar"><div class="tm-progress-fill" id="tmProgressFill" style="width:0%"></div></div>
   </div>
 
-  <!-- 底部动作列表 -->
-  <div class="tm-exercises" id="tmExercisesList"></div>
+  <!-- 底部动作列表（训练中收起） -->
+  <div class="tm-exercises collapsed" id="tmExercisesList"></div>
 
   <!-- 控制按钮 -->
   <div class="tm-controls" id="tmControls">
@@ -1558,6 +1590,10 @@ var WorkoutTimer = (function() {
 
   // 统计
   var stats = { setsCompleted: 0, exercisesCompleted: 0 };
+  // 本次训练每动作结果（用于"上次成绩"）
+  var sessionExLog = {};
+  // 折叠按钮绑定守卫
+  var toggleBound = false;
 
   // 热身
   var warmupStage = 0;
@@ -1815,6 +1851,11 @@ var WorkoutTimer = (function() {
     totalTime = isTimed ? ex.duration : 0; // 次数型用0表示正计时模式
     timeLeft = isTimed ? totalTime : 0;    // 次数型从0开始往上数
 
+    // 初始化本次训练的动作记录
+    if (!sessionExLog[ex.name]) {
+      sessionExLog[ex.name] = { sets: ex.sets, reps: ex.reps, doneSets: 0, done: false };
+    }
+
     state = STATE.TRAINING;
 
     // 恢复视频显示，隐藏休息大屏
@@ -1831,6 +1872,15 @@ var WorkoutTimer = (function() {
 
     // 加载分步指令
     renderInstructionSteps(ex.name);
+    // 上次成绩 + 下一动作预览
+    renderLastResult(ex.name);
+    updateNextPreview();
+    // 默认收起列表与要领，聚焦当前动作
+    var exListEl = document.getElementById('tmExercisesList');
+    if (exListEl) { exListEl.classList.add('collapsed'); var tl = document.getElementById('tmToggleList'); if (tl) tl.textContent = '📋 全部动作'; }
+    var insArea = document.getElementById('tmInstructionsArea');
+    if (insArea) insArea.style.display = 'none';
+    var ttBtn = document.getElementById('tmToggleTips'); if (ttBtn) ttBtn.textContent = '💡 动作要领';
 
     showControlsForState();
     updateDisplay();
@@ -1924,8 +1974,43 @@ var WorkoutTimer = (function() {
     area.style.display = '';
   }
 
+  // --- 上次成绩（从训练记录中读取同动作最近一次结果）---
+  function renderLastResult(exName) {
+    var el = document.getElementById('tmLastResult');
+    if (!el) return;
+    try {
+      var logs = JSON.parse(localStorage.getItem('jf_training_logs') || '[]');
+      for (var i = logs.length - 1; i >= 0; i--) {
+        var exs = logs[i].exercises || [];
+        for (var j = 0; j < exs.length; j++) {
+          if (exs[j].name === exName) {
+            el.className = 'tm-last-result';
+            el.innerHTML = '↩️ 上次：<b>' + exs[j].sets + '×' + exs[j].reps + '</b>' + (exs[j].done ? ' ✓' : '');
+            return;
+          }
+        }
+      }
+    } catch (e) {}
+    el.className = 'tm-last-result none';
+    el.innerHTML = '（暂无历史，今天是第一回）';
+  }
+
+  // --- 下一动作预览 + 进度文本 ---
+  function updateNextPreview() {
+    var prev = document.getElementById('tmNextPreview');
+    var prog = document.getElementById('tmProgressText');
+    if (prog) prog.textContent = '动作 ' + (currentIndex + 1) + '/' + exercises.length;
+    if (!prev) return;
+    var next = exercises[currentIndex + 1];
+    if (next) prev.innerHTML = '下一个：<b>' + next.name + '</b>';
+    else prev.innerHTML = '已是最后一个动作 🏁';
+  }
+
   function completeCurrentSet() {
     stats.setsCompleted++;
+    // 记录本次动作完成进度
+    var rec = sessionExLog[exercises[currentIndex].name];
+    if (rec) { rec.doneSets++; if (rec.doneSets >= rec.sets) rec.done = true; }
     speak('完成！休息 ' + restTime + ' 秒');
     startRest();
   }
@@ -2016,6 +2101,12 @@ var WorkoutTimer = (function() {
     try {
       var logs = JSON.parse(localStorage.getItem('jf_training_logs') || '[]');
       var todayLogDate = new Date().toISOString().slice(0, 10);
+      // 本次每动作结果
+      var exArr = [];
+      Object.keys(sessionExLog).forEach(function(k) {
+        var r = sessionExLog[k];
+        exArr.push({ name: k, sets: r.sets, reps: r.reps, done: r.done });
+      });
       logs.push({
         date: todayLogDate,
         time: new Date().toISOString(),
@@ -2024,7 +2115,8 @@ var WorkoutTimer = (function() {
         exercisesCompleted: stats.exercisesCompleted,
         totalExercises: exercises.length,
         setsCompleted: stats.setsCompleted,
-        calories: calEst
+        calories: calEst,
+        exercises: exArr
       });
       if (logs.length > 200) logs = logs.slice(-200);
       localStorage.setItem('jf_training_logs', JSON.stringify(logs));
@@ -2169,6 +2261,26 @@ var WorkoutTimer = (function() {
     // 解析动作数据（使用调整后的参数）
     exercises = (window.TimeEstimator ? TimeEstimator.parseMovesAdjusted(activePanel) : parseMoves(activePanel));
     if (!exercises.length) { alert('当前日期没有可训练的动作'); return; }
+    sessionExLog = {};
+
+    // 绑定折叠按钮（仅一次）
+    if (!toggleBound) {
+      toggleBound = true;
+      var listBtn = document.getElementById('tmToggleList');
+      var tipsBtn = document.getElementById('tmToggleTips');
+      if (listBtn) listBtn.addEventListener('click', function() {
+        var l = document.getElementById('tmExercisesList');
+        if (!l) return;
+        if (l.classList.contains('collapsed')) { l.classList.remove('collapsed'); this.textContent = '📋 收起动作'; }
+        else { l.classList.add('collapsed'); this.textContent = '📋 全部动作'; }
+      });
+      if (tipsBtn) tipsBtn.addEventListener('click', function() {
+        var a = document.getElementById('tmInstructionsArea');
+        if (!a) return;
+        if (a.style.display === 'none' || !a.style.display) { a.style.display = ''; this.textContent = '💡 收起要领'; }
+        else { a.style.display = 'none'; this.textContent = '💡 动作要领'; }
+      });
+    }
 
     // 计算总预估时间
     var totalEst = window.TimeEstimator ? TimeEstimator.estimateTotal(exercises) : 0;
