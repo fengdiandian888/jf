@@ -669,13 +669,13 @@
   .compact-card.rehab-card { border-left: 4px solid #3b82f6; }
   .compact-card.sleep-card { border-left: 4px solid #8b5cf6; }
 
-  /* 模式切换器 */
-  .train-mode-switch { display: inline-flex; gap: 6px; margin: 4px 0 14px; background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 4px; }
-  .train-mode-switch a { cursor: pointer; padding: 8px 18px; border-radius: 9px; font-size: 13px; font-weight: 700; color: var(--sub); text-decoration: none; user-select: none; }
-  .train-mode-switch a.active { background: linear-gradient(135deg,#f97316,#ea580c); color: #fff; box-shadow: 0 2px 8px rgba(249,115,22,.35); }
-
-  /* 默认(工作日)隐藏休假日专属内容，JS按记忆再切换 */
-  .t-hd, .mode-hd { display: none; }
+  /* 训练后酸痛 · 角落悬浮控件 */
+  .sore-fab { position: fixed; right: 16px; bottom: 16px; z-index: 80; background: linear-gradient(135deg,#a78bfa,#8b5cf6); color:#fff; font-size:13px; font-weight:700; padding:11px 16px; border-radius:24px; box-shadow:0 6px 20px rgba(139,92,246,.45); cursor:pointer; user-select:none; max-width:46vw; text-align:center; }
+  .sore-fab:hover { transform: translateY(-2px); }
+  .sore-panel { position: fixed; right:16px; bottom:70px; z-index:80; width:min(92vw,380px); max-height:74vh; overflow-y:auto; background:var(--card); border:1px solid rgba(167,139,250,.45); border-radius:16px; box-shadow:0 14px 44px rgba(0,0,0,.4); padding:16px; display:none; }
+  .sore-panel.open { display:block; }
+  .sore-panel .close-x { position:absolute; top:10px; right:14px; cursor:pointer; color:var(--sub); font-weight:700; font-size:18px; line-height:1; }
+  .sore-panel .close-x:hover { color:var(--text); }
 
 </style>
 <script src="data.js"></script>
@@ -692,19 +692,15 @@
 <div class="container">
 
 <div class="header">
- <h1>💪 每日跟练 · 工作日 / 休假日</h1>
- <p>工作日两练（早+晚）· 休假日单练（白天）· 下方一键切换</p>
+ <h1>💪 每周训练计划</h1>
+ <p>拉 / 推 / 腿 三分化 + 有氧核心 · 居家哑铃 · 小电动通勤也能练</p>
  <div class="tags">
  <span>🏠 居家为主</span><span>💪 4次力量/周</span><span>🛵 小电动通勤</span>
  </div>
 </div>
 
 
-<div class="train-mode-switch">
-  <a data-mode="wd" class="active">🏢 工作日</a>
-  <a data-mode="hd">🏖️ 休假日</a>
-</div>
-<div class="mode-wd">
+<div>
 <!-- 器材说明 + 跳绳风险警示 -->
 <div style="background:#fff;border:1px solid var(--border);border-radius:10px;padding:14px;margin:0 0 12px;overflow:hidden;">
  <div style="font-size:15px;font-weight:700;margin-bottom:8px;color:var(--text);">🎽 我的器材清单</div>
@@ -743,7 +739,7 @@
 </div>
 
 <!-- 周一 -->
-<div class="mode-hd" style="display:none">
+<div>
 <div class="rhythm-card">
  <div class="rhythm-header">
   <span class="rh-icon">🌞</span>
@@ -793,8 +789,8 @@
  <div class="day-header">
  <div class="day-badge evening pull"></div>
  <div class="day-info">
- <div class="day-name"><span class="t-wd">晚上 · 拉日力量 45′ + 拉伸 15′</span><span class="t-hd">09:30 拉日力量训练 60-70min</span></div>
- <div class="day-sub"><span class="t-wd">21:00–22:00 | 背部+三角肌后束+肱二头肌</span><span class="t-hd">背部+三角肌后束+肱二头肌 | 哑铃8KG</span></div>
+ <div class="day-name">拉日力量 45′ + 拉伸 15′</div>
+ <div class="day-sub">背部 · 三角肌后束 · 肱二头肌</div>
  <div class="day-tags"><span>哑铃训练</span></div>
  </div>
  </div>
@@ -863,8 +859,8 @@
  <div class="day-header">
  <div class="day-badge evening"></div>
  <div class="day-info">
- <div class="day-name"><span class="t-wd">晚上 · 低强度有氧 40′ + 拉伸 20′</span><span class="t-hd">09:30 有氧训练 40min + 拉伸 20min</span></div>
- <div class="day-sub"><span class="t-wd">21:00–22:00 | 不追求力竭，动起来就行</span><span class="t-hd">不追求力竭，动起来就行 | 低冲击无跳跃</span></div>
+ <div class="day-name">低强度有氧 40′ + 拉伸 20′</div>
+ <div class="day-sub">不追求力竭，动起来就行</div>
  </div>
  </div>
  <div class="day-body">
@@ -942,8 +938,8 @@
  <div class="day-header">
  <div class="day-badge evening push"></div>
  <div class="day-info">
- <div class="day-name"><span class="t-wd">晚上 · 推日力量 45′ + 拉伸 15′</span><span class="t-hd">09:30 推日力量训练 60-70min</span></div>
- <div class="day-sub"><span class="t-wd">21:00–22:00 | 胸+三角肌前中束+肱三头肌</span><span class="t-hd">胸+三角肌前中束+肱三头肌 | 哑铃8KG</span></div>
+ <div class="day-name">推日力量 45′ + 拉伸 15′</div>
+ <div class="day-sub">胸 · 三角肌前中束 · 肱三头肌</div>
  <div class="day-tags"><span>哑铃训练</span></div>
  </div>
  </div>
@@ -1004,8 +1000,8 @@
  <div class="day-header">
  <div class="day-badge evening"></div>
  <div class="day-info">
- <div class="day-name"><span class="t-wd">晚上 · 核心 20′ + 有氧 20′ + 拉伸 20′</span><span class="t-hd">09:30 核心 20min + 有氧 20min + 拉伸 20min</span></div>
- <div class="day-sub"><span class="t-wd">21:00–22:00 | 核心唤醒 + 低强度燃脂 + 放松</span><span class="t-hd">核心唤醒 + 低强度燃脂 + 放松</span></div>
+ <div class="day-name">核心 20′ + 有氧 20′ + 拉伸 20′</div>
+ <div class="day-sub">核心唤醒 + 低强度燃脂 + 放松</div>
  </div>
  </div>
  <div class="day-body">
@@ -1060,8 +1056,8 @@
  <div class="day-header">
  <div class="day-badge evening leg"><svg width="20" height="14" viewBox="0 0 20 14" fill="none"><rect x="0" y="4" width="3" height="6" rx="1" fill="#ef4444"/><rect x="4" y="2" width="2" height="10" rx="0.5" fill="#ef4444"/><rect x="7" y="0" width="6" height="3" rx="1.5" fill="#ef4444"/><rect x="7" y="11" width="6" height="3" rx="1.5" fill="#ef4444"/><rect x="7" y="3" width="6" height="8" rx="1" fill="rgba(239,68,68,0.3)"/><rect x="14" y="2" width="2" height="10" rx="0.5" fill="#ef4444"/><rect x="17" y="4" width="3" height="6" rx="1" fill="#ef4444"/></svg></div>
  <div class="day-info">
- <div class="day-name"><span class="t-wd">晚上 · 腿日力量 45′ + 拉伸 15′</span><span class="t-hd">09:30 腿日力量训练 60-70min</span></div>
- <div class="day-sub"><span class="t-wd">21:00–22:00 | 臀腿+核心稳定</span><span class="t-hd">臀腿+核心稳定 | 哑铃</span></div>
+ <div class="day-name">腿日力量 45′ + 拉伸 15′</div>
+ <div class="day-sub">臀腿 · 核心稳定</div>
  <div class="day-tags"><span>哑铃</span><span>无肩部压力</span><span class="warn">做完别开车</span></div>
  </div>
  </div>
@@ -1137,8 +1133,8 @@
  <div class="day-header">
  <div class="day-badge evening"></div>
  <div class="day-info">
- <div class="day-name"><span class="t-wd">晚上 · 轻量全身力量 30′ + 瑜伽 30′</span><span class="t-hd">09:30 轻量全身力量 30min + 瑜伽 30min</span></div>
- <div class="day-sub"><span class="t-wd">21:00–22:00 | 肌肉保存信号 + 放松恢复</span><span class="t-hd">肌肉保存信号 + 放松恢复</span></div>
+ <div class="day-name">轻量全身力量 30′ + 瑜伽 30′</div>
+ <div class="day-sub">肌肉保存信号 + 放松恢复</div>
  <div class="day-tags"><span class="warn"> 不求力竭！永远不升级！</span></div>
  </div>
  </div>
@@ -1210,8 +1206,8 @@
  <div class="day-header">
  <div class="day-badge evening rest"></div>
  <div class="day-info">
- <div class="day-name"><span class="t-wd">晚上 · 散步 30′ + 全身拉伸 30′</span><span class="t-hd">09:30 完整瑜伽拉伸 30-45min</span></div>
- <div class="day-sub"><span class="t-wd">21:00–22:00 | 纯恢复 · 为周一储蓄能量</span><span class="t-hd">纯恢复日 · 不碰哑铃 · 神经系统彻底休息</span></div>
+ <div class="day-name">散步 30′ + 全身拉伸 30′</div>
+ <div class="day-sub">纯恢复 · 为周一储蓄能量</div>
  <div class="day-tags"><span class="warn"> 不做任何高心率运动</span></div>
  </div>
  </div>
@@ -1236,7 +1232,7 @@
  </div>
 </div>
 
-<div class="mode-hd">
+<div>
 <div class="compact-card sleep-card">
  <div class="cc-icon">😴</div>
  <div class="cc-info">
@@ -1349,12 +1345,11 @@ if('serviceWorker' in navigator){
  navigator.serviceWorker.register('/jf/serviceWorker.js').catch(function(){});
 }
 </script>
-<!-- ====== 训练后酸痛缓解指南 ====== -->
-<div class="card" style="border-color:rgba(167,139,250,.4);box-shadow:0 2px 8px rgba(167,139,250,.1)">
-  <div class="collapse-header open" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')">
-    💜 力量训练后浑身酸痛？怎么回事、怎么缓解
-  </div>
-  <div class="collapse-body open" style="margin-top:10px">
+<!-- ====== 训练后酸痛缓解指南（角落悬浮） ====== -->
+<div class="sore-fab" id="soreFab" onclick="document.getElementById('sorePanel').classList.toggle('open')">💡 训练后酸痛？</div>
+<div class="sore-panel" id="sorePanel">
+  <span class="close-x" onclick="document.getElementById('sorePanel').classList.remove('open')" title="关闭">✕</span>
+  <div style="font-size:15px;font-weight:700;margin-bottom:12px;color:#8b5cf6">💜 力量训练后浑身酸痛？怎么回事、怎么缓解</div>
 
     <p style="font-size:13px;color:var(--sub);line-height:1.7;margin-bottom:10px;">
       训练后24–48小时出现的肌肉酸痛，叫<strong style="color:var(--purple)">延迟性肌肉酸痛（DOMS）</strong>，是因为肌肉纤维微微受损后发炎修复的正常过程，不是"练错了"，反而说明训练到位了。
@@ -1438,8 +1433,6 @@ if('serviceWorker' in navigator){
         <span style="color:var(--sub);font-size:11px">以上都不是必须的，优先做好睡眠+蛋白质+拉伸。</span>
       </div>
     </div>
-
-  </div>
 </div>
 
 <!-- ====== 抖音精选视频 ====== -->
@@ -3405,36 +3398,7 @@ var TimeEstimator = (function() {
   <a href="数据看板.html">看板</a>
 </nav>
 
-<script>
-(function(){
-  function applyTrainMode(m){
-    try{ localStorage.setItem('jf_train_mode', m); }catch(e){}
-    var wd = (m === 'wd');
-    document.querySelectorAll('.mode-wd').forEach(function(e){ e.style.display = wd ? '' : 'none'; });
-    document.querySelectorAll('.mode-hd').forEach(function(e){ e.style.display = wd ? 'none' : ''; });
-    document.querySelectorAll('.t-wd').forEach(function(e){ e.style.display = wd ? '' : 'none'; });
-    document.querySelectorAll('.t-hd').forEach(function(e){ e.style.display = wd ? 'none' : ''; });
-    document.querySelectorAll('.train-mode-switch a').forEach(function(a){
-      a.classList.toggle('active', a.getAttribute('data-mode') === m);
-    });
-  }
-  window.applyTrainMode = applyTrainMode;
-  // 把“早上”区块标记出来（工作日显示 / 休假隐藏）
-  document.querySelectorAll('.day-badge.morning').forEach(function(b){
-    var s = b.closest('.day-section'); if(s) s.classList.add('mode-wd');
-  });
-  var sw = document.querySelector('.train-mode-switch');
-  if(sw){
-    sw.addEventListener('click', function(e){
-      var a = e.target.closest('a[data-mode]');
-      if(a){ applyTrainMode(a.getAttribute('data-mode')); e.preventDefault(); }
-    });
-  }
-  var saved = 'wd';
-  try{ saved = localStorage.getItem('jf_train_mode') || 'wd'; }catch(e){}
-  applyTrainMode(saved);
-})();
-</script>
+
 
 </body>
 </html>
