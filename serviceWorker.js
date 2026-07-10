@@ -10,7 +10,7 @@ const URLS_TO_CACHE = [
   '/jf/shared.css',
   '/jf/今日计划.html',
   '/jf/减脂全面计划.html',
-  '/jf/减脂训练日跟练_三分化.html',
+  '/jf/减脂训练日跟练.html',
   '/jf/减脂完整教程_饮食运动作息动作库.html',
   '/jf/每周小结.html',
   '/jf/每日必做清单.html',
