@@ -577,13 +577,34 @@ window.EXERCISE_DB =   [
     }
   ];
 
+// 动作名别名映射 — 新计划(PPL×2)动作名对齐到动作库现有条目，复用标准GIF示范
+// 仅映射「同型动作」(如上斜卧推→平板卧推、锤式弯举→弯举)，避免错误示范误导动作
+// 注意：findExercise 为「库名包含搜索名」逻辑，带「哑铃」前缀的计划动作大多需显式别名才能命中
+window.EXERCISE_ALIASES = {
+  '哑铃交替弯举': '哑铃弯举',
+  '哑铃锤式弯举': '哑铃弯举',
+  '哑铃平板卧推': '哑铃卧推',
+  '哑铃上斜卧推': '哑铃卧推',
+  '哑铃俯身臂屈伸': '哑铃臂屈伸',
+  '哑铃过顶臂屈伸': '哑铃仰卧臂屈伸',
+  '哑铃俯身反向飞鸟': '哑铃后束飞鸟',
+  '哑铃坐姿肩推': '哑铃阿诺德推举',
+  '哑铃高脚杯深蹲': '高脚杯深蹲',
+  '哑铃保加利亚分腿蹲': '保加利亚分腿蹲',
+  '哑铃罗马尼亚硬拉': '罗马尼亚硬拉',
+  '哑铃臀推': '臀桥',
+  '哑铃单腿臀桥': '臀桥'
+};
+
 // 查找动作的便捷方法
 window.findExercise = function(name, lang) {
   lang = lang || 'zh';
+  var alias = window.EXERCISE_ALIASES && window.EXERCISE_ALIASES[name];
+  var searchName = alias || name;
   var results = window.EXERCISE_DB.filter(function(ex) {
-    return ex.name === name || ex.name_en === name || 
-           (ex.name && ex.name.indexOf(name) !== -1) ||
-           (ex.name_en && ex.name_en.toLowerCase().indexOf((name || '').toLowerCase()) !== -1);
+    return ex.name === searchName || ex.name_en === searchName || 
+           (ex.name && ex.name.indexOf(searchName) !== -1) ||
+           (ex.name_en && ex.name_en.toLowerCase().indexOf((searchName || '').toLowerCase()) !== -1);
   });
   return results[0] || null;
 };
