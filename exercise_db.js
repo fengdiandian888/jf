@@ -5,6 +5,319 @@
 
 window.EXERCISE_DB =   [
     {
+  "name": "哑铃仰卧上拉",
+  "name_en": "dumbbell pullover",
+  "target": "pectorals",
+  "secondary": [
+    "latissimus dorsi",
+    "triceps"
+  ],
+  "equipment": "dumbbell",
+  "gif": "exercise_gifs/0375-9XjtHvS.gif",
+  "gif_url": "videos/0375-9XjtHvS.gif",
+  "instructions_cn": "",
+  "instructions_en": "Lie flat on a bench with your head at one end and your feet on the floor. Hold a dumbbell with both hands and extend your arms straight above your chest. Keeping a slight bend in your elbows, slowly lower the dumbbell behind your head until you feel a stretch in your chest and shoulders. Pause for a moment, then raise the dumbbell back to the starting position. Repeat for the desired number of repetitions.",
+  "instruction_steps": []
+},
+    {
+  "name": "哑铃交替弯举",
+  "name_en": "dumbbell alternate biceps curl",
+  "target": "biceps",
+  "secondary": [
+    "forearms"
+  ],
+  "equipment": "dumbbell",
+  "gif": "exercise_gifs/0285-BU15nH4.gif",
+  "gif_url": "videos/0285-BU15nH4.gif",
+  "instructions_cn": "",
+  "instructions_en": "Stand up straight with a dumbbell in each hand, palms facing forward and arms fully extended. Keeping your upper arms stationary, exhale and curl the weights while contracting your biceps. Continue to raise the dumbbells until your biceps are fully contracted and the dumbbells are at shoulder level. Hold the contracted position for a brief pause as you squeeze your biceps. Inhale and slowly begin to lower the dumbbells back to the starting position. Repeat for the desired number of repetitions, alternating arms.",
+  "instruction_steps": []
+},
+    {
+  "name": "哑铃锤式弯举",
+  "name_en": "dumbbell hammer curl",
+  "target": "biceps",
+  "secondary": [
+    "forearms"
+  ],
+  "equipment": "dumbbell",
+  "gif": "exercise_gifs/0313-slDvUAU.gif",
+  "gif_url": "videos/0313-slDvUAU.gif",
+  "instructions_cn": "",
+  "instructions_en": "Stand up straight with a dumbbell in each hand, palms facing your torso. Keep your elbows close to your torso and rotate the palms of your hands until they are facing forward. This will be your starting position. Now, keeping the upper arms stationary, exhale and curl the weights while contracting your biceps. Continue to raise the weights until your biceps are fully contracted and the dumbbells are at shoulder level. Hold the contracted position for a brief pause as you squeeze your biceps. Then, inhale and slowly begin to lower the dumbbells back to the starting position. Repeat for the recommended amount of repetitions.",
+  "instruction_steps": []
+},
+    {
+  "name": "哑铃俯身直臂后拉",
+  "name_en": "dumbbell straight arm pullover",
+  "target": "pectorals",
+  "secondary": [
+    "latissimus dorsi",
+    "triceps"
+  ],
+  "equipment": "dumbbell",
+  "gif": "exercise_gifs/0433-i8BdLTK.gif",
+  "gif_url": "videos/0433-i8BdLTK.gif",
+  "instructions_cn": "",
+  "instructions_en": "Lie flat on a bench with your head at one end and your feet planted firmly on the ground. Hold a dumbbell with both hands and extend your arms straight above your chest. Keeping your arms straight, slowly lower the dumbbell behind your head in an arc-like motion. Pause for a moment, then raise the dumbbell back to the starting position. Repeat for the desired number of repetitions.",
+  "instruction_steps": []
+},
+    {
+  "name": "哑铃上斜卧推",
+  "name_en": "dumbbell incline bench press",
+  "target": "pectorals",
+  "secondary": [
+    "shoulders",
+    "triceps"
+  ],
+  "equipment": "dumbbell",
+  "gif": "exercise_gifs/0314-ns0SIbU.gif",
+  "gif_url": "videos/0314-ns0SIbU.gif",
+  "instructions_cn": "",
+  "instructions_en": "Set up an incline bench at a 45-degree angle. Sit on the bench with your feet flat on the ground and your back pressed firmly against the bench. Hold a dumbbell in each hand, palms facing forward, and lift them to shoulder height. Slowly lower the dumbbells to the sides of your chest, keeping your elbows at a 90-degree angle. Push the dumbbells back up to the starting position, fully extending your arms. Repeat for the desired number of repetitions.",
+  "instruction_steps": []
+},
+    {
+  "name": "哑铃上斜飞鸟",
+  "name_en": "dumbbell incline fly",
+  "target": "pectorals",
+  "secondary": [
+    "shoulders"
+  ],
+  "equipment": "dumbbell",
+  "gif": "exercise_gifs/0319-ESOd5Pl.gif",
+  "gif_url": "videos/0319-ESOd5Pl.gif",
+  "instructions_cn": "",
+  "instructions_en": "Set an incline bench to a 45-degree angle. Sit on the bench with a dumbbell in each hand, palms facing each other. Lie back on the bench and press the dumbbells up to the starting position, directly above your chest. Lower the dumbbells out to the sides in a wide arc until you feel a stretch in your chest. Pause for a moment, then squeeze your chest muscles to bring the dumbbells back up to the starting position. Repeat for the desired number of repetitions.",
+  "instruction_steps": []
+},
+    {
+  "name": "死虫",
+  "name_en": "dead bug",
+  "target": "abs",
+  "secondary": [
+    "hip flexors",
+    "lower back"
+  ],
+  "equipment": "body weight",
+  "gif": "exercise_gifs/0276-iny3m5y.gif",
+  "gif_url": "videos/0276-iny3m5y.gif",
+  "instructions_cn": "",
+  "instructions_en": "Lie flat on your back with your arms extended towards the ceiling. Bend your knees and lift your legs off the ground, creating a 90-degree angle at your hips and knees. Engage your core and lower back to press your lower back into the ground. Slowly lower your right arm and left leg towards the ground, keeping them straight and hovering just above the floor. Pause for a moment, then return to the starting position. Repeat the movement with your left arm and right leg. Continue alternating sides for the desired number of repetitions.",
+  "instruction_steps": []
+},
+    {
+  "name": "哑铃臀推",
+  "name_en": "barbell glute bridge",
+  "target": "glutes",
+  "secondary": [
+    "hamstrings",
+    "lower back"
+  ],
+  "equipment": "dumbbell",
+  "gif": "exercise_gifs/1409-qKBpF7I.gif",
+  "gif_url": "videos/1409-qKBpF7I.gif",
+  "instructions_cn": "",
+  "instructions_en": "Start by lying flat on your back on the ground with your knees bent and feet flat on the floor. Place a barbell across your hips, holding it securely with both hands. Engage your glutes and core muscles, then lift your hips off the ground until your body forms a straight line from your knees to your shoulders. Pause for a moment at the top, squeezing your glutes. Slowly lower your hips back down to the starting position. Repeat for the desired number of repetitions.",
+  "instruction_steps": []
+},
+    {
+  "name": "哑铃单腿臀桥",
+  "name_en": "single leg bridge with outstretched leg",
+  "target": "glutes",
+  "secondary": [
+    "hamstrings",
+    "quadriceps"
+  ],
+  "equipment": "body weight",
+  "gif": "exercise_gifs/3645-rmEukuS.gif",
+  "gif_url": "videos/3645-rmEukuS.gif",
+  "instructions_cn": "",
+  "instructions_en": "Lie on your back with your knees bent and feet flat on the ground. Extend one leg straight out in front of you. Engage your glutes and lift your hips off the ground, forming a straight line from your knees to your shoulders. Hold for a moment at the top, then slowly lower your hips back down to the starting position. Repeat for the desired number of repetitions, then switch legs.",
+  "instruction_steps": []
+},
+    {
+  "name": "站姿提踵",
+  "name_en": "dumbbell standing calf raise",
+  "target": "calves",
+  "secondary": [
+    "ankles"
+  ],
+  "equipment": "dumbbell",
+  "gif": "exercise_gifs/0417-dPmaUaU.gif",
+  "gif_url": "videos/0417-dPmaUaU.gif",
+  "instructions_cn": "",
+  "instructions_en": "Stand with your feet shoulder-width apart, holding a dumbbell in each hand. Raise your heels off the ground as high as possible, using your calves. Pause for a moment at the top, then slowly lower your heels back down to the starting position. Repeat for the desired number of repetitions.",
+  "instruction_steps": []
+},
+    {
+  "name": "侧卧抬腿",
+  "name_en": "side hip abduction",
+  "target": "abductors",
+  "secondary": [
+    "glutes",
+    "quadriceps"
+  ],
+  "equipment": "body weight",
+  "gif": "exercise_gifs/0710-7WaDzyL.gif",
+  "gif_url": "videos/0710-7WaDzyL.gif",
+  "instructions_cn": "",
+  "instructions_en": "Stand with your feet shoulder-width apart and your hands on your hips. Shift your weight to one leg and lift the opposite leg out to the side, keeping it straight. Pause for a moment at the top, then slowly lower your leg back down to the starting position. Repeat on the other side. Continue alternating sides for the desired number of repetitions.",
+  "instruction_steps": []
+},
+    {
+  "name": "哑铃平板卧推",
+  "name_en": "dumbbell bench press",
+  "target": "pectorals",
+  "secondary": [
+    "triceps",
+    "shoulders"
+  ],
+  "equipment": "dumbbell",
+  "gif": "exercise_gifs/0289-SpYC0Kp.gif",
+  "gif_url": "videos/0289-SpYC0Kp.gif",
+  "instructions_cn": "",
+  "instructions_en": "Lie flat on a bench with your feet flat on the ground and your back pressed against the bench. Hold a dumbbell in each hand, with your palms facing forward and your arms extended above your chest. Lower the dumbbells slowly to the sides of your chest, keeping your elbows at a 90-degree angle. Pause for a moment, then push the dumbbells back up to the starting position, fully extending your arms. Repeat for the desired number of repetitions.",
+  "instruction_steps": []
+},
+    {
+  "name": "哑铃过顶臂屈伸",
+  "name_en": "dumbbell lying triceps extension",
+  "target": "triceps",
+  "secondary": [
+    "shoulders"
+  ],
+  "equipment": "dumbbell",
+  "gif": "exercise_gifs/0351-mpKZGWz.gif",
+  "gif_url": "videos/0351-mpKZGWz.gif",
+  "instructions_cn": "",
+  "instructions_en": "Lie flat on a bench with a dumbbell in each hand, palms facing each other. Extend your arms straight up over your chest, keeping your elbows close to your body. Lower the dumbbells down towards your forehead, bending your elbows. Pause for a moment, then extend your arms back up to the starting position. Repeat for the desired number of repetitions.",
+  "instruction_steps": []
+},
+    {
+  "name": "哑铃俯身臂屈伸",
+  "name_en": "dumbbell kickback",
+  "target": "triceps",
+  "secondary": [
+    "shoulders"
+  ],
+  "equipment": "dumbbell",
+  "gif": "exercise_gifs/0333-W6PxUkg.gif",
+  "gif_url": "videos/0333-W6PxUkg.gif",
+  "instructions_cn": "",
+  "instructions_en": "Stand with your feet shoulder-width apart and hold a dumbbell in each hand. Bend your knees slightly and hinge forward at the hips, keeping your back straight. Bring your upper arms close to your sides, with your elbows bent at a 90-degree angle. Extend your arms straight back, squeezing your triceps at the top of the movement. Pause for a moment, then slowly lower the dumbbells back to the starting position. Repeat for the desired number of repetitions.",
+  "instruction_steps": []
+},
+    {
+  "name": "哑铃坐姿肩推",
+  "name_en": "dumbbell arnold press",
+  "target": "delts",
+  "secondary": [
+    "triceps",
+    "upper chest"
+  ],
+  "equipment": "dumbbell",
+  "gif": "exercise_gifs/2137-Xy4jlWA.gif",
+  "gif_url": "videos/2137-Xy4jlWA.gif",
+  "instructions_cn": "",
+  "instructions_en": "Sit on a bench with back support and hold a dumbbell in each hand at shoulder level, palms facing your body and elbows bent. Press the dumbbells upward until your arms are fully extended and your palms are facing forward. Rotate your wrists as you lift, so that your palms are facing forward at the top of the movement. Pause for a moment at the top, then slowly lower the dumbbells back to the starting position. Repeat for the desired number of repetitions.",
+  "instruction_steps": []
+},
+    {
+  "name": "哑铃俯身反向飞鸟",
+  "name_en": "dumbbell rear delt raise",
+  "target": "delts",
+  "secondary": [
+    "trapezius",
+    "rhomboids"
+  ],
+  "equipment": "dumbbell",
+  "gif": "exercise_gifs/2292-mu5Guxt.gif",
+  "gif_url": "videos/2292-mu5Guxt.gif",
+  "instructions_cn": "",
+  "instructions_en": "Stand with your feet shoulder-width apart and hold a dumbbell in each hand, palms facing your body. Bend your knees slightly and hinge forward at the hips, keeping your back straight. Raise your arms out to the sides, keeping a slight bend in your elbows, until they are parallel to the floor. Pause for a moment at the top, then slowly lower your arms back down to the starting position. Repeat for the desired number of repetitions.",
+  "instruction_steps": []
+},
+    {
+  "name": "哑铃高脚杯深蹲",
+  "name_en": "dumbbell goblet squat",
+  "target": "quads",
+  "secondary": [
+    "glutes",
+    "hamstrings",
+    "calves"
+  ],
+  "equipment": "dumbbell",
+  "gif": "exercise_gifs/1760-yn8yg1r.gif",
+  "gif_url": "videos/1760-yn8yg1r.gif",
+  "instructions_cn": "",
+  "instructions_en": "Stand with your feet shoulder-width apart, holding a dumbbell vertically against your chest with both hands. Keeping your chest up and core engaged, lower your body down into a squat position by pushing your hips back and bending your knees. Continue lowering until your thighs are parallel to the ground, or as low as you can comfortably go. Pause for a moment at the bottom, then push through your heels to return to the starting position. Repeat for the desired number of repetitions.",
+  "instruction_steps": []
+},
+    {
+  "name": "哑铃保加利亚分腿蹲",
+  "name_en": "dumbbell single leg split squat",
+  "target": "quads",
+  "secondary": [
+    "glutes",
+    "hamstrings",
+    "calves"
+  ],
+  "equipment": "dumbbell",
+  "gif": "exercise_gifs/0410-qx4fgX7.gif",
+  "gif_url": "videos/0410-qx4fgX7.gif",
+  "instructions_cn": "",
+  "instructions_en": "Stand with your feet shoulder-width apart, holding a dumbbell in each hand. Take a step forward with one foot and position your feet so that your front foot is flat on the ground and your back foot is elevated on a bench or step. Lower your body by bending your front knee and hip, keeping your back knee slightly bent and your back heel off the ground. Continue lowering until your front thigh is parallel to the ground, then push through your front heel to return to the starting position. Repeat for the desired number of repetitions, then switch legs and repeat.",
+  "instruction_steps": []
+},
+    {
+  "name": "哑铃罗马尼亚硬拉",
+  "name_en": "dumbbell romanian deadlift",
+  "target": "glutes",
+  "secondary": [
+    "hamstrings",
+    "lower back"
+  ],
+  "equipment": "dumbbell",
+  "gif": "exercise_gifs/1459-rR0LJzx.gif",
+  "gif_url": "videos/1459-rR0LJzx.gif",
+  "instructions_cn": "",
+  "instructions_en": "Stand with your feet shoulder-width apart, holding a dumbbell in each hand with an overhand grip. Keeping your back straight and your core engaged, hinge at the hips and lower the dumbbells towards the ground, allowing your knees to bend slightly. Lower the dumbbells until you feel a stretch in your hamstrings, then push through your heels and engage your glutes to return to the starting position. Repeat for the desired number of repetitions.",
+  "instruction_steps": []
+},
+    {
+  "name": "俯卧撑",
+  "name_en": "push-up",
+  "target": "pectorals",
+  "secondary": [
+    "triceps",
+    "deltoids",
+    "core"
+  ],
+  "equipment": "body weight",
+  "gif": "exercise_gifs/0662-I4hDWkc.gif",
+  "gif_url": "videos/0662-I4hDWkc.gif",
+  "instructions_cn": "",
+  "instructions_en": "Start in a high plank position with your hands slightly wider than shoulder-width apart and your feet together. Engage your core and lower your body towards the ground by bending your elbows, keeping your body in a straight line. Pause for a moment when your chest is just above the ground, then push yourself back up to the starting position by straightening your arms. Repeat for the desired number of repetitions.",
+  "instruction_steps": []
+},
+    {
+  "name": "平板支撑",
+  "name_en": "front plank with twist",
+  "target": "abs",
+  "secondary": [
+    "obliques",
+    "shoulders"
+  ],
+  "equipment": "body weight",
+  "gif": "exercise_gifs/0464-CosupLu.gif",
+  "gif_url": "videos/0464-CosupLu.gif",
+  "instructions_cn": "",
+  "instructions_en": "Start in a high plank position with your hands directly under your shoulders and your body in a straight line from head to toe. Engage your core and glutes to maintain a stable position. Rotate your torso to the right, lifting your right arm and extending it towards the ceiling. Keep your hips and legs stable as you twist. Hold for a moment, then return to the starting position. Repeat the twist on the left side. Continue alternating sides for the desired number of repetitions.",
+  "instruction_steps": []
+},
+
+    {
       "name": "哑铃单臂划船",
       "name_en": "dumbbell one arm bent-over row",
       "target": "upper back",
@@ -580,29 +893,7 @@ window.EXERCISE_DB =   [
 // 动作名别名映射 — 新计划(PPL×2)动作名对齐到动作库现有条目，复用标准GIF示范
 // 仅映射「同型动作」(如上斜卧推→平板卧推、锤式弯举→弯举)，避免错误示范误导动作
 // 注意：findExercise 为「库名包含搜索名」逻辑，带「哑铃」前缀的计划动作大多需显式别名才能命中
-window.EXERCISE_ALIASES = {
-  '哑铃交替弯举': '哑铃弯举',
-  '哑铃锤式弯举': '哑铃弯举',
-  '哑铃平板卧推': '哑铃卧推',
-  '哑铃上斜卧推': '哑铃卧推',
-  '哑铃俯身臂屈伸': '哑铃臂屈伸',
-  '哑铃过顶臂屈伸': '哑铃仰卧臂屈伸',
-  '哑铃俯身反向飞鸟': '哑铃后束飞鸟',
-  '哑铃坐姿肩推': '哑铃阿诺德推举',
-  '哑铃高脚杯深蹲': '高脚杯深蹲',
-  '哑铃保加利亚分腿蹲': '保加利亚分腿蹲',
-  '哑铃罗马尼亚硬拉': '罗马尼亚硬拉',
-  '哑铃臀推': '臀桥',
-  '哑铃单腿臀桥': '臀桥',
-  // v9.7f: 7 个无精确GIF的动作 → 同部位/近似动作兜底（示范框标注「示意·近似」，避免误导）
-  '死虫': '卷腹',
-  '鸟狗': '平板支撑',
-  '侧卧抬腿': '臀桥',
-  '哑铃仰卧上拉': '哑铃卧推',
-  '哑铃俯身直臂后拉': '哑铃俯身划船',
-  '哑铃上斜飞鸟': '哑铃卧推',
-  '站姿提踵': '自重深蹲'
-};
+window.EXERCISE_ALIASES = {};
 
 // 查找动作的便捷方法
 window.findExercise = function(name, lang) {
