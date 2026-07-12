@@ -340,27 +340,6 @@
 .tm-exercise-meta { font-size: 14px; color: rgba(255,255,255,.45); font-weight: 500; }
 .tm-set-info { font-size: 13px; color: #f97316; font-weight: 700; margin-top: 4px; }
 
-/* 分步指令 */
-.tm-instructions-area {
-  flex: 0 0 auto; max-height: 180px; overflow-y: auto;
-  margin: 0 20px 12px; padding: 12px 14px;
-  background: rgba(255,255,255,.06); border-radius: 10px;
-  border-left: 3px solid #f97316;
-  transition: opacity .25s;
-}
-.tm-instructions-area .tm-step {
-  display: flex; align-items: flex-start; gap: 10px;
-  padding: 5px 0; font-size: 13px; color: rgba(255,255,255,.78);
-  line-height: 1.55; border-bottom: 1px solid rgba(255,255,255,.06);
-}
-.tm-instructions-area .tm-step:last-child { border-bottom: none; }
-.tm-instructions-area .tm-step-num {
-  flex-shrink: 0; width: 22px; height: 22px;
-  background: #f97316; color: #fff; border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 11px; font-weight: 700; margin-top: 1px;
-}
-
 /* 上次成绩锚点 */
 .tm-last-result { font-size: 12px; color: rgba(255,255,255,.42); margin-top: 7px; font-weight: 500; }
 .tm-last-result b { color: #fbbf24; font-weight: 700; }
@@ -1406,11 +1385,7 @@ if('serviceWorker' in navigator){
   </div>
   <div class="tm-strip-btns">
     <button class="tm-toggle-btn" id="tmToggleList">📋 全部动作</button>
-    <button class="tm-toggle-btn" id="tmToggleTips">💡 动作要领</button>
   </div>
-
-  <!-- 分步动作指令（默认收起） -->
-  <div class="tm-instructions-area" id="tmInstructionsArea" style="display:none"></div>
 
   <!-- 进度条 -->
   <div class="tm-progress-wrap">
@@ -1832,17 +1807,12 @@ var WorkoutTimer = (function() {
     videoBadge.textContent = isTimed ? '进行中' : ('第' + currentSet + '组');
     timerLabel.textContent = isTimed ? '⏱ 动作倒计时' : '⏱ 本组用时';
 
-    // 加载分步指令
-    renderInstructionSteps(ex.name);
     // 上次成绩 + 下一动作预览
     renderLastResult(ex.name);
     updateNextPreview();
     // 默认收起列表与要领，聚焦当前动作
     var exListEl = document.getElementById('tmExercisesList');
     if (exListEl) { exListEl.classList.add('collapsed'); var tl = document.getElementById('tmToggleList'); if (tl) tl.textContent = '📋 全部动作'; }
-    var insArea = document.getElementById('tmInstructionsArea');
-    if (insArea) insArea.style.display = 'none';
-    var ttBtn = document.getElementById('tmToggleTips'); if (ttBtn) ttBtn.textContent = '💡 动作要领';
 
     showControlsForState();
     updateDisplay();
@@ -1918,22 +1888,6 @@ var WorkoutTimer = (function() {
     videoArea.appendChild(ref);
   }
 
-  // --- 分步动作指令 ---
-  function renderInstructionSteps(exName) {
-    var area = document.getElementById('tmInstructionsArea');
-    if (!area) return;
-    var exDb = window.findExercise && window.findExercise(exName);
-    var steps = exDb && exDb.instruction_steps;
-    if (!steps || !steps.length) { area.style.display = 'none'; return; }
-
-    var html = '';
-    for (var i = 0; i < steps.length; i++) {
-      html += '<div class="tm-step"><span class="tm-step-num">' + (i + 1) + '</span><span>' + steps[i] + '</span></div>';
-    }
-    area.innerHTML = html;
-    area.style.display = '';
-  }
-
   // --- 上次成绩（从训练记录中读取同动作最近一次结果）---
   function renderLastResult(exName) {
     var el = document.getElementById('tmLastResult');
@@ -1996,10 +1950,6 @@ var WorkoutTimer = (function() {
     restHint.textContent = '放松肌肉，调整呼吸';
     restScreen.classList.add('active');
     restScreen.classList.remove('warmup-mode');
-
-    // 隐藏分步指令
-    var ia = document.getElementById('tmInstructionsArea');
-    if (ia) ia.style.display = 'none';
 
     showControlsForState();
     updateDisplay();
@@ -2227,18 +2177,11 @@ var WorkoutTimer = (function() {
     if (!toggleBound) {
       toggleBound = true;
       var listBtn = document.getElementById('tmToggleList');
-      var tipsBtn = document.getElementById('tmToggleTips');
       if (listBtn) listBtn.addEventListener('click', function() {
         var l = document.getElementById('tmExercisesList');
         if (!l) return;
         if (l.classList.contains('collapsed')) { l.classList.remove('collapsed'); this.textContent = '📋 收起动作'; }
         else { l.classList.add('collapsed'); this.textContent = '📋 全部动作'; }
-      });
-      if (tipsBtn) tipsBtn.addEventListener('click', function() {
-        var a = document.getElementById('tmInstructionsArea');
-        if (!a) return;
-        if (a.style.display === 'none' || !a.style.display) { a.style.display = ''; this.textContent = '💡 收起要领'; }
-        else { a.style.display = 'none'; this.textContent = '💡 动作要领'; }
       });
     }
 
