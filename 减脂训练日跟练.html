@@ -350,15 +350,6 @@
 .tm-progress-text { font-size: 12px; color: rgba(255,255,255,.5); font-weight: 700; flex: 0 0 auto; font-variant-numeric: tabular-nums; }
 .tm-next-preview { font-size: 12px; color: rgba(255,255,255,.4); font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .tm-next-preview b { color: #fff; }
-.tm-strip-btns { flex: 0 0 auto; display: flex; gap: 8px; padding: 8px 20px 4px; }
-.tm-toggle-btn {
-  background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.12);
-  color: rgba(255,255,255,.72); border-radius: 9px; padding: 8px 14px;
-  font-size: 12px; font-weight: 600; cursor: pointer; font-family: var(--font);
-  transition: all .15s; -webkit-tap-highlight-color: transparent;
-}
-.tm-toggle-btn:active { transform: scale(.95); }
-.tm-exercises.collapsed { display: none; }
 
 /* 进度条 */
 .tm-progress-wrap {
@@ -1383,17 +1374,13 @@ if('serviceWorker' in navigator){
     <span class="tm-progress-text" id="tmProgressText"></span>
     <span class="tm-next-preview" id="tmNextPreview"></span>
   </div>
-  <div class="tm-strip-btns">
-    <button class="tm-toggle-btn" id="tmToggleList">📋 全部动作</button>
-  </div>
-
   <!-- 进度条 -->
   <div class="tm-progress-wrap">
     <div class="tm-progress-bar"><div class="tm-progress-fill" id="tmProgressFill" style="width:0%"></div></div>
   </div>
 
-  <!-- 底部动作列表（训练中收起） -->
-  <div class="tm-exercises collapsed" id="tmExercisesList"></div>
+  <!-- 底部动作列表（默认全部动作展开） -->
+  <div class="tm-exercises" id="tmExercisesList"></div>
 
   <!-- 控制按钮 -->
   <div class="tm-controls" id="tmControls">
@@ -1529,8 +1516,6 @@ var WorkoutTimer = (function() {
   var stats = { setsCompleted: 0, exercisesCompleted: 0 };
   // 本次训练每动作结果（用于"上次成绩"）
   var sessionExLog = {};
-  // 折叠按钮绑定守卫
-  var toggleBound = false;
 
   // 热身
   var warmupStage = 0;
@@ -1810,9 +1795,7 @@ var WorkoutTimer = (function() {
     // 上次成绩 + 下一动作预览
     renderLastResult(ex.name);
     updateNextPreview();
-    // 默认收起列表与要领，聚焦当前动作
-    var exListEl = document.getElementById('tmExercisesList');
-    if (exListEl) { exListEl.classList.add('collapsed'); var tl = document.getElementById('tmToggleList'); if (tl) tl.textContent = '📋 全部动作'; }
+    // 全部动作默认常驻展开（无收起逻辑）
 
     showControlsForState();
     updateDisplay();
@@ -2173,17 +2156,7 @@ var WorkoutTimer = (function() {
     if (!exercises.length) { alert('当前日期没有可训练的动作'); return; }
     sessionExLog = {};
 
-    // 绑定折叠按钮（仅一次）
-    if (!toggleBound) {
-      toggleBound = true;
-      var listBtn = document.getElementById('tmToggleList');
-      if (listBtn) listBtn.addEventListener('click', function() {
-        var l = document.getElementById('tmExercisesList');
-        if (!l) return;
-        if (l.classList.contains('collapsed')) { l.classList.remove('collapsed'); this.textContent = '📋 收起动作'; }
-        else { l.classList.add('collapsed'); this.textContent = '📋 全部动作'; }
-      });
-    }
+    // （已移除收起按钮，全部动作默认常驻展开）
 
     // 计算总预估时间
     var totalEst = window.TimeEstimator ? TimeEstimator.estimateTotal(exercises) : 0;
