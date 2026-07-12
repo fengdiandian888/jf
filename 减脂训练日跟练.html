@@ -2538,6 +2538,7 @@ var VideoManager = (function() {
 
   // --- 从动作数据库获取GIF动画路径 ---
   function getExerciseGif(name) {
+    window.__gifApprox = false;
     // 先通过data-exercise属性查
     var rows = document.querySelectorAll('.move-row[data-exercise]');
     for (var i = 0; i < rows.length; i++) {
@@ -2545,16 +2546,25 @@ var VideoManager = (function() {
       if (rowName === name || normalizeName(rowName) === normalizeName(name)) {
         var dbKey = rows[i].getAttribute('data-exercise');
         var ex = window.findExercise && window.findExercise(dbKey);
-        if (ex && ex.gif) return ex.gif;
+        if (ex && ex.gif) {
+          window.__gifApprox = !!(window.EXERCISE_ALIASES && (window.EXERCISE_ALIASES[dbKey] || window.EXERCISE_ALIASES[name]));
+          return ex.gif;
+        }
         break;
       }
     }
     // fallback: 直接查数据库
     var ex = window.findExercise && window.findExercise(name);
-    if (ex && ex.gif) return ex.gif;
+    if (ex && ex.gif) {
+      window.__gifApprox = !!(window.EXERCISE_ALIASES && window.EXERCISE_ALIASES[name]);
+      return ex.gif;
+    }
     var norm = normalizeName(name);
     ex = window.findExercise && window.findExercise(norm);
-    if (ex && ex.gif) return ex.gif;
+    if (ex && ex.gif) {
+      window.__gifApprox = !!(window.EXERCISE_ALIASES && window.EXERCISE_ALIASES[norm]);
+      return ex.gif;
+    }
     return '';
   }
 
@@ -2692,8 +2702,9 @@ var VideoManager = (function() {
     // 始终显示GIF标准示范（如果数据库中有）
     var gifPath = getExerciseGif(exerciseName);
     if (gifPath) {
+      var approxTag = window.__gifApprox ? ' <span style="color:#d97706;font-size:10px;">· ⚠️示意·同部位近似</span>' : '';
       $('vcPreview').style.display = 'block';
-      $('vcPreview').innerHTML = '<div style="text-align:center;padding:8px;background:var(--card);border-radius:8px"><div style="font-size:11px;color:var(--sub);margin-bottom:6px">📐 标准动作示范 (GIF)</div><img src="' + gifPath + '" style="width:180px;height:180px;object-fit:contain;border-radius:6px" alt="标准示范" /></div>';
+      $('vcPreview').innerHTML = '<div style="text-align:center;padding:8px;background:var(--card);border-radius:8px"><div style="font-size:11px;color:var(--sub);margin-bottom:6px">📐 标准动作示范 (GIF)' + approxTag + '</div><img src="' + gifPath + '" style="width:180px;height:180px;object-fit:contain;border-radius:6px" alt="标准示范" /></div>';
     } else {
       $('vcPreview').style.display = 'block';
       $('vcPreview').innerHTML = '<div style="text-align:center;padding:10px;background:var(--card);border-radius:8px;color:var(--sub);font-size:11px;line-height:1.6">📐 该动作暂无标准示范动图<br>按动作要领标注执行即可</div>';
@@ -2786,8 +2797,9 @@ var VideoManager = (function() {
     // 如果有GIF，在视频下方显示标准示范
     var gifPath = getExerciseGif(exerciseName || currentExercise);
     if (gifPath) {
+      var approxTag2 = window.__gifApprox ? ' <span style="color:#d97706;font-size:10px;">· ⚠️示意·同部位近似</span>' : '';
       html += '<div style="text-align:center;margin-top:8px;padding:6px;background:var(--card);border-radius:8px">' +
-        '<div style="font-size:11px;color:var(--sub);margin-bottom:4px">📐 标准示范 (GIF)</div>' +
+        '<div style="font-size:11px;color:var(--sub);margin-bottom:4px">📐 标准示范 (GIF)' + approxTag2 + '</div>' +
         '<img src="' + gifPath + '" style="width:180px;height:180px;object-fit:contain;border-radius:6px" alt="标准示范" />' +
         '</div>';
     }
