@@ -238,20 +238,73 @@ details .inner { padding: 6px 0; }
 }
 .supp-time { font-size: 11px; color: #78716c; line-height: 1.5; }
 .supp-tip { font-size: 10px; color: var(--sub); line-height: 1.5; margin-top: 2px; }
+
+/* ===== 完整周计划（备查·默认收起） ===== */
+details.ref-wrap { margin: 0 10px 12px; background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+details.ref-wrap > summary { padding: 14px 16px; font-size: 15px; font-weight: 700; color: var(--text); list-style: none; cursor: pointer; }
+details.ref-wrap > summary::-webkit-details-marker { display: none; }
+details.ref-wrap > summary::before { content: '▸ '; color: var(--sub); }
+details.ref-wrap[open] > summary::before { content: '▾ '; }
+.ref-inner { padding: 0 12px 14px; }
+.ref-inner .card { margin: 0 0 12px; box-shadow: none; }
+
+.stat-row { display: grid; grid-template-columns: repeat(4,1fr); gap: 8px; margin: 10px 0; }
+.stat-item { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 14px 8px; text-align: center; }
+.stat-item .val { font-size: 22px; font-weight: 800; display: block; line-height: 1; }
+.stat-item .lbl { font-size: 11px; color: var(--sub); margin-top: 4px; font-weight: 600; }
+@media(max-width:600px){ .stat-row { grid-template-columns: 1fr 1fr; } }
+
+.week-grid { display: grid; grid-template-columns: repeat(7,1fr); gap: 6px; margin: 10px 0; }
+.week-day { background: var(--surface); border-radius: var(--radius-sm); padding: 10px 4px; text-align: center; border: 2px solid transparent; }
+.week-day.pull { border-color: rgba(59,130,246,.3); }
+.week-day.push { border-color: rgba(245,158,11,.3); }
+.week-day.leg { border-color: rgba(239,68,68,.3); }
+.week-day.cardio { border-color: rgba(34,197,94,.3); }
+.week-day.recovery { border-color: rgba(167,139,250,.3); }
+.week-day.rest { border-color: rgba(82,82,91,.3); }
+.week-label { font-size: .62rem; color: var(--sub); margin-bottom: 2px; font-weight: 600; }
+.week-name { font-weight: 700; font-size: 13px; margin-bottom: 4px; }
+.week-tag { font-size: .6rem; padding: 1px 5px; border-radius: 6px; display: inline-block; font-weight: 700; }
+.wtag-pull { background: rgba(59,130,246,.1); color: var(--pull); }
+.wtag-push { background: rgba(245,158,11,.1); color: var(--push); }
+.wtag-leg { background: rgba(239,68,68,.1); color: var(--leg); }
+.wtag-cardio { background: rgba(34,197,94,.1); color: var(--cardio); }
+.wtag-recovery { background: rgba(167,139,250,.1); color: var(--recovery); }
+.week-day .tag-rest { background: rgba(82,82,91,.12); color: var(--sub); }
+@media(max-width:600px){ .week-grid { grid-template-columns: repeat(4,1fr); } }
+
+.note { background: var(--surface); border-left: 3px solid var(--warn); padding: 10px 14px; border-radius: 0 var(--radius-sm) var(--radius-sm) 0; margin: 8px 0; font-size: .85rem; line-height: 1.6; }
+.note.info { border-left-color: var(--info); }
+.note.success { border-left-color: var(--cardio); }
+.note.danger { border-left-color: var(--danger); }
+
+.tbl { width: 100%; border-collapse: collapse; font-size: .85rem; margin: 8px 0; }
+.tbl th { padding: 7px 8px; text-align: left; font-weight: 700; color: var(--sub); border-bottom: 1px solid var(--border); font-size: .72rem; }
+.tbl td { padding: 7px 8px; border-bottom: 1px solid rgba(0,0,0,.03); font-size: .85rem; }
+.tbl .hi { font-weight: 700; color: var(--cardio); }
+
+.food-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+@media(max-width:600px){ .food-grid { grid-template-columns: 1fr; } }
+.food-section { background: var(--surface); border-radius: var(--radius-sm); padding: 12px; border: 1px solid var(--border); }
+.food-section h4 { font-size: .85rem; font-weight: 700; margin-bottom: 6px; }
+.food-list { list-style: none; font-size: .82rem; }
+.food-list li { padding: 2px 0; color: var(--sub); }
+
+.milestone-track { display: flex; align-items: center; gap: 0; margin: 12px 0; position: relative; }
+.milestone-dot { flex: 1; text-align: center; position: relative; z-index: 1; }
+.milestone-dot .dot-circle { width: 12px; height: 12px; border-radius: 50%; background: var(--border); margin: 0 auto 4px; border: 2px solid rgba(0,0,0,.05); }
+.milestone-dot .dot-wt { font-size: 16px; font-weight: 800; color: var(--text); }
+.milestone-dot .dot-label { font-size: 10px; color: var(--sub); font-weight: 600; }
+.milestone-dot .dot-time { font-size: 10px; color: var(--sub); }
+.milestone-line { position: absolute; top: 6px; left: 8%; right: 8%; height: 1px; background: var(--border); z-index: 0; }
+
+.ref-card h2 { font-size: 17px; font-weight: 700; margin-bottom: 8px; color: var(--text); }
 </style>
 <script src="data.js"></script>
 <script src="exercise_db.js"></script>
 </head>
 <body>
 
-<!-- ===== TOP TAB BAR ===== -->
-<nav class="tab-bar">
- <a href="今日计划.html" class="active">今日</a>
- <a href="减脂全面计划.html">计划</a>
- <a href="减脂训练日跟练.html">跟练</a>
- <a href="每日必做清单.html">清单</a>
- <a href="饮食参考.html">饮食</a>
-</nav>
 
 <!-- ===== 1. TODAY CARD (Hero) ===== -->
 <div class="today-hero" id="todayCard"></div>
@@ -265,6 +318,79 @@ details .inner { padding: 6px 0; }
 
 <!-- ===== 3. TIMELINE ===== -->
 <div class="card tl-outer" id="timelineCard"></div>
+
+<!-- ===== 4. 完整周计划（备查·默认收起） ===== -->
+<details class="ref-wrap">
+  <summary>📋 完整周计划（备查 · 点开看）</summary>
+  <div class="ref-inner">
+
+    <!-- 基础数据 -->
+    <div class="card ref-card">
+      <h2>基础数据</h2>
+      <div class="stat-row">
+        <div class="stat-item"><span class="val">170</span><span class="lbl">身高 cm</span></div>
+        <div class="stat-item"><span class="val">81.5</span><span class="lbl">当前体重</span></div>
+        <div class="stat-item"><span class="val">28.1</span><span class="lbl">BMI</span></div>
+        <div class="stat-item"><span class="val">63–70</span><span class="lbl">目标 kg</span></div>
+      </div>
+      <div style="font-size:13px;color:var(--sub);margin-top:4px">株洲·石峰区 · 独居 · 小电动通勤 · 不抽烟不喝酒 · 不吃零食不聚餐</div>
+    </div>
+
+    <!-- 每周节奏 -->
+    <div class="card ref-card">
+      <h2>每周节奏</h2>
+      <div class="week-grid">
+        <div class="week-day pull"><div class="week-label">周一</div><div class="week-name">拉日</div><div class="week-tag wtag-pull">力量</div></div>
+        <div class="week-day cardio"><div class="week-label">周二</div><div class="week-name">有氧+核心</div><div class="week-tag wtag-cardio">有氧</div></div>
+        <div class="week-day push"><div class="week-label">周三</div><div class="week-name">推日</div><div class="week-tag wtag-push">力量</div></div>
+        <div class="week-day cardio"><div class="week-label">周四</div><div class="week-name">有氧+核心</div><div class="week-tag wtag-cardio">有氧</div></div>
+        <div class="week-day leg"><div class="week-label">周五</div><div class="week-name">腿日</div><div class="week-tag wtag-leg">力量</div></div>
+        <div class="week-day recovery"><div class="week-label">周六</div><div class="week-name">维持+瑜伽</div><div class="week-tag wtag-recovery">维持</div></div>
+        <div class="week-day rest"><div class="week-label">周日</div><div class="week-name">恢复</div><div class="week-tag tag-rest">备餐+休息</div></div>
+      </div>
+    </div>
+
+    <!-- 饮食原则 -->
+    <div class="card ref-card">
+      <h2>饮食原则</h2>
+      <div class="note info"><b>晚餐必须加 55–65g 碳水</b>：40岁+重度打鼾(OSA) → 夜间皮质醇偏高，完全断碳更难入睡+掉肌肉。给大脑"没饥荒"的安全信号。</div>
+      <table class="tbl">
+        <tr><th>级别</th><th>触发</th><th>应对</th></tr>
+        <tr><td>LV1 微饿</td><td>喝水能解决</td><td>喝 300ml 温水</td></tr>
+        <tr><td>LV2 真饿</td><td>水解决不了</td><td>啃半根黄瓜 / 1 个番茄</td></tr>
+        <tr><td>LV3 饿到睡不着</td><td>前两级均失败</td><td>喝 200ml 牛奶（慢饮）→ 色氨酸助眠</td></tr>
+      </table>
+    </div>
+
+    <!-- 食材偏好 -->
+    <div class="card ref-card">
+      <h2>食材偏好</h2>
+      <div class="food-grid">
+        <div class="food-section"><h4>喜欢（主力）</h4><ul class="food-list"><li>蛋白：虾/豆腐/牛肉/鸡蛋/鸡胸肉</li><li>蔬菜：丝瓜/苋菜/黄瓜/菠菜/生菜</li></ul></div>
+        <div class="food-section"><h4>不吃</h4><ul class="food-list"><li>西兰花</li></ul></div>
+      </div>
+      <div class="food-grid" style="margin-top:8px">
+        <div class="food-section"><h4>操作不便（偶尔）</h4><ul class="food-list"><li>鱼（麻烦）/ 冬瓜（太大用不完）/ 木耳菜红薯叶（不好买）</li></ul></div>
+        <div class="food-section"><h4>弱点管理</h4><ul class="food-list"><li>甜食不买不进家门 · 不喝酒不吃零食不聚餐</li></ul></div>
+      </div>
+    </div>
+
+    <!-- 里程碑 -->
+    <div class="card ref-card">
+      <h2>里程碑</h2>
+      <div class="milestone-track">
+        <div class="milestone-line"></div>
+        <div class="milestone-dot"><div class="dot-circle"></div><div class="dot-wt">85</div><div class="dot-label">起点</div></div>
+        <div class="milestone-dot"><div class="dot-circle"></div><div class="dot-wt">80</div><div class="dot-time">4–5周</div></div>
+        <div class="milestone-dot"><div class="dot-circle"></div><div class="dot-wt">75</div><div class="dot-time">8–10周</div></div>
+        <div class="milestone-dot"><div class="dot-circle"></div><div class="dot-wt">70</div><div class="dot-time">14–18周</div></div>
+        <div class="milestone-dot"><div class="dot-circle"></div><div class="dot-wt">65</div><div class="dot-time">22–26周</div></div>
+      </div>
+      <div class="note success" style="margin-top:8px"><b>奖励：</b>80kg→买衣 · 75kg→按摩 · 70kg→骑行装备 · 65kg→腹肌照</div>
+    </div>
+
+  </div>
+</details>
 
 <script>
 // ========== CORE DATA ==========
@@ -877,11 +1003,9 @@ if ('serviceWorker' in navigator) {
 </script>
 <nav class="bottom-nav">
  <a href="今日计划.html" class="active">今日</a>
- <a href="减脂全面计划.html">计划</a>
  <a href="减脂训练日跟练.html">跟练</a>
- <a href="每日必做清单.html">清单</a>
  <a href="饮食参考.html">饮食</a>
-  <a href="数据看板.html">看板</a>
+ <a href="数据看板.html">看板</a>
 </nav>
 </body>
 </html>
