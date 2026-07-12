@@ -237,7 +237,6 @@ details .inner { padding: 6px 0; }
   background: rgba(59,130,246,0.12); color: var(--pull);
 }
 .supp-time { font-size: 11px; color: #78716c; line-height: 1.5; }
-.supp-tip { font-size: 10px; color: var(--sub); line-height: 1.5; margin-top: 2px; }
 
 /* ===== 完整周计划（备查·默认收起） ===== */
 details.ref-wrap { margin: 0 10px 12px; background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
@@ -929,24 +928,19 @@ function renderTodayMeals() {
 const SUPPS = [
   { id:'vd3', icon:'☀️', name:'维生素D3', dose:'1颗',
     period:'早餐', periodBg:'rgba(245,158,11,.15)', periodColor:'#92400e',
-    time:'随早餐服用（牛奶+鸡蛋含脂肪，帮助吸收）',
-    tip:'脂溶性维生素，必须随含脂肪的餐食吃' },
+    time:'随早餐服用（牛奶+鸡蛋含脂肪，帮助吸收）' },
   { id:'fishoil', icon:'🐟', name:'鱼油', dose:'2颗',
     period:'午/晚餐', periodBg:'rgba(74,222,128,.15)', periodColor:'#166534',
-    time:'午餐1颗 + 晚餐1颗',
-    tip:'随餐服用吸收好，分两次减少鱼腥打嗝' },
+    time:'午餐1颗 + 晚餐1颗' },
   { id:'protein', icon:'💪', name:'乳清蛋白粉', dose:'30g（1勺）',
     period:'训练后', periodBg:'rgba(96,165,250,.15)', periodColor:'#1e40af',
-    time:'训练日：训练后30分钟内 · 休息日：下午15:00-16:00加餐',
-    tip:'训练后肌肉吸收率最高；休息日下午补蛋白合成低谷' },
+    time:'训练日：训练后30分钟内 · 休息日：下午15:00-16:00加餐' },
   { id:'creatine', icon:'🔋', name:'一水肌酸', dose:'5g（1茶匙）',
     period:'任意时间', periodBg:'rgba(167,139,250,.15)', periodColor:'#5b21b6',
-    time:'每天固定一个时间即可 · 可混水或蛋白粉一起喝',
-    tip:'每天5g不用停，配合训练增肌增力；关键是每天吃，不挑时间' },
+    time:'每天固定一个时间即可 · 可混水或蛋白粉一起喝' },
   { id:'magnesium', icon:'🌙', name:'甘氨酸镁', dose:'约2.7g粉（300mg元素镁）',
     period:'睡前', periodBg:'rgba(99,102,241,.15)', periodColor:'#3730a3',
-    time:'睡前30-60分钟，温水冲服',
-    tip:'甘氨酸本身有镇静效果，助眠+放松肌肉；别和钙/铁同时吃' }
+    time:'睡前30-60分钟，温水冲服' }
 ];
 
 function renderSuppCard() {
@@ -974,7 +968,6 @@ function renderSuppCard() {
           <span class="supp-dose">${s.dose}</span>
         </div>
         <div class="supp-time">⏰ ${s.time}</div>
-        <div class="supp-tip">💡 ${s.tip}</div>
       </div>
     </div>`;
   });
