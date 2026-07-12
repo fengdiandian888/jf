@@ -163,6 +163,7 @@ h1 { font-size: 19px; text-align: center; padding: 14px 0 2px; color: var(--prim
   function calcPortion(food, meal) {
     var f = FOODS[food];
     if (!f) return { g:150 };
+    if (window.FIXED_GRAMS && window.FIXED_GRAMS[food] != null) return { g: window.FIXED_GRAMS[food] };
     if (f.cat === 'meat') {
       if (food === '鸡蛋') return { g:100 };
       if (food === '牛奶') return { g:250 };
@@ -367,14 +368,7 @@ h1 { font-size: 19px; text-align: center; padding: 14px 0 2px; color: var(--prim
       if (f.cat === 'soy') soys.push(name);
     });
 
-    if (meats.length===0 || veggies.length===0 || staples.length===0) {
-      var hint = document.getElementById('assignHint');
-      hint.textContent = '请先添加蛋白质、蔬菜、主食各至少一样';
-      hint.style.color = 'var(--danger)';
-      hint.style.fontWeight = '800';
-      setTimeout(function(){ hint.style.fontWeight = ''; }, 1500);
-      return;
-    }
+    // 固定标准三餐模式：不依赖库存，直接生成（库存为空也能生成）
 
     // 重置 used
     Object.keys(ingredientStock).forEach(function(n) {
@@ -406,17 +400,16 @@ h1 { font-size: 19px; text-align: center; padding: 14px 0 2px; color: var(--prim
 
       weeklySel[dayId] = {
         breakfast: {meat:['鸡蛋','牛奶'], soy:null, veg:[], staple:'燕麦片'},
-        lunch:     {meat:luMeat, soy:null, veg:luVegs, staple:luStaple},
-        dinner:    {meat:diMeat, soy:diSoy, veg:diVegs, staple:diStaple}
+        lunch:     {meat:'鸡胸肉', soy:null, veg:['黄瓜'], staple:'杂粮饭'},
+        dinner:    {meat:'鸡胸肉', soy:null, veg:['黄瓜'], staple:'杂粮饭'}
       };
 
-      addUsage(luMeat, 'lunch');
-      addUsage(diMeat, 'dinner');
-      luVegs.forEach(function(v){ addUsage(v,'lunch'); });
-      diVegs.forEach(function(v){ addUsage(v,'dinner'); });
-      addUsage(luStaple, 'lunch');
-      addUsage(diStaple, 'dinner');
-      if (diSoy) addUsage(diSoy, 'dinner');
+      addUsage('鸡胸肉', 'lunch');
+      addUsage('鸡胸肉', 'dinner');
+      addUsage('黄瓜', 'lunch');
+      addUsage('黄瓜', 'dinner');
+      addUsage('杂粮饭', 'lunch');
+      addUsage('杂粮饭', 'dinner');
     });
 
     shuffleSeed++;

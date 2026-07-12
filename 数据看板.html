@@ -279,6 +279,7 @@ var DAY_IDS_T = ['mon','tue','wed','thu','fri','sat','sun'];
 var MEAL_KEYS_T = ['breakfast','lunch','dinner'];
 function calcPortion(food, meal){
   var f = FOODS[food]; if(!f) return {g:150};
+  if (window.FIXED_GRAMS && window.FIXED_GRAMS[food] != null) return {g: window.FIXED_GRAMS[food]};
   if (f.cat==='meat'){
     if (food==='鸡蛋') return {g:100}; if (food==='牛奶') return {g:250}; if (food==='无糖酸奶') return {g:200};
     var calTarget=(meal==='lunch')?250:200; var raw=Math.round(calTarget/f.cal*100/5)*5;

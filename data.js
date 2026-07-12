@@ -106,7 +106,7 @@ window.FOODS = (function() {
   return {
     // --- 蛋白质 ---
     '鸡蛋':       { cat:'meat', cal:144,pro:13,  carb:1.5, fat:9,   portion:100, unit:'g≈2个', tip:'全蛋营养',      meals:['breakfast','lunch','dinner'] },
-    '牛奶':       { cat:'meat', cal:54, pro:3,   carb:3.4, fat:3.2, portion:250, unit:'ml',    tip:'补钙·全脂',     meals:['breakfast'] },
+    '牛奶':       { cat:'meat', cal:62, pro:3.3, carb:4.8, fat:3.5, portion:250, unit:'ml',    tip:'全脂纯牛奶',    meals:['breakfast'] },
     '无糖酸奶':   { cat:'meat', cal:63, pro:3.5, carb:4.5, fat:3.2, portion:200, unit:'ml',    tip:'补钙·益生菌',   meals:['breakfast'] },
     '鸡胸肉':     { cat:'meat', cal:133,pro:30,  carb:0,   fat:1.5, portion:150, unit:'g生重', tip:'高蛋白低脂',    meals:['lunch','dinner'] },
     '瘦猪肉':     { cat:'meat', cal:143,pro:20,  carb:1,   fat:7,   portion:180, unit:'g生重', tip:'里脊/后腿',     meals:['lunch','dinner'] },
@@ -163,6 +163,16 @@ window.FOODS = (function() {
     '荞麦面':  { cat:'staple',cal:350,pro:11,  carb:66,  fat:2.5,portion:80, unit:'g干重',   tip:'低GI·饱腹',      meals:['lunch','dinner'] },
   };
 })();
+
+// 固定标准三餐克数（覆盖 calcPortion 的热量目标算法，确保显示与真实进食一致）
+window.FIXED_GRAMS = {
+  '鸡蛋': 100,   // 2个
+  '牛奶': 250,   // ml
+  '燕麦片': 50,  // g干重
+  '鸡胸肉': 130, // g生重
+  '杂粮饭': 150, // g熟重
+  '黄瓜': 250    // g≈1根
+};
 
 // ---- URL 工具 ----
 FIT.bvUrl = function(bvid) {
