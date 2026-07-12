@@ -1031,6 +1031,70 @@ window.EXERCISE_DB = [
       "继续交替进行所需的重复次数。"
     ]
   }
+},
+{
+  "name": "哑铃仰卧臂屈伸",
+  "name_en": "dumbbell lying triceps extension",
+  "target": "triceps",
+  "secondary": [
+    "shoulders"
+  ],
+  "equipment": "dumbbell",
+  "gif": "exercise_gifs/0351-mpKZGWz.gif",
+  "gif_url": "videos/0351-mpKZGWz.gif",
+  "instructions_cn": "",
+  "instructions_en": {
+    "en": "Lie flat on a bench with a dumbbell in each hand, palms facing each other. Extend your arms straight up over your chest, keeping your elbows close to your body. Lower the dumbbells down towards your forehead, bending your elbows. Pause for a moment, then extend your arms back up to the starting position. Repeat for the desired number of repetitions.",
+    "it": "Sdraiati disteso su una panchina con un manubrio in ogni mano, i palmi uno verso l'altro. Allunga le braccia dritte sul petto, tenendo i gomiti vicini al corpo. Abbassa i manubri verso la fronte, piegando i gomiti. Fermati un attimo, poi rialza le braccia fino alla posizione iniziale. Ripeti per il numero desiderato di ripetizioni.",
+    "tr": "Her iki elinizde birer dambıl olacak şekilde, avuçlarınız birbirine bakacak şekilde bir bankın üzerine düz bir şekilde uzanın. Dirseklerinizi vücudunuza yakın tutarak kollarınızı düz bir şekilde göğsünüzün üzerine doğru uzatın. Dirseklerinizi bükerek dambılları alnınıza doğru indirin. Bir an duraklayın, ardından kollarınızı başlangıç ​​pozisyonuna kadar uzatın. İstenilen sayıda tekrar için tekrarlayın.",
+    "es": "Túmbate boca arriba en un banco con una mancuerna en cada mano, con las palmas enfrentadas entre sí. Extiende los brazos rectos hacia arriba sobre el pecho, manteniendo los codos cerca del cuerpo. Baja las mancuernas hacia la frente, flexionando los codos. Haz una pausa breve y luego extiende los brazos de vuelta a la posición inicial. Repite el número de repeticiones deseado.",
+    "ru": "Лягте на скамью, взяв в каждую руку по гантели, ладони обращены друг к другу. Вытяните руки прямо вверх над грудью, держа локти близко к телу. Опустите гантели ко лбу, сгибая локти. Сделайте паузу на мгновение, затем вытяните руки обратно в исходное положение. Повторите необходимое количество повторений.",
+    "zh": "平躺在长凳上，双手各握一个哑铃，手掌相对。 将手臂伸直越过胸部，保持肘部靠近身体。 将哑铃向前额方向降低，弯曲肘部。 暂停片刻，然后将手臂伸回到起始位置。 重复所需的重复次数。"
+  },
+  "instruction_steps": {
+    "en": [
+      "Lie flat on a bench with a dumbbell in each hand, palms facing each other.",
+      "Extend your arms straight up over your chest, keeping your elbows close to your body.",
+      "Lower the dumbbells down towards your forehead, bending your elbows.",
+      "Pause for a moment, then extend your arms back up to the starting position.",
+      "Repeat for the desired number of repetitions."
+    ],
+    "it": [
+      "Sdraiati disteso su una panchina con un manubrio in ogni mano, i palmi uno verso l'altro.",
+      "Allunga le braccia dritte sul petto, tenendo i gomiti vicini al corpo.",
+      "Abbassa i manubri verso la fronte, piegando i gomiti.",
+      "Fermati un attimo, poi rialza le braccia fino alla posizione iniziale.",
+      "Ripeti per il numero desiderato di ripetizioni."
+    ],
+    "tr": [
+      "Her iki elinizde birer dambıl olacak şekilde, avuçlarınız birbirine bakacak şekilde bir bankın üzerine düz bir şekilde uzanın.",
+      "Dirseklerinizi vücudunuza yakın tutarak kollarınızı düz bir şekilde göğsünüzün üzerine doğru uzatın.",
+      "Dirseklerinizi bükerek dambılları alnınıza doğru indirin.",
+      "Bir an duraklayın, ardından kollarınızı başlangıç ​​pozisyonuna kadar uzatın.",
+      "İstenilen sayıda tekrar için tekrarlayın."
+    ],
+    "es": [
+      "Túmbate boca arriba en un banco con una mancuerna en cada mano, con las palmas enfrentadas entre sí.",
+      "Extiende los brazos rectos hacia arriba sobre el pecho, manteniendo los codos cerca del cuerpo.",
+      "Baja las mancuernas hacia la frente, flexionando los codos.",
+      "Haz una pausa breve y luego extiende los brazos de vuelta a la posición inicial.",
+      "Repite el número de repeticiones deseado."
+    ],
+    "ru": [
+      "Лягте на скамью, взяв в каждую руку по гантели, ладони обращены друг к другу.",
+      "Вытяните руки прямо вверх над грудью, держа локти близко к телу.",
+      "Опустите гантели ко лбу, сгибая локти.",
+      "Сделайте паузу на мгновение, затем вытяните руки обратно в исходное положение.",
+      "Повторите необходимое количество повторений."
+    ],
+    "zh": [
+      "平躺在长凳上，双手各握一个哑铃，手掌相对。",
+      "将手臂伸直越过胸部，保持肘部靠近身体。",
+      "将哑铃向前额方向降低，弯曲肘部。",
+      "暂停片刻，然后将手臂伸回到起始位置。",
+      "重复所需的重复次数。"
+    ]
+  }
 }
   ];
 
