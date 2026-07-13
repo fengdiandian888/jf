@@ -55,14 +55,16 @@
 
 /* Today data row */
 .th-data {
- display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; border-top: 1px solid var(--border);
- background: var(--border);
+ display: flex; flex-direction: column; gap: 16px; border-top: 1px solid var(--border); padding-top: 14px;
 }
-@media(max-width:600px){ .th-data { grid-template-columns: repeat(2, 1fr); } }
+.th-group-hd {
+ font-size: 11px; color: var(--sub); font-weight: 700; letter-spacing: .05em; margin-bottom: 8px; padding-left: 2px;
+}
+.th-group-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
 .th-data-item {
- flex: 1; background: var(--card); padding: 14px 6px; text-align: center;
+ background: var(--card); padding: 13px 6px; text-align: center; border-radius: 10px;
 }
-.th-data-item .val { font-size: 26px; font-weight: 800; display: block; line-height: 1; }
+.th-data-item .val { font-size: 25px; font-weight: 800; display: block; line-height: 1; }
 .th-data-item .lbl { font-size: 11px; color: var(--sub); margin-top: 4px; font-weight: 600; letter-spacing: 0.04em; }
 .th-data-item .val.protein { color: var(--cardio); }
 .th-data-item .val.water { color: #60a5fa; }
@@ -657,12 +659,22 @@ function renderToday(d) {
  ${p.tx ? `<div class="th-section"><div class="th-section-title">训练动作</div>${trHTML}</div>` : ''}
  ${DI === 0 ? trHTML : ''}
  <div class="th-data">
+ <div class="th-group">
+ <div class="th-group-hd">营养摄入</div>
+ <div class="th-group-grid">
  <div class="th-data-item"><span class="val protein">${FIT.metrics.protein}g</span><span class="lbl">蛋白质 ≥98g</span></div>
+ <div class="th-data-item"><span class="val carb">${Math.round(_dCarb)}g</span><span class="lbl">碳水</span></div>
+ <div class="th-data-item"><span class="val fat">${_dFat.toFixed(1)}g</span><span class="lbl">脂肪</span></div>
+ </div>
+ </div>
+ <div class="th-group">
+ <div class="th-group-hd">每日习惯</div>
+ <div class="th-group-grid">
  <div class="th-data-item"><span class="val water">${FIT.metrics.water}</span><span class="lbl">饮水 5次/天</span></div>
  <div class="th-data-item"><span class="val exercise">${FIT.metrics.exercise}</span><span class="lbl">运动</span></div>
  <div class="th-data-item"><span class="val sleep">${FIT.metrics.sleepH}h</span><span class="lbl">睡眠 00–07</span></div>
- <div class="th-data-item"><span class="val carb">${Math.round(_dCarb)}g</span><span class="lbl">碳水</span></div>
- <div class="th-data-item"><span class="val fat">${_dFat.toFixed(1)}g</span><span class="lbl">脂肪</span></div>
+ </div>
+ </div>
  </div>
  `;
 }
