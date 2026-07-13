@@ -26,31 +26,6 @@
  background: rgba(249,115,22,0.12); color: var(--primary); letter-spacing: 0.03em;
 }
 
-/* Weather inline */
-.th-wx {
- display: flex; align-items: center; gap: 10px; padding: 10px 16px;
- margin: 0 6px 8px; background: rgba(249,115,22,0.04); border-radius: var(--radius-sm);
- font-size: 15px;
-}
-.th-wx .wx-icon { font-size: 26px; flex-shrink: 0; }
-.th-wx .wx-temp { font-weight: 800; font-size: 22px; color: var(--primary); }
-.th-wx .wx-detail { flex: 1; line-height: 1.4; font-size: 14px; color: var(--sub); }
-.th-wx .wx-tag {
- font-size: 12px; padding: 2px 8px; border-radius: 6px; font-weight: 600; white-space: nowrap;
-}
-.wx-tag.ok { background: rgba(34,197,94,0.1); color: var(--cardio); }
-.wx-tag.no { background: rgba(239,68,68,0.1); color: var(--danger); }
-
-/* Weather skeleton */
-.wx-skeleton {
- display: flex; align-items: center; gap: 10px; padding: 10px 16px;
- margin: 0 6px 8px; background: rgba(0,0,0,0.02); border-radius: var(--radius-sm);
-}
-.skel { background: var(--border); border-radius: 4px; animation: skelPulse 1.5s ease-in-out infinite; }
-.skel-icon { width: 26px; height: 26px; border-radius: 50%; }
-.skel-text { height: 10px; flex: 1; }
-@keyframes skelPulse { 0%, 100% { opacity: 0.4; } 50% { opacity: 0.8; } }
-
 /* Section blocks */
 .th-section { padding: 0 20px 10px; }
 .th-section-title {
@@ -80,9 +55,10 @@
 
 /* Today data row */
 .th-data {
- display: flex; gap: 1px; border-top: 1px solid var(--border);
+ display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; border-top: 1px solid var(--border);
  background: var(--border);
 }
+@media(max-width:600px){ .th-data { grid-template-columns: repeat(2, 1fr); } }
 .th-data-item {
  flex: 1; background: var(--card); padding: 14px 6px; text-align: center;
 }
@@ -92,6 +68,8 @@
 .th-data-item .val.water { color: #60a5fa; }
 .th-data-item .val.exercise { color: var(--primary); }
 .th-data-item .val.sleep { color: var(--sleep); }
+.th-data-item .val.carb { color: #f59e0b; }
+.th-data-item .val.fat { color: #a78bfa; }
 
 /* ===== Tomorrow Card ===== */
 .tm-card { margin: 0 10px 10px; }
@@ -411,7 +389,6 @@ function getExKey(name) {
 const now = new Date();
 const DI = now.getDay();
 const todayStr = now.toISOString().slice(0,10);
-let tomorrowWeather = null;
 
 // ========== DAY PLANS (unchanged core config) ==========
 const plans = {
@@ -425,7 +402,7 @@ const plans = {
  {t:'09:30',bar:'water',txt:'第1次补水 400ml'},
  {t:'10:30',bar:'rest',txt:'周日备餐 40′',prep:true},
  {t:'11:30',bar:'water',txt:'第2次补水 400ml'},
- {t:'12:00',bar:'food',txt:'午餐：米饭减半（蛋白~20g）'},
+ {t:'12:00',bar:'food',txt:'午餐：杂粮饭150g+鸡胸肉130g+黄瓜1根（蛋白46g）'},
  {t:'13:30',bar:'water',txt:'第3次补水 400ml'},
  {t:'15:30',bar:'water',txt:'第4次补水 400ml'},
  {t:'17:30',bar:'water',txt:'第5次补水 400ml'},
@@ -437,8 +414,8 @@ const plans = {
  morning:{type:'柔韧瑜伽',txt:'Yoga Nancy 16′晨间舒展',vids:[{id:'BV1M9GC6uE1V',title:'Yoga Nancy 16′ 晨间舒展',bvid:'BV1M9GC6uE1V'}]},
  evening:{type:'纯恢复',txt:'轻松散步（不求强度）+ 全身静态拉伸 — 神经系统完全休息，为周一蓄力'},
  tx:null,vd:null,
- nx:{d:'周一',t:'拉日训练',nt:'',nc:'var(--pull)',n:'早空腹有氧 → 晚拉日力量'}},
- 1:{l:'拉日训练',icon:'',
+ nx:{d:'周一',t:'拉日(重)',nt:'',nc:'var(--pull)',n:'早空腹有氧 → 晚拉日力量(RPE7-8)'}},
+ 1:{l:'拉日(重)',icon:'',
  s:[
  {t:'07:00',bar:'rest',txt:'起床'},
  {t:'07:00',bar:'exercise',txt:'空腹有氧20′',isMorning:true},
@@ -455,16 +432,16 @@ const plans = {
  {t:'17:30',bar:'water',txt:'第5次补水 400ml'},
  {t:'18:00',bar:'move',txt:'小电动回家'},
  {t:'19:00',bar:'food',txt:'晚餐（练前2h吃完）',isDinner:true},
- {t:'21:00',bar:'exercise',txt:'拉日力量45′ + 拉伸15′（每组最后一组力竭）',isTraining:true},
+ {t:'21:00',bar:'exercise',txt:'拉日力量60′ + 有氧10′ + 拉伸',isTraining:true},
  {t:'00:00',bar:'sleep',txt:'睡觉，侧卧'}
  ],
  dn:'鸡胸肉130g(蛋白39g) + 杂粮饭150g(碳水42g) + 黄瓜1根 · 练前2h吃完',
  morning:{type:'空腹有氧',txt:'MIZI 20′晨起空腹有氧',vids:[{id:'BV1oLpFeGEu6',title:'MIZI 20′ 晨起空腹有氧',bvid:'BV1oLpFeGEu6'}]},
- evening:{type:'拉日力量+拉伸',txt:'弹力带下拉·哑铃划船·面拉·弯举（每组最后一组力竭） + 拉伸15′'},
- tx:{day:'pull',level:'beginner',moves:[['弹力带高位下拉（跪姿）','3×12–15'],['哑铃单臂划船','3×10–12'],['弹力带面拉','3×12–15'],['哑铃弯举','3×12–15']],upgrade:'连续2周完成→升级标准版（+1组/动作，+引体向上）'},
- vd:{id:'BV18jxRznELd',title:'梅林FIT · 三分化4.0 | 拉日'},
- nx:{d:'周二',t:'有氧+核心',nt:'',nc:'var(--cardio)',n:'早核心 → 晚低强度有氧'}},
- 2:{l:'有氧+核心',icon:'',
+ evening:{type:'拉日力量(RPE7-8)','txt':'单臂划船11kg·俯身划船11kg → 交替弯举8kg·俯身反向飞鸟8kg（哑铃+凳，换片1次）'},
+ tx:{moves:[['单臂划船','4×10–12（11kg/手）'],['俯身划船','4×10–12（11kg/手）'],['交替弯举','3×12–15（8kg/手）'],['俯身反向飞鸟','3×15（8kg/手）']]},
+ vd:{id:'BV1uZ42127Gz',title:'梅林FIT · 二分化拉日 哑铃增肌'},
+ nx:{d:'周二',t:'推日(轻)',nt:'',nc:'var(--push)',n:'早核心 → 晚推日力量(RPE6-7)'}},
+ 2:{l:'推日(轻)',icon:'',
  s:[
  {t:'07:00',bar:'rest',txt:'起床'},
  {t:'07:00',bar:'exercise',txt:'核心15′',isMorning:true},
@@ -480,15 +457,16 @@ const plans = {
  {t:'17:30',bar:'water',txt:'第5次补水 400ml'},
  {t:'18:00',bar:'move',txt:'小电动回家'},
  {t:'19:00',bar:'food',txt:'晚餐',isDinner:true},
- {t:'21:00',bar:'exercise',txt:'低强度有氧40′ + 拉伸20′',isTraining:true},
+ {t:'21:00',bar:'exercise',txt:'推日力量50′ + 有氧10′ + 拉伸',isTraining:true},
  {t:'00:00',bar:'sleep',txt:'睡觉，侧卧'}
  ],
  dn:'鸡胸肉130g(蛋白39g) + 杂粮饭150g(碳水42g) + 黄瓜1根',
  morning:{type:'核心',txt:'MIZI 15′初学者核心',vids:[{id:'BV1Ss421P7Uz',title:'MIZI 15′ 腹部核心（零基础）',bvid:'BV1Ss421P7Uz'}]},
- evening:{type:'低强度有氧+拉伸',txt:'原地踏步·开合跳·高抬腿（不求强度，持续动就够）+ 全身拉伸20′'},
- tx:null,vd:null,
- nx:{d:'周三',t:'推日训练',nt:'',nc:'var(--push)',n:'早柔韧拉伸 → 晚推日力量 力竭'}},
- 3:{l:'推日训练',icon:'',
+ evening:{type:'推日力量(RPE6-7)','txt':'平板推胸8kg·上斜卧推8kg·坐姿肩推8kg → 侧平举5kg·仰卧臂屈伸5kg（哑铃+凳，换片1次）'},
+ tx:{moves:[['平板推胸','4×10–12（8kg/手或总重）'],['上斜卧推','4×10–12（8kg/手）'],['坐姿肩推','3×12–15（8kg/手）'],['侧平举','3×15（5kg/手）'],['仰卧臂屈伸','3×12–15（5kg/手）']]},
+ vd:{id:'BV1qF4m1M7rL',title:'梅林FIT · 二分化推日 哑铃增肌'},
+ nx:{d:'周三',t:'腿日(重)',nt:'',nc:'var(--leg)',n:'早柔韧拉伸 → 晚腿日力量 力竭'}},
+ 3:{l:'腿日(重)',icon:'',
  s:[
  {t:'07:00',bar:'rest',txt:'起床'},
  {t:'07:00',bar:'exercise',txt:'柔韧拉伸20′',isMorning:true},
@@ -505,16 +483,16 @@ const plans = {
  {t:'17:30',bar:'water',txt:'第5次补水 400ml'},
  {t:'18:00',bar:'move',txt:'小电动回家'},
  {t:'19:00',bar:'food',txt:'晚餐（练前2h吃完）',isDinner:true},
- {t:'21:00',bar:'exercise',txt:'推日力量45′ + 拉伸15′ 力竭',isTraining:true},
+ {t:'21:00',bar:'exercise',txt:'腿日力量60′ + 有氧10′ + 拉伸 力竭',isTraining:true},
  {t:'00:00',bar:'sleep',txt:'睡觉，侧卧'}
  ],
- dn:'鸡胸肉130g(蛋白39g) + 杂粮饭150g(碳水42g) + 黄瓜1根',
- morning:{type:'柔韧拉伸',txt:'Yoga Nancy 16′晨间舒展',vids:[{id:'BV1M9GC6uE1V',title:'Yoga Nancy 16′晨间',bvid:'BV1M9GC6uE1V'}]},
- evening:{type:'推日力量+拉伸',txt:'窄距俯卧撑·前平举·臂屈伸（每组最后一组力竭）+ 拉伸15′'},
- tx:{day:'push',level:'beginner',moves:[['窄距俯卧撑（可跪姿）','3×力竭'],['哑铃前平举','3×12–15'],['凳上臂屈伸（屈膝版）','3×力竭']],caution:'每组最后一组力竭，动作标准优先',upgrade:'连续2周完成→恢复标准俯卧撑(+标准版4×力竭)、侧平举(+3×15)'},
- vd:{id:'BV1LhnmzFEEa',title:'梅林FIT · 三分化4.0 | 推日'},
- nx:{d:'周四',t:'有氧+核心',nt:'',nc:'var(--cardio)',n:'早空腹有氧 → 晚核心+低强度有氧'}},
- 4:{l:'有氧+核心',icon:'',
+ dn:'鸡胸肉130g(蛋白39g) + 杂粮饭150g(碳水42g) + 黄瓜1根 · 练前2h吃完',
+ morning:{type:'柔韧拉伸',txt:'Yoga Nancy 16′晨间舒展',vids:[{id:'BV1M9GC6uE1V',title:'Yoga Nancy 16′ 晨间',bvid:'BV1M9GC6uE1V'}]},
+ evening:{type:'腿日力量(RPE7-8)','txt':'高脚杯深蹲18kg·臀推18kg(上背靠凳) → 罗马尼亚硬拉12kg·保加利亚分腿蹲12kg（哑铃+凳，换片1次）'},
+ tx:{moves:[['高脚杯深蹲','4×8–10（18kg或总重）'],['臀推（上背靠凳）','4×8–10（18kg/手或总重）'],['罗马尼亚硬拉','4×10–12（12kg/手）'],['保加利亚分腿蹲','3×10/侧（12kg/手）']]},
+ vd:{id:'BV1RW42197ez',title:'梅林FIT · 三分化 哑铃增肌 臀腿'},
+ nx:{d:'周四',t:'拉日(轻)',nt:'',nc:'var(--pull)',n:'早空腹有氧 → 晚拉日力量(RPE6-7)'}},
+ 4:{l:'拉日(轻)',icon:'',
  s:[
  {t:'07:00',bar:'rest',txt:'起床'},
  {t:'07:00',bar:'exercise',txt:'空腹有氧20′',isMorning:true},
@@ -530,15 +508,16 @@ const plans = {
  {t:'17:30',bar:'water',txt:'第5次补水 400ml'},
  {t:'18:00',bar:'move',txt:'小电动回家'},
  {t:'19:00',bar:'food',txt:'晚餐',isDinner:true},
- {t:'21:00',bar:'exercise',txt:'核心训练20′ + 低强度有氧20′ + 拉伸20′',isTraining:true},
+ {t:'21:00',bar:'exercise',txt:'拉日力量45′ + 有氧10′ + 拉伸',isTraining:true},
  {t:'00:00',bar:'sleep',txt:'睡觉，侧卧'}
  ],
  dn:'鸡胸肉130g(蛋白39g) + 杂粮饭150g(碳水42g) + 黄瓜1根',
  morning:{type:'空腹有氧',txt:'MIZI 20′晨起空腹有氧（力量日后最佳燃脂窗口）',vids:[{id:'BV1oLpFeGEu6',title:'MIZI 20′ 晨起空腹有氧',bvid:'BV1oLpFeGEu6'}]},
- evening:{type:'核心+低强度有氧+拉伸',txt:'平板支撑·死虫式·鸟狗式 + 原地踏步 + 全身拉伸'},
- tx:null,vd:null,
- nx:{d:'周五',t:'腿日训练',nt:'',nc:'var(--leg)',n:'早核心 → 晚腿日力量 力竭'}},
- 5:{l:'腿日训练',icon:'',
+ evening:{type:'拉日力量(RPE6-7)','txt':'单臂划船9kg·俯身划船9kg → 交替弯举6kg·锤式弯举6kg（哑铃+凳，换片1次）'},
+ tx:{moves:[['单臂划船','4×10–12（9kg/手）'],['俯身划船','4×10–12（9kg/手）'],['交替弯举','3×12–15（6kg/手）'],['锤式弯举','3×12–15（6kg/手）']]},
+ vd:{id:'BV1uZ42127Gz',title:'梅林FIT · 二分化拉日 哑铃增肌'},
+ nx:{d:'周五',t:'推日(重)',nt:'',nc:'var(--push)',n:'早核心 → 晚推日力量 力竭'}},
+ 5:{l:'推日(重)',icon:'',
  s:[
  {t:'07:00',bar:'rest',txt:'起床'},
  {t:'07:00',bar:'exercise',txt:'核心15′',isMorning:true},
@@ -554,22 +533,23 @@ const plans = {
  {t:'15:30',bar:'water',txt:'第4次补水 400ml'},
  {t:'17:30',bar:'water',txt:'第5次补水 400ml'},
  {t:'18:00',bar:'move',txt:'小电动回家'},
- {t:'19:00',bar:'food',txt:'晚餐',isDinner:true},
- {t:'21:00',bar:'exercise',txt:'腿日力量45′ + 拉伸15′ 力竭',isTraining:true},
+ {t:'19:00',bar:'food',txt:'晚餐（练前2h吃完）',isDinner:true},
+ {t:'21:00',bar:'exercise',txt:'推日力量55′ + 有氧10′ + 拉伸 力竭',isTraining:true},
  {t:'00:00',bar:'sleep',txt:'睡觉，侧卧'}
  ],
- dn:'鸡胸肉130g(蛋白39g) + 杂粮饭150g(碳水42g) + 黄瓜1根',
+ dn:'鸡胸肉130g(蛋白39g) + 杂粮饭150g(碳水42g) + 黄瓜1根 · 练前2h吃完',
  morning:{type:'核心',txt:'MIZI 15′初学者核心（蓄力给晚上力量训练）',vids:[{id:'BV1Ss421P7Uz',title:'MIZI 15′ 腹部核心（零基础）',bvid:'BV1Ss421P7Uz'}]},
- evening:{type:'腿日力量+拉伸',txt:'自重深蹲·臀桥·卷腹·平板支撑（每组最后一组力竭）+ 拉伸15′'},
- tx:{day:'leg',level:'beginner',moves:[['自重深蹲（无负重）','3×12–15'],['臀桥（双腿）','3×15'],['卷腹','3×12–15'],['平板支撑','3×20–30s']],upgrade:'连续2周完成→哑铃酒杯深蹲(+5kg哑铃 4×12–15)、保加利亚分腿蹲(+3×10/侧)'},
- vd:{id:'BV1FusRzAEYv',title:'梅林FIT · 三分化4.0 | 腿日'},
- nx:{d:'周六',t:'力量维持+瑜伽',nt:'',nc:'var(--recovery)',n:'早空腹有氧 → 晚轻量全身力量+瑜伽'}},
- 6:{l:'力量维持+瑜伽',icon:'',
+ evening:{type:'推日力量(RPE7-8)','txt':'平板推胸10kg·上斜卧推10kg → 坐姿肩推8kg·仰卧臂屈伸8kg → 侧平举5kg（哑铃+凳，换片2次）'},
+ tx:{moves:[['平板推胸','4×8–10（10kg/手或总重）'],['上斜卧推','4×8–10（10kg/手）'],['坐姿肩推','3×12–15（8kg/手）'],['仰卧臂屈伸','3×12–15（8kg/手）'],['侧平举','3×15（5kg/手）']]},
+ vd:{id:'BV1qF4m1M7rL',title:'梅林FIT · 二分化推日 哑铃增肌'},
+ nx:{d:'周六',t:'腿日(轻)+核心',nt:'',nc:'var(--recovery)',n:'早空腹有氧 → 晚腿日轻量+核心'}},
+ 6:{l:'腿日(轻)+核心',icon:'',
  s:[
  {t:'07:00',bar:'rest',txt:'起床'},
  {t:'07:00',bar:'exercise',txt:'空腹有氧20′',isMorning:true},
  {t:'07:30',bar:'rest',txt:'放松·洗漱'},
  {t:'08:00',bar:'rest',txt:'洗澡'},
+ {t:'08:30',bar:'move',txt:'小电动通勤'},
  {t:'09:00',bar:'food',txt:'早餐：2全蛋+250ml牛奶+燕麦片50g（蛋白28g）'},
  {t:'09:30',bar:'water',txt:'第1次补水 400ml'},
  {t:'11:30',bar:'water',txt:'第2次补水 400ml'},
@@ -578,14 +558,14 @@ const plans = {
  {t:'15:30',bar:'water',txt:'第4次补水 400ml'},
  {t:'17:30',bar:'water',txt:'第5次补水 400ml'},
  {t:'19:00',bar:'food',txt:'晚餐',isDinner:true},
- {t:'21:00',bar:'exercise',txt:'轻量全身力量30′ + 瑜伽拉伸30′',isTraining:true},
+ {t:'21:00',bar:'exercise',txt:'腿日轻量40′ + 核心10′ + 拉伸',isTraining:true},
  {t:'00:00',bar:'sleep',txt:'睡觉，侧卧'}
  ],
  dn:'鸡胸肉130g(蛋白39g) + 杂粮饭150g(碳水42g) + 黄瓜1根',
  morning:{type:'空腹有氧',txt:'MIZI 20′晨起空腹有氧',vids:[{id:'BV1oLpFeGEu6',title:'MIZI 20′ 晨起空腹有氧',bvid:'BV1oLpFeGEu6'}]},
- evening:{type:'轻量全身力量+瑜伽拉伸',txt:'不求力竭！自重深蹲·跪姿俯卧撑·弹力带划船·臀桥 各2组轻松完成 → 肌肉保存信号 + Eleni Fit 瑜伽30′',vids:[{id:'BV1sWs5z8Enm',title:'Eleni Fit 30′ 瑜伽',bvid:'BV1sWs5z8Enm'}]},
- tx:{day:'fullbody',level:'light',moves:[['自重深蹲','2×10（不求力竭）'],['跪姿俯卧撑','2×力竭的70%'],['弹力带划船','2×10（轻松）'],['臀桥','2×12（轻松）']],caution:'轻量维持信号，绝不为难肌肉。每组做完还有5个余力就停。目的：让身体知道肌肉还在用，不是要拆它。',upgrade:'永不升级 — 维持日永远轻松'},
- vd:null,
+ evening:{type:'腿日轻量+核心(RPE6-7)','txt':'高脚杯深蹲14kg·臀推14kg(上背靠凳) → 俄罗斯转体(自重)·死虫式(自重)（哑铃+凳，换片1次）'},
+ tx:{moves:[['高脚杯深蹲','4×10–12（14kg或总重）'],['臀推（上背靠凳）','4×10–12（14kg/手或总重）'],['俄罗斯转体','3×20（自重）'],['死虫式','3×10/侧（自重）']]},
+ vd:{id:'BV1RW42197ez',title:'梅林FIT · 三分化 哑铃增肌 臀腿'},
  nx:{d:'周日',t:'纯恢复日',nt:'',nc:'var(--recovery)',n:'早柔韧瑜伽 → 晚散步+拉伸 · 神经系统休息'}}
 };
 const p = plans[DI];
@@ -593,29 +573,6 @@ const p = plans[DI];
 // ========== RENDER TODAY ==========
 function renderToday(d) {
  const mm = now.getMonth() + 1, dd = now.getDate();
-
- // Weather
- let wxHTML = '';
- if (d) {
- const c = d.current_condition[0], w = d.weather[0];
- const code = parseInt(c.weatherCode);
- const evRain = w.hourly.filter(h => {
- const hr = parseInt(h.time) / 100;
- return hr >= 17 && hr <= 20;
- }).some(h => parseInt(h.chanceofrain) > 30);
- wxHTML = `<div class="th-wx">
- <span class="wx-icon">${wxEmo(code)}</span>
- <span class="wx-temp">${c.temp_C}°C</span>
- <div class="wx-detail">${c.weatherDesc[0].value} · 湿度${c.humidity}% · 体感${c.FeelsLikeC}°C</div>
- <span class="wx-tag ${evRain ? 'no' : 'ok'}">${evRain ? '傍晚有雨' : '晴好'}</span>
- </div>`;
- } else {
- wxHTML = `<div class="wx-skeleton">
- <div class="skel skel-icon"></div>
- <div class="skel skel-text"></div>
- <div style="font-size: 13px;color:var(--sub);flex-shrink:0">加载天气...</div>
- </div>`;
- }
 
  // Morning block
  let moHTML = '';
@@ -666,6 +623,21 @@ function renderToday(d) {
  if (['拉日训练','推日训练','腿日训练'].includes(p.l)) badgeColor = 'var(--primary)';
  if (p.l.includes('恢复') || p.l.includes('维持')) badgeColor = 'var(--recovery)';
 
+ // 全天标准三餐宏量（碳水/脂肪），与饮食页同源 FIXED_GRAMS
+ const _dfoods = [
+   ['鸡蛋','breakfast'],['牛奶','breakfast'],['燕麦片','breakfast'],
+   ['鸡胸肉','lunch'],['杂粮饭','lunch'],['黄瓜','lunch'],
+   ['鸡胸肉','dinner'],['杂粮饭','dinner'],['黄瓜','dinner']
+ ];
+ let _dCarb = 0, _dFat = 0;
+ _dfoods.forEach(function(it){
+   const _g = (window.FIXED_GRAMS && window.FIXED_GRAMS[it[0]] != null) ? window.FIXED_GRAMS[it[0]] : (calcPortion(it[0], it[1]).g || 0);
+   const _m = calcMacros(it[0], _g);
+   _dCarb += _m.carb; _dFat += _m.fat;
+ });
+ // 烹饪油：午/晚各约5g（与饮食页「全天合计」逻辑一致）
+ _dFat += 10;
+
  document.getElementById('todayCard').innerHTML = `
  <div class="th-top">
  <div class="th-date">
@@ -674,7 +646,6 @@ function renderToday(d) {
  </div>
  <span class="th-badge" style="background:rgba(249,115,22,0.12);color:${badgeColor}">${p.icon} ${p.l}</span>
  </div>
- ${wxHTML}
  <div class="th-section">
  <div class="th-section-title">早上 · ${p.morning ? p.morning.type : '7:00–7:30'}</div>
  ${moHTML}
@@ -690,6 +661,8 @@ function renderToday(d) {
  <div class="th-data-item"><span class="val water">${FIT.metrics.water}</span><span class="lbl">饮水 5次/天</span></div>
  <div class="th-data-item"><span class="val exercise">${FIT.metrics.exercise}</span><span class="lbl">运动</span></div>
  <div class="th-data-item"><span class="val sleep">${FIT.metrics.sleepH}h</span><span class="lbl">睡眠 00–07</span></div>
+ <div class="th-data-item"><span class="val carb">${Math.round(_dCarb)}g</span><span class="lbl">碳水</span></div>
+ <div class="th-data-item"><span class="val fat">${_dFat.toFixed(1)}g</span><span class="lbl">脂肪</span></div>
  </div>
  `;
 }
@@ -702,23 +675,11 @@ function renderTomorrow() {
  tomorrow.setDate(tomorrow.getDate() + 1);
  const tmm = tomorrow.getMonth() + 1, tdd = tomorrow.getDate();
 
- let wxHTML = '';
- if (tomorrowWeather) {
- const t = tomorrowWeather;
- wxHTML = `<div class="tm-wx">
- <span class="wx-icon">${wxEmo(t.weatherCode)}</span>
- <span class="wx-temp" style="font-weight:700;font-size: 16px;color:#60a5fa">${t.minTemp}~${t.maxTemp}°C</span>
- <span style="font-size: 13px;color:var(--sub)">${t.desc || ''}</span>
- ${t.evRain ? '<span class="wx-tag no" style="margin-left:auto">傍晚有雨</span>' : '<span class="wx-tag ok" style="margin-left:auto"></span>'}
- </div>`;
- }
-
  document.getElementById('tomorrowCard').innerHTML = `
  <div class="tm-top">
  <div class="tm-date">${tmm}月${tdd}日<span class="dow">周${DAYS[nxD]}</span></div>
  <span class="tm-badge">${np.icon} ${np.l}</span>
  </div>
- ${wxHTML}
  <div class="tm-plan">${np.icon} <b>${np.l}</b> · ${p.nx.n || ''}</div>
  `;
 }
@@ -987,14 +948,7 @@ function renderAll(d) {
  renderTimeline();
 }
 
-// ========== WEATHER FETCH (shared data.js) ==========
-function processWeather(d) {
-  if (d) { tomorrowWeather = extractTomorrow(d); }
-  renderAll(d);
-}
-
 renderAll(null);
-fetchWeather(processWeather);
 
 // PWA
 if ('serviceWorker' in navigator) {

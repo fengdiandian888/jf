@@ -93,11 +93,6 @@ const FIT = {
     { wt: '65kg', label: '目标', time: '22–26周' }
   ],
 
-  // ---- 天气 ----
-  weather: {
-    city: 'Zhuzhou', url: 'https://wttr.in/Zhuzhou?format=j1',
-    cacheKey: 'fit_wx_cache', cacheTTL: 30 * 60 * 1000
-  }
 };
 
 // ---- FOODS 数据库（全站唯一来源，供饮食参考页 + 今日计划页共享） ----
@@ -185,55 +180,3 @@ FIT.bvLink = function(bvid) {
 FIT.dyUrl = function(vid) {
   return 'https://www.douyin.com/video/' + vid;
 };
-function wxEmo(c) {
-  if (c >= 200 && c < 300) return '⛈️';
-  if (c >= 300 && c < 400) return '🌧️';
-  if (c >= 500 && c < 600) return '🌧️';
-  if (c >= 600 && c < 700) return '🌨️';
-  if (c >= 700 && c < 800) return '🌫️';
-  if (c === 801) return '🌤️';
-  if (c > 801) return '☁️';
-  return '☀️';
-}
-
-// ---- 天气获取（带 localStorage 缓存 30min） ----
-function fetchWeather(callback) {
-  var CACHE_KEY = FIT.weather.cacheKey;
-  var CACHE_TTL = FIT.weather.cacheTTL;
-  var cached;
-  try { cached = JSON.parse(localStorage.getItem(CACHE_KEY) || 'null'); } catch(e) { cached = null; }
-
-  if (cached && Date.now() - cached.ts < CACHE_TTL) {
-    callback(cached.data, null);
-    return;
-  }
-
-  fetch(FIT.weather.url)
-    .then(function(r) { return r.json(); })
-    .then(function(data) {
-      try { localStorage.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now(), data: data })); } catch(e) {}
-      callback(data, null);
-    })
-    .catch(function(err) {
-      if (cached) { callback(cached.data, null); }
-      else { callback(null, err); }
-    });
-}
-
-// ---- 从 wttr.in 响应中提取明日天气 ----
-function extractTomorrow(d) {
-  if (!d || !d.weather || !d.weather[1]) return null;
-  var tw = d.weather[1];
-  var hourly = tw.hourly || [];
-  var mid = Math.floor(hourly.length / 2);
-  var evRain = hourly.filter(function(h) {
-    var hr = parseInt(h.time) / 100;
-    return hr >= 17 && hr <= 20;
-  }).some(function(h) { return parseInt(h.chanceofrain) > 30; });
-  return {
-    minTemp: tw.mintempC, maxTemp: tw.maxtempC,
-    desc: hourly.length ? hourly[mid].weatherDesc[0].value : '',
-    weatherCode: hourly.length ? parseInt(hourly[mid].weatherCode) : 0,
-    evRain: evRain
-  };
-}
