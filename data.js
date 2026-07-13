@@ -180,3 +180,48 @@ FIT.bvLink = function(bvid) {
 FIT.dyUrl = function(vid) {
   return 'https://www.douyin.com/video/' + vid;
 };
+
+// ============ 份量 / 营养计算（全站唯一真源，挂到 window 供各页调用）============
+// 历史：曾于 今日计划.html / 数据看板.html / 饮食参考.html 各抄一份且已分叉，
+// 现已统一收口于此。改算法只改这里。
+window.calcPortion = function calcPortion(food, meal) {
+  const f = FOODS[food];
+  if (!f) return { g:150 };
+  if (window.FIXED_GRAMS && window.FIXED_GRAMS[food] != null) return { g: window.FIXED_GRAMS[food] };
+  if (f.cat === 'meat') {
+    if (food === '鸡蛋') return { g:100, note:'2个蛋≈26g蛋白' };
+    if (food === '牛奶') return { g:250, note:'全脂牛奶≈135kcal' };
+    if (food === '无糖酸奶') return { g:200, note:'200ml≈126kcal' };
+    const calTarget = (meal === 'lunch') ? 250 : 200;
+    let raw = Math.round(calTarget / f.cal * 100 / 5) * 5;
+    if (raw > 250) raw = 250; if (raw < 100) raw = 100;
+    return { g:raw };
+  }
+  if (f.cat === 'soy') {
+    if (food === '无糖豆浆') return { g:250, note:'无糖·低热量' };
+    if (food === '千张') return { g:70, note:'热量偏高·配蔬菜' };
+    if (food === '豆干') return { g:100 };
+    if (food === '素鸡') return { g:80 };
+    if (food === '毛豆') return { g:100 };
+    return { g: f.portion || 200 }; // 其余豆制品按 FOODS.portion
+  }
+  if (f.cat === 'veg') return { g: f.portion || 250 };
+  if (f.cat === 'staple') {
+    if (food === '燕麦片') return { g:50, note:'50g干重≈一碗粥' };
+    if (food === '全麦面包') return { g:80, note:'≈2~3片' };
+    if (food === '南瓜') return { g:300, note:'碳水偏低·搭配其他' };
+    if (food === '荞麦面') return { g:80, note:'80g干重≈280kcal' };
+    const calTarget = (meal === 'lunch') ? 280 : 230;
+    let raw = Math.round(calTarget / f.cal * 100 / 5) * 5;
+    if (raw > 350) raw = 350; if (raw < 50) raw = 50;
+    return { g:raw };
+  }
+  return { g:150 };
+};
+
+window.calcMacros = function calcMacros(food, grams) {
+  const f = FOODS[food];
+  if (!f) return { cal:0, pro:0, carb:0, fat:0 };
+  const r = grams/100;
+  return { cal:Math.round(f.cal*r), pro:Number((f.pro*r).toFixed(1)), carb:Number((f.carb*r).toFixed(1)), fat:Number((f.fat*r).toFixed(1)) };
+};

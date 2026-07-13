@@ -274,27 +274,9 @@ $('tdeeSave').addEventListener('click', function(){
 });
 
 /* ============ 3. 计划 vs 目标 ============ */
-// 复制自 今日计划.html 的份量/营养计算（自包含）
+// 份量/营养计算已收口到 data.js（window.calcPortion / window.calcMacros），此处不再重复
 var DAY_IDS_T = ['mon','tue','wed','thu','fri','sat','sun'];
 var MEAL_KEYS_T = ['breakfast','lunch','dinner'];
-function calcPortion(food, meal){
-  var f = FOODS[food]; if(!f) return {g:150};
-  if (window.FIXED_GRAMS && window.FIXED_GRAMS[food] != null) return {g: window.FIXED_GRAMS[food]};
-  if (f.cat==='meat'){
-    if (food==='鸡蛋') return {g:100}; if (food==='牛奶') return {g:250}; if (food==='无糖酸奶') return {g:200};
-    var calTarget=(meal==='lunch')?250:200; var raw=Math.round(calTarget/f.cal*100/5)*5;
-    if(raw>250)raw=250; if(raw<100)raw=100; return {g:raw};
-  }
-  if (f.cat==='soy'){ if(food==='无糖豆浆')return{g:250}; if(food==='千张')return{g:70}; if(food==='豆干')return{g:100}; if(food==='素鸡')return{g:80}; if(food==='毛豆')return{g:100}; return {g:200}; }
-  if (f.cat==='veg') return {g:250};
-  if (f.cat==='staple'){ if(food==='燕麦片')return{g:50}; if(food==='全麦面包')return{g:80}; if(food==='南瓜')return{g:300}; if(food==='荞麦面')return{g:80};
-    var c2=(meal==='lunch')?280:230; var r2=Math.round(c2/f.cal*100/5)*5; if(r2>350)r2=350; if(r2<50)r2=50; return {g:r2}; }
-  return {g:150};
-}
-function calcMacros(food, grams){
-  var f=FOODS[food]; if(!f) return {cal:0,pro:0,carb:0,fat:0};
-  var r=grams/100; return {cal:Math.round(f.cal*r),pro:Number((f.pro*r).toFixed(1)),carb:Number((f.carb*r).toFixed(1)),fat:Number((f.fat*r).toFixed(1))};
-}
 function avgPlanNutrition(){
   var sel={}; try{ sel=JSON.parse(localStorage.getItem('jf_weekly_plan_v3')||'{}'); }catch(e){}
   var tot={cal:0,pro:0,carb:0,fat:0}, days=0;
