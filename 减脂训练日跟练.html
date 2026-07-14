@@ -172,6 +172,9 @@
 /* 核心动作复用与训练日相同的 🎬 弹窗按钮（不再用内联缩略图） */
 .core-item .move-video-btn { position:absolute; right:6px; top:50%; transform:translateY(-50%); opacity:1; background:rgba(34,197,94,0.10); border:1px solid rgba(34,197,94,0.25); }
 .core-item:hover .move-video-btn { background:rgba(34,197,94,0.18); }
+/* 有氧核心日动作行沿用训练日结构，保留绿色核心标识 */
+.move-row.core-row { background:rgba(34,197,94,0.05); border:1px solid rgba(34,197,94,0.14); }
+.move-row.core-row .move-num { background:rgba(34,197,94,0.15); color:#15803d; }
 
  /* Caution & Rehab */
  .caution { background: rgba(245,158,11,0.06); border: 1px solid rgba(245,158,11,0.2); border-radius: 8px; padding: 10px 14px; margin: 10px 0; font-size: 15px; color: var(--warn); line-height: 1.6; font-weight: 500; }
@@ -824,11 +827,16 @@
  </div>
 <div style="background:rgba(34,197,94,0.06);border:1px solid rgba(34,197,94,0.2);border-radius:8px;padding:8px 12px;margin-bottom:8px;font-size:12px;color:#15803d;">💡 <b>今天无哑铃、不碰肩！</b>有氧循环播放凑够 25–35min（Z2·能聊天）；核心做完即收，不冲极限。</div>
 <div class="moves-title">📋 核心清单（自重·无哑铃）</div>
+ <button class="btn-start-training" data-day="cardio-wed"><span class="btn-icon">▶</span> 开始核心计时训练（自重·护肩）</button>
+ <div class="tm-estimate-row">
+  <div class="tm-total-estimate">⏱ 预计 <span class="tm-total-estimate-val">计算中…</span></div>
+  <button class="btn-adjust" data-session="cardio-wed">⚙ 调整参数</button>
+ </div>
  <div class="moves-grid">
-  <div class="core-item" data-exercise="死虫"><span class="ci-name">死虫式</span><span class="ci-meta">3×12/侧 · 自重</span></div>
-  <div class="core-item" data-exercise="鸟狗式"><span class="ci-name">鸟狗式</span><span class="ci-meta">3×10/侧 · 自重</span></div>
-  <div class="core-item" data-exercise="平板支撑"><span class="ci-name">平板支撑</span><span class="ci-meta">3×30s · 自重</span></div>
-  <div class="core-item" data-exercise="俄罗斯转体"><span class="ci-name">俄罗斯转体</span><span class="ci-meta">3×20 · 自重</span></div>
+  <div class="move-row core-row" data-exercise="死虫"><span class="move-num">1</span><span class="move-name">死虫式</span><span class="move-sets">3×12/侧</span><span class="move-rest">休 60s</span><span class="move-note" style="grid-column:2/5;">自重·无哑铃·肩零负荷。慢起慢落，腰椎始终贴地。</span></div>
+  <div class="move-row core-row" data-exercise="鸟狗式"><span class="move-num">2</span><span class="move-name">鸟狗式</span><span class="move-sets">3×10/侧</span><span class="move-rest">休 60s</span><span class="move-note" style="grid-column:2/5;">自重·无哑铃。对侧手脚伸展，核心收紧不塌腰。</span></div>
+  <div class="move-row core-row" data-exercise="平板支撑"><span class="move-num">3</span><span class="move-name">平板支撑</span><span class="move-sets">3×30秒</span><span class="move-rest">休 60s</span><span class="move-note" style="grid-column:2/5;">自重·无哑铃。身体成直线，臀腹收紧，不塌不撅。</span></div>
+  <div class="move-row core-row" data-exercise="俄罗斯转体"><span class="move-num">4</span><span class="move-name">俄罗斯转体</span><span class="move-sets">3×20</span><span class="move-rest">休 60s</span><span class="move-note" style="grid-column:2/5;">自重·无哑铃。脚离地，转体用腹斜发力，不甩头。</span></div>
  </div>
  <div class="caution"><strong> 今日要点：</strong>无哑铃、不碰肩。有氧循环播放凑够 25–35min；核心自重完成，做完即收，不冲极限。</div>
  <p class="tip"> 跟练 20 分钟空腹有氧视频循环播放，凑够 25–35min 即可。核心自重完成，肩完全卸负荷。</p>
@@ -962,12 +970,17 @@
  </div>
 <div style="background:rgba(34,197,94,0.06);border:1px solid rgba(34,197,94,0.2);border-radius:8px;padding:8px 12px;margin-bottom:8px;font-size:12px;color:#15803d;">💡 <b>周末长有氧日！</b>有氧循环播放凑够 35min（Z2·能聊天）；核心做完即收，不冲极限。</div>
 <div class="moves-title">📋 核心清单（自重·无哑铃）</div>
+ <button class="btn-start-training" data-day="cardio-sat"><span class="btn-icon">▶</span> 开始核心计时训练（自重·护肩）</button>
+ <div class="tm-estimate-row">
+  <div class="tm-total-estimate">⏱ 预计 <span class="tm-total-estimate-val">计算中…</span></div>
+  <button class="btn-adjust" data-session="cardio-sat">⚙ 调整参数</button>
+ </div>
  <div class="moves-grid">
-  <div class="core-item" data-exercise="死虫"><span class="ci-name">死虫式</span><span class="ci-meta">3×12/侧 · 自重</span></div>
-  <div class="core-item" data-exercise="鸟狗式"><span class="ci-name">鸟狗式</span><span class="ci-meta">3×10/侧 · 自重</span></div>
-  <div class="core-item" data-exercise="平板支撑"><span class="ci-name">平板支撑</span><span class="ci-meta">3×30s · 自重</span></div>
-  <div class="core-item" data-exercise="俄罗斯转体"><span class="ci-name">俄罗斯转体</span><span class="ci-meta">3×20 · 自重</span></div>
-  <div class="core-item" data-exercise="侧平板"><span class="ci-name">侧平板</span><span class="ci-meta">2×20s/侧 · 自重</span></div>
+  <div class="move-row core-row" data-exercise="死虫"><span class="move-num">1</span><span class="move-name">死虫式</span><span class="move-sets">3×12/侧</span><span class="move-rest">休 60s</span><span class="move-note" style="grid-column:2/5;">自重·无哑铃·肩零负荷。慢起慢落，腰椎始终贴地。</span></div>
+  <div class="move-row core-row" data-exercise="鸟狗式"><span class="move-num">2</span><span class="move-name">鸟狗式</span><span class="move-sets">3×10/侧</span><span class="move-rest">休 60s</span><span class="move-note" style="grid-column:2/5;">自重·无哑铃。对侧手脚伸展，核心收紧不塌腰。</span></div>
+  <div class="move-row core-row" data-exercise="平板支撑"><span class="move-num">3</span><span class="move-name">平板支撑</span><span class="move-sets">3×30秒</span><span class="move-rest">休 60s</span><span class="move-note" style="grid-column:2/5;">自重·无哑铃。身体成直线，臀腹收紧，不塌不撅。</span></div>
+  <div class="move-row core-row" data-exercise="俄罗斯转体"><span class="move-num">4</span><span class="move-name">俄罗斯转体</span><span class="move-sets">3×20</span><span class="move-rest">休 60s</span><span class="move-note" style="grid-column:2/5;">自重·无哑铃。脚离地，转体用腹斜发力，不甩头。</span></div>
+  <div class="move-row core-row" data-exercise="侧平板"><span class="move-num">5</span><span class="move-name">侧平板</span><span class="move-sets">2×20秒/侧</span><span class="move-rest">休 60s</span><span class="move-note" style="grid-column:2/5;">自重·无哑铃。侧撑成直线，髋上提不塌，左右各做。</span></div>
  </div>
  <div class="caution"><strong> 今日要点：</strong>无哑铃、不碰肩。有氧循环播放凑够 35min；核心自重完成，做完即收，不冲极限。</div>
  <p class="tip"> 跟练 20 分钟空腹有氧视频循环播放，凑够 35min 即可。核心自重完成，肩完全卸负荷。</p>
@@ -1546,22 +1559,22 @@ var WorkoutTimer = (function() {
       var restMatch = restStr.match(/(\d+)/);
       var restSec = restMatch ? parseInt(restMatch[1]) : 90;
 
-      // 判断是否为时间型: 名称或sets包含 分钟/秒/′/″ 符号
-      var timed = /\d+\s*(分钟|分|′|分钟)/.test(name + ' ' + setsStr) ||
+      // 判断是否为时间型: 次数/组数字段含 分钟/分/′/秒/s/″
+      var repsPart = setsMatch ? setsMatch[2].trim() : setsStr;
+      var timed = /(分钟|分|′|秒|s|″)/i.test(repsPart) ||
+                   /(分钟|分|′|秒|s|″)/i.test(name) ||
                    /\d+\s*['\"]/.test(setsStr);
 
-      // 提取时间型时长（秒）
+      // 提取时间型时长（秒）——优先从次数部分取，避免取到组数
       var duration = 0;
       if (timed) {
-        var minMatch = (name + ' ' + setsStr).match(/(\d+)\s*(分钟|分|′)/);
+        var minMatch = repsPart.match(/(\d+)\s*(分钟|分|′)/i) || name.match(/(\d+)\s*(分钟|分|′)/);
         if (minMatch) duration = parseInt(minMatch[1]) * 60;
         else {
-          var secMatch = setsStr.match(/(\d+)/);
+          var secMatch = repsPart.match(/(\d+)\s*(秒|s|″)/i);
+          if (!secMatch) secMatch = setsStr.match(/(\d+)\s*(秒|s|″)/i);
           if (secMatch) duration = parseInt(secMatch[1]);
         }
-        // 特殊处理: "× 20′" 格式
-        var min2 = setsStr.match(/(\d+)\s*['']/);
-        if (min2) duration = parseInt(min2[1]) * 60;
       }
 
       result.push({
@@ -2885,19 +2898,20 @@ var TimeEstimator = (function() {
         var restMatch = restEl ? restEl.textContent.trim().match(/(\d+)/) : null;
         var restSec = restMatch ? parseInt(restMatch[1]) : 90;
 
-        // 判断是否时间型
-        var timed = /\d+\s*(分钟|分|′|分钟)/.test(name + ' ' + setsStr) ||
+        // 判断是否时间型（与 parseMoves 保持一致）
+        var repsPart2 = setsMatch ? setsMatch[2].trim() : setsStr;
+        var timed = /(分钟|分|′|秒|s|″)/i.test(repsPart2) ||
+                    /(分钟|分|′|秒|s|″)/i.test(name) ||
                     /\d+\s*['\"]/.test(setsStr);
         var duration = 0;
         if (timed) {
-          var minMatch = (name + ' ' + setsStr).match(/(\d+)\s*(分钟|分|′)/);
+          var minMatch = repsPart2.match(/(\d+)\s*(分钟|分|′)/i) || name.match(/(\d+)\s*(分钟|分|′)/);
           if (minMatch) duration = parseInt(minMatch[1]) * 60;
           else {
-            var secMatch = setsStr.match(/(\d+)/);
+            var secMatch = repsPart2.match(/(\d+)\s*(秒|s|″)/i);
+            if (!secMatch) secMatch = setsStr.match(/(\d+)\s*(秒|s|″)/i);
             if (secMatch) duration = parseInt(secMatch[1]);
           }
-          var min2 = setsStr.match(/(\d+)\s*['']/);
-          if (min2) duration = parseInt(min2[1]) * 60;
         }
 
         // 应用调整（仅用于时间计算，不修改DOM文本）
