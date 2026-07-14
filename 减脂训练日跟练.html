@@ -166,6 +166,9 @@
 .move-row .move-note { font-size: 12px; color: var(--warn); grid-column: 2/5; margin-top: -1px; font-weight: 400; }
 .move-row .move-time { text-align: center; font-size: 11px; font-weight: 700; color: var(--primary); font-variant-numeric: tabular-nums; white-space: nowrap; grid-column: 5 !important; grid-row: 1 !important; }
  .move-row .move-time.adjusted { color: var(--info); }
+.core-item { display:flex; justify-content:space-between; align-items:center; gap:8px; padding:9px 10px; border-radius:6px; font-size:15px; font-weight:500; background:rgba(34,197,94,0.05); border:1px solid rgba(34,197,94,0.14); margin-bottom:2px; }
+.core-item .ci-name { color:var(--text); font-weight:600; }
+.core-item .ci-meta { font-size:12px; color:var(--sub); white-space:nowrap; }
 
  /* Caution & Rehab */
  .caution { background: rgba(245,158,11,0.06); border: 1px solid rgba(245,158,11,0.2); border-radius: 8px; padding: 10px 14px; margin: 10px 0; font-size: 15px; color: var(--warn); line-height: 1.6; font-weight: 500; }
@@ -682,18 +685,17 @@
 
 <div class="tab-wrap">
 <div class="tab-bar" id="tabBar">
- <button class="tab-btn pull" data-day="0"><svg width="14" height="10" viewBox="0 0 20 14" fill="none" style="vertical-align:middle;margin-right:1px"><rect x="0" y="4" width="3" height="6" rx="1" fill="currentColor"/><rect x="4" y="2" width="2" height="10" rx="0.5" fill="currentColor"/><rect x="7" y="0" width="6" height="3" rx="1.5" fill="currentColor"/><rect x="7" y="11" width="6" height="3" rx="1.5" fill="currentColor"/><rect x="7" y="3" width="6" height="8" rx="1" fill="currentColor" opacity="0.3"/><rect x="14" y="2" width="2" height="10" rx="0.5" fill="currentColor"/><rect x="17" y="4" width="3" height="6" rx="1" fill="currentColor"/></svg> 周一<span class="tab-label">拉日</span></button>
- <button class="tab-btn push" data-day="1"><span class="tab-icon"></span> 周二<span class="tab-label">推日·轻</span></button>
- <button class="tab-btn push" data-day="2"><svg width="14" height="10" viewBox="0 0 20 14" fill="none" style="vertical-align:middle;margin-right:1px"><rect x="0" y="4" width="3" height="6" rx="1" fill="currentColor"/><rect x="4" y="2" width="2" height="10" rx="0.5" fill="currentColor"/><rect x="7" y="0" width="6" height="3" rx="1.5" fill="currentColor"/><rect x="7" y="11" width="6" height="3" rx="1.5" fill="currentColor"/><rect x="7" y="3" width="6" height="8" rx="1" fill="currentColor" opacity="0.3"/><rect x="14" y="2" width="2" height="10" rx="0.5" fill="currentColor"/><rect x="17" y="4" width="3" height="6" rx="1" fill="currentColor"/></svg> 周三<span class="tab-label">推日</span></button>
- <button class="tab-btn pull" data-day="3"><span class="tab-icon"></span> 周四<span class="tab-label">拉日·轻</span></button>
- <button class="tab-btn leg" data-day="4"><svg width="14" height="10" viewBox="0 0 20 14" fill="none" style="vertical-align:middle;margin-right:1px"><rect x="0" y="4" width="3" height="6" rx="1" fill="currentColor"/><rect x="4" y="2" width="2" height="10" rx="0.5" fill="currentColor"/><rect x="7" y="0" width="6" height="3" rx="1.5" fill="currentColor"/><rect x="7" y="11" width="6" height="3" rx="1.5" fill="currentColor"/><rect x="7" y="3" width="6" height="8" rx="1" fill="currentColor" opacity="0.3"/><rect x="14" y="2" width="2" height="10" rx="0.5" fill="currentColor"/><rect x="17" y="4" width="3" height="6" rx="1" fill="currentColor"/></svg> 周五<span class="tab-label">腿日</span></button>
- <button class="tab-btn leg" data-day="5"><span class="tab-icon"></span> 周六<span class="tab-label">腿日+核心·轻</span></button>
+ <button class="tab-btn leg" data-day="0"><svg width="14" height="10" viewBox="0 0 20 14" fill="none" style="vertical-align:middle;margin-right:1px"><rect x="0" y="4" width="3" height="6" rx="1" fill="currentColor"/><rect x="4" y="2" width="2" height="10" rx="0.5" fill="currentColor"/><rect x="7" y="0" width="6" height="3" rx="1.5" fill="currentColor"/><rect x="7" y="11" width="6" height="3" rx="1.5" fill="currentColor"/><rect x="7" y="3" width="6" height="8" rx="1" fill="currentColor" opacity="0.3"/><rect x="14" y="2" width="2" height="10" rx="0.5" fill="currentColor"/><rect x="17" y="4" width="3" height="6" rx="1" fill="currentColor"/></svg> 周一<span class="tab-label">腿/臀A</span></button>
+ <button class="tab-btn pull" data-day="1"><span class="tab-icon"></span> 周二<span class="tab-label">拉/背A</span></button>
+ <button class="tab-btn cardio" data-day="2"><span class="tab-icon"></span> 周三<span class="tab-label">有氧+核心</span></button>
+ <button class="tab-btn leg" data-day="3"><span class="tab-icon"></span> 周四<span class="tab-label">腿/臀B</span></button>
+ <button class="tab-btn pull" data-day="4"><span class="tab-icon"></span> 周五<span class="tab-label">拉/臂B</span></button>
+ <button class="tab-btn cardio" data-day="5"><span class="tab-icon"></span> 周六<span class="tab-label">长有氧</span></button>
  <button class="tab-btn recovery" data-day="6"><span class="tab-icon"></span> 周日<span class="tab-label">恢复</span></button>
 </div>
 </div>
 
-<!-- 周一 -->
-<div class="day-panel" id="panel-0">
+<!-- 周一 --><div class="day-panel" id="panel-0">
 
 <div class="compact-card walk-card">
  <div class="cc-icon">🚶</div>
@@ -702,271 +704,13 @@
   <div class="cc-sub">早空腹走 30min（低强度）· 午饭后走 30min · 晚饭后走 30min</div>
  </div>
 </div>
-
-<div class="day-section">
- <div class="day-header">
- <div class="day-badge pull"></div>
- <div class="day-info">
- <div class="day-name">09:30 拉日力量 60min + 有氧 10min</div>
- <div class="day-sub">背部+肩后束+肱二头 | 哑铃+凳（单手 8–20KG 自选）</div>
- <div class="day-tags"><span>主攻日</span><span>RPE 7–8 留 1–2 次</span><span>无弹力绳</span></div>
- </div>
- </div>
- <div class="day-body">
- <div class="video-box">
- <div class="video-label"> 🏋️ 哑铃跟练（推荐）</div>
- <div class="vid-lazy" data-bvid="BV1uZ42127Gz" onclick="loadVid(this)"><div class="vid-play-btn">▶ 点击加载视频</div></div>
- </div>
- <div class="video-meta">
- <span class="vm-title">梅林FIT · 二分化拉日 哑铃增肌 | 52′ 一对哑铃 背+二头</span>
- <a class="vm-link" href="https://www.bilibili.com/video/BV1uZ42127Gz" target="_blank">打开B站 →</a>
- </div>
-<div style="background:rgba(59,130,246,0.06);border:1px solid rgba(59,130,246,0.2);border-radius:8px;padding:8px 12px;margin-bottom:8px;font-size:12px;color:#1e40af;">💡 <b>主攻日：</b>重量选能标准完成区间上限的（单手最重 20KG）。每组留 1–2 次余量，不冲力竭。20KG 封顶后靠加次数 / 慢速离心 / 单侧化进阶。</div>
- <button class="btn-start-training" data-day="pull-evening"><span class="btn-icon">▶</span> 开始拉日计时训练（主攻）</button>
- <div class="tm-estimate-row">
-  <div class="tm-total-estimate">⏱ 预计 <span class="tm-total-estimate-val">计算中…</span></div>
-  <button class="btn-adjust" data-session="pull-evening">⚙ 调整参数</button>
- </div>
-<div class="moves-title">📋 动作清单（主攻：4+3 组，组间休 90s）</div>
- <div class="moves-grid">
-  <div class="move-row" data-exercise="哑铃单臂划船"><span class="move-num">1</span><span class="move-name">哑铃单臂划船（手撑凳）</span><span class="move-sets">4×8–12</span><span class="move-rest">休 90s</span><span class="move-note" style="grid-column:2/5;">单手撑凳/膝，另一手持铃拉至腰侧，肘贴身，肩胛主动收缩。<b>11KG/手</b></span></div>
-  <div class="move-row" data-exercise="哑铃俯身划船"><span class="move-num">2</span><span class="move-name">哑铃俯身划船</span><span class="move-sets">3×10–12</span><span class="move-rest">休 90s</span><span class="move-note" style="grid-column:2/5;">屈髋俯身约45°，双手持铃沿大腿上拉至腹部，肘贴身。<b>11KG/手</b></span></div>
-  <div class="move-row" data-exercise="哑铃交替弯举"><span class="move-num">3</span><span class="move-name">哑铃交替弯举</span><span class="move-sets">3×10–12</span><span class="move-rest">休 60s</span><span class="move-note" style="grid-column:2/5;">左右交替，肘贴身体不摆动，顶峰收缩2s。<b>8KG/手</b></span></div>
-  <div class="move-row" data-exercise="哑铃俯身反向飞鸟"><span class="move-num">4</span><span class="move-name">哑铃俯身反向飞鸟（肩后束）</span><span class="move-sets">3×15</span><span class="move-rest">休 60s</span><span class="move-note" style="grid-column:2/5;">俯身约30°，双臂侧后举至与肩平，练肩后束、护肩姿态。<b>8KG/手</b></span></div>
- </div>
- <div class="caution"><strong> 进阶（20KG 封顶后）：</strong>同重量先把次数推到区间上限 → 加 1 次 / 减休息 5s / 改 3 秒慢速离心 / 改单臂单侧化。</div>
- <p class="tip"> 哑铃跟练 52 分钟一对哑铃全程口令。先跟视频找动作感觉，再按上方清单用自选重量完成。</p>
-<div style="background:rgba(34,197,94,0.06);border:1px solid rgba(34,197,94,0.2);border-radius:8px;padding:8px 12px;margin-top:8px;font-size:12px;color:#15803d;">🏃 <b>力量后 10 分钟有氧：</b>轻松走 / 慢骑，RPE 3–4（能聊天）。低强度收尾，不当加练。</div>
- </div>
-</div>
-
-</div>
-
-<!-- 周二 -->
-<div class="day-panel" id="panel-1">
-
-<div class="compact-card walk-card">
- <div class="cc-icon">🚶</div>
- <div class="cc-info">
-  <div class="cc-title">全天走路 90min（分 3 次）</div>
-  <div class="cc-sub">早空腹走 30min（低强度）· 午饭后走 30min · 晚饭后走 30min</div>
- </div>
-</div>
-
-<div class="day-section">
- <div class="day-header">
- <div class="day-badge"></div>
- <div class="day-info">
- <div class="day-name">09:30 推日力量 60min + 有氧 10min</div>
- <div class="day-sub">胸+肩+肱三头 | 哑铃+凳（单手 8–20KG 自选）</div>
- </div>
- </div>
- <div class="day-body">
- <div class="video-box">
- <div class="video-label"> 🏋️ 哑铃跟练（推荐）</div>
- <div class="vid-lazy" data-bvid="BV1qF4m1M7rL" onclick="loadVid(this)"><div class="vid-play-btn">▶ 点击加载视频</div></div>
- </div>
- <div class="video-meta">
- <span class="vm-title">梅林FIT · 二分化推日 哑铃增肌 | 51′45″ 一对哑铃 胸+三头</span>
- <a class="vm-link" href="https://www.bilibili.com/video/BV1qF4m1M7rL" target="_blank">打开B站 →</a>
- </div>
-<div style="background:rgba(139,92,246,0.05);border:1px solid rgba(139,92,246,0.18);border-radius:8px;padding:9px 12px;margin:10px 0;">
- <div style="font-size:13px;font-weight:700;color:#7c3aed;margin-bottom:3px;">🏋️ 推日（轻量日）</div>
- <p style="font-size:12px;color:#6b21a8;line-height:1.5;margin:0;">RPE 6–7，每组留 3–4 次余量。动作放慢、控制为主，不冲大重量。</p>
- </div>
- <button class="btn-start-training" data-day="push-evening"><span class="btn-icon">▶</span> 开始推日计时训练（轻量）</button>
- <div class="tm-estimate-row">
-  <div class="tm-total-estimate">⏱ 预计 <span class="tm-total-estimate-val">计算中…</span></div>
-  <button class="btn-adjust" data-session="push-evening">⚙ 调整参数</button>
- </div>
-<div class="moves-title">📋 动作清单（轻量：3 组，组间休 90s）</div>
- <div class="moves-grid">
-  <div class="move-row" data-exercise="平板推胸"><span class="move-num">1</span><span class="move-name">平板推胸</span><span class="move-sets">3×10–12</span><span class="move-rest">休 90s</span><span class="move-note" style="grid-column:2/5;">仰卧凳上，哑铃下放至胸侧，肘45°，推起时夹胸。<b>8KG/手</b></span></div>
-  <div class="move-row" data-exercise="哑铃上斜卧推"><span class="move-num">2</span><span class="move-name">哑铃上斜卧推</span><span class="move-sets">3×10–12</span><span class="move-rest">休 90s</span><span class="move-note" style="grid-column:2/5;">凳调上斜约30°，哑铃推至头顶，胸上沿发力。<b>8KG/手</b></span></div>
-  <div class="move-row" data-exercise="哑铃坐姿肩推"><span class="move-num">3</span><span class="move-name">哑铃坐姿肩推</span><span class="move-sets">3×10–12</span><span class="move-rest">休 90s</span><span class="move-note" style="grid-column:2/5;">坐凳，哑铃从肩侧推至头顶，核心收紧不塌腰。<b>8KG/手</b></span></div>
-  <div class="move-row" data-exercise="哑铃侧平举"><span class="move-num">4</span><span class="move-name">哑铃侧平举</span><span class="move-sets">3×12–15</span><span class="move-rest">休 60s</span><span class="move-note" style="grid-column:2/5;">双臂侧举至肩高，小重量慢控制，练中束。<b>5KG/手</b></span></div>
-  <div class="move-row" data-exercise="哑铃仰卧臂屈伸"><span class="move-num">5</span><span class="move-name">哑铃仰卧臂屈伸</span><span class="move-sets">3×10–12</span><span class="move-rest">休 60s</span><span class="move-note" style="grid-column:2/5;">仰卧，哑铃在头顶做三头伸展，仅前臂动。<b>5KG/手</b></span></div>
- </div>
- <div class="caution"><strong> 轻量日原则：</strong>不冲重量，动作标准 + 肌肉感受为主。重量同主攻日但组数/余量更保守。</div>
- <p class="tip"> 哑铃跟练 51 分钟一对哑铃全程口令。先跟视频学动作，再按上方清单用自选重量完成。</p>
-<div style="background:rgba(34,197,94,0.06);border:1px solid rgba(34,197,94,0.2);border-radius:8px;padding:8px 12px;margin-top:8px;font-size:12px;color:#15803d;">🏃 <b>力量后 10 分钟有氧：</b>轻松走 / 慢骑，RPE 3–4（能聊天）。低强度收尾，不当加练。</div>
- </div>
- </div>
-
-</div>
-
-<!-- 周三 -->
-<div class="day-panel" id="panel-2">
-
-<div class="compact-card walk-card">
- <div class="cc-icon">🚶</div>
- <div class="cc-info">
-  <div class="cc-title">全天走路 90min（分 3 次）</div>
-  <div class="cc-sub">早空腹走 30min（低强度）· 午饭后走 30min · 晚饭后走 30min</div>
- </div>
-</div>
-
-<div class="day-section">
- <div class="day-header">
- <div class="day-badge push"></div>
- <div class="day-info">
- <div class="day-name">09:30 腿日力量 60min + 有氧 10min</div>
- <div class="day-sub">股四+腘绳+臀 | 哑铃+凳（单手 8–20KG 自选）</div>
- <div class="day-tags"><span>主攻日</span><span>RPE 7–8 留 1–2 次</span><span>无弹力绳</span></div>
- </div>
- </div>
- <div class="day-body">
- <div class="video-box">
- <div class="video-label"> 🏋️ 哑铃跟练（推荐）</div>
- <div class="vid-lazy" data-bvid="BV1RW42197ez" onclick="loadVid(this)"><div class="vid-play-btn">▶ 点击加载视频</div></div>
- </div>
- <div class="video-meta">
- <span class="vm-title">梅林FIT · 三分化 哑铃增肌 肩+臀腿 | 66′30″ 一步到位</span>
- <a class="vm-link" href="https://www.bilibili.com/video/BV1RW42197ez" target="_blank">打开B站 →</a>
- </div>
-<div style="background:rgba(220,38,38,0.06);border:1px solid rgba(220,38,38,0.2);border-radius:8px;padding:8px 12px;margin-bottom:8px;font-size:12px;color:#991b1b;">💡 <b>腿日 = 最大受益日！</b>哑铃负重深蹲→最大化睾酮分泌→全身增肌减脂。重量选能标准完成区间上限（单手最重 20KG），每组留 1–2 次余量。</div>
- <button class="btn-start-training" data-day="leg-evening"><span class="btn-icon">▶</span> 开始腿日计时训练（主攻·最大受益日）</button>
- <div class="tm-estimate-row">
-  <div class="tm-total-estimate">⏱ 预计 <span class="tm-total-estimate-val">计算中…</span></div>
-  <button class="btn-adjust" data-session="leg-evening">⚙ 调整参数</button>
- </div>
-<div class="moves-title">📋 动作清单（主攻：4+3 组，组间休 90s）</div>
- <div class="moves-grid">
-  <div class="move-row" data-exercise="哑铃高脚杯深蹲"><span class="move-num">1</span><span class="move-name">哑铃高脚杯深蹲</span><span class="move-sets">4×10–15</span><span class="move-rest">休 90s</span><span class="move-note" style="grid-column:2/5;">双手托铃于胸前，下蹲至大腿平行，膝盖不内扣。<b>18KG</b></span></div>
-  <div class="move-row" data-exercise="哑铃臀推"><span class="move-num">2</span><span class="move-name">哑铃臀推（上背靠凳）</span><span class="move-sets">3×12–15</span><span class="move-rest">休 90s</span><span class="move-note" style="grid-column:2/5;">上背靠凳，哑铃置髋，顶髋至身体成直线，收紧臀。<b>18KG</b></span></div>
-  <div class="move-row" data-exercise="哑铃罗马尼亚硬拉"><span class="move-num">3</span><span class="move-name">哑铃罗马尼亚硬拉</span><span class="move-sets">3×10–12</span><span class="move-rest">休 90s</span><span class="move-note" style="grid-column:2/5;">微屈膝，臀部后推，哑铃沿大腿前侧下滑至小腿中段，感受腘绳拉伸。<b>12KG/手</b></span></div>
-  <div class="move-row" data-exercise="哑铃保加利亚分腿蹲"><span class="move-num">4</span><span class="move-name">哑铃保加利亚分腿蹲</span><span class="move-sets">3×每侧10–12</span><span class="move-rest">休 90s</span><span class="move-note" style="grid-column:2/5;">后脚搭凳，前腿下蹲至大腿平行，重心在前脚。<b>12KG/手</b></span></div>
- </div>
- <div class="caution"><strong> 进阶（20KG 封顶后）：</strong>同重量先把次数推到区间上限 → 加 1 次 / 减休息 5s / 改 3 秒慢速离心 / 改单腿单侧化。</div>
- <p class="tip"> 哑铃跟练 66 分钟全程口令。包含肩+臀腿完整训练，先跟视频学动作规范，再按上方清单用自选重量完成。</p>
-<div style="background:rgba(34,197,94,0.06);border:1px solid rgba(34,197,94,0.2);border-radius:8px;padding:8px 12px;margin-top:8px;font-size:12px;color:#15803d;">🏃 <b>力量后 10 分钟有氧：</b>轻松走 / 慢骑，RPE 3–4（能聊天）。低强度收尾，不当加练。</div>
- </div>
- </div>
-
-</div>
-
-<!-- 周四 -->
-<div class="day-panel" id="panel-3">
-
-<div class="compact-card walk-card">
- <div class="cc-icon">🚶</div>
- <div class="cc-info">
-  <div class="cc-title">全天走路 90min（分 3 次）</div>
-  <div class="cc-sub">早空腹走 30min（低强度）· 午饭后走 30min · 晚饭后走 30min</div>
- </div>
-</div>
-
-<div class="day-section">
- <div class="day-header">
- <div class="day-badge"></div>
- <div class="day-info">
- <div class="day-name">09:30 拉日力量 60min + 有氧 10min</div>
- <div class="day-sub">背部+肩后束+肱二头 | 哑铃+凳（单手 8–20KG 自选）</div>
- <div class="day-tags"><span>轻量日</span><span>RPE 6–7 留 3–4 次</span><span>无弹力绳</span></div>
- </div>
- </div>
- <div class="day-body">
- <div class="video-box">
- <div class="video-label"> 🏋️ 哑铃跟练（推荐）</div>
- <div class="vid-lazy" data-bvid="BV1uZ42127Gz" onclick="loadVid(this)"><div class="vid-play-btn">▶ 点击加载视频</div></div>
- </div>
- <div class="video-meta">
- <span class="vm-title">梅林FIT · 二分化拉日 哑铃增肌 | 52′ 一对哑铃 背+二头</span>
- <a class="vm-link" href="https://www.bilibili.com/video/BV1uZ42127Gz" target="_blank">打开B站 →</a>
- </div>
-<div style="background:rgba(59,130,246,0.06);border:1px solid rgba(59,130,246,0.2);border-radius:8px;padding:8px 12px;margin-bottom:8px;font-size:12px;color:#1e40af;">💡 <b>拉日（轻量日）：</b>RPE 6–7，每组留 3–4 次余量。动作放慢、控制为主，不冲大重量。</div>
- <button class="btn-start-training" data-day="pull-evening"><span class="btn-icon">▶</span> 开始拉日计时训练（轻量）</button>
- <div class="tm-estimate-row">
-  <div class="tm-total-estimate">⏱ 预计 <span class="tm-total-estimate-val">计算中…</span></div>
-  <button class="btn-adjust" data-session="pull-evening">⚙ 调整参数</button>
- </div>
-<div class="moves-title">📋 动作清单（轻量：3 组，组间休 90s）</div>
- <div class="moves-grid">
-  <div class="move-row" data-exercise="哑铃单臂划船"><span class="move-num">1</span><span class="move-name">哑铃单臂划船（手撑凳）</span><span class="move-sets">3×10–12</span><span class="move-rest">休 90s</span><span class="move-note" style="grid-column:2/5;">单手撑凳/膝，另一手持铃拉至腰侧，肘贴身。<b>9KG/手</b></span></div>
-  <div class="move-row" data-exercise="哑铃俯身划船"><span class="move-num">2</span><span class="move-name">哑铃俯身划船</span><span class="move-sets">3×10–12</span><span class="move-rest">休 90s</span><span class="move-note" style="grid-column:2/5;">屈髋俯身约45°，双手持铃沿大腿上拉至腹部，肘贴身。<b>9KG/手</b></span></div>
-  <div class="move-row" data-exercise="哑铃交替弯举"><span class="move-num">3</span><span class="move-name">哑铃交替弯举</span><span class="move-sets">3×12</span><span class="move-rest">休 60s</span><span class="move-note" style="grid-column:2/5;">左右交替，肘贴身体不摆动。<b>6KG/手</b></span></div>
-  <div class="move-row" data-exercise="哑铃锤式弯举"><span class="move-num">4</span><span class="move-name">哑铃锤式弯举</span><span class="move-sets">3×12</span><span class="move-rest">休 60s</span><span class="move-note" style="grid-column:2/5;">拳眼相对，练肱肌，加粗手臂。<b>6KG/手</b></span></div>
- </div>
- <div class="caution"><strong> 轻量日原则：</strong>不冲重量，动作标准 + 肌肉感受为主。重量同主攻日但组数/余量更保守。</div>
- <p class="tip"> 哑铃跟练 52 分钟一对哑铃全程口令。先跟视频找动作感觉，再按上方清单用自选重量完成。</p>
-<div style="background:rgba(34,197,94,0.06);border:1px solid rgba(34,197,94,0.2);border-radius:8px;padding:8px 12px;margin-top:8px;font-size:12px;color:#15803d;">🏃 <b>力量后 10 分钟有氧：</b>轻松走 / 慢骑，RPE 3–4（能聊天）。低强度收尾，不当加练。</div>
- </div>
- </div>
-
-</div>
-
-<!-- 周五 -->
-<div class="day-panel" id="panel-4">
-
-<div class="compact-card walk-card">
- <div class="cc-icon">🚶</div>
- <div class="cc-info">
-  <div class="cc-title">全天走路 90min（分 3 次）</div>
-  <div class="cc-sub">早空腹走 30min（低强度）· 午饭后走 30min · 晚饭后走 30min</div>
- </div>
-</div>
-
 <div class="day-section">
  <div class="day-header">
  <div class="day-badge leg"></div>
  <div class="day-info">
- <div class="day-name">09:30 推日力量 60min + 有氧 10min</div>
- <div class="day-sub">胸+肩+肱三头 | 哑铃+凳（单手 8–20KG 自选）</div>
- <div class="day-tags"><span>主攻日</span><span>RPE 7–8 留 1–2 次</span><span>无弹力绳</span></div>
- </div>
- </div>
- <div class="day-body">
- <div class="video-box">
- <div class="video-label"> 🏋️ 哑铃跟练（推荐）</div>
- <div class="vid-lazy" data-bvid="BV1qF4m1M7rL" onclick="loadVid(this)"><div class="vid-play-btn">▶ 点击加载视频</div></div>
- </div>
- <div class="video-meta">
- <span class="vm-title">梅林FIT · 二分化推日 哑铃增肌 | 51′45″ 一对哑铃 胸+三头</span>
- <a class="vm-link" href="https://www.bilibili.com/video/BV1qF4m1M7rL" target="_blank">打开B站 →</a>
- </div>
-<div style="background:rgba(139,92,246,0.05);border:1px solid rgba(139,92,246,0.18);border-radius:8px;padding:9px 12px;margin:10px 0;">
- <div style="font-size:13px;font-weight:700;color:#7c3aed;margin-bottom:3px;">🏋️ 推日（主攻日）</div>
- <p style="font-size:12px;color:#6b21a8;line-height:1.5;margin:0;">重量选能标准完成区间上限（单手最重 20KG）。每组留 1–2 次余量，不冲力竭。</p>
- </div>
- <button class="btn-start-training" data-day="push-evening"><span class="btn-icon">▶</span> 开始推日计时训练（主攻）</button>
- <div class="tm-estimate-row">
-  <div class="tm-total-estimate">⏱ 预计 <span class="tm-total-estimate-val">计算中…</span></div>
-  <button class="btn-adjust" data-session="push-evening">⚙ 调整参数</button>
- </div>
-<div class="moves-title">📋 动作清单（主攻：4+3 组，组间休 90s）</div>
- <div class="moves-grid">
-  <div class="move-row" data-exercise="平板推胸"><span class="move-num">1</span><span class="move-name">平板推胸</span><span class="move-sets">4×8–12</span><span class="move-rest">休 90s</span><span class="move-note" style="grid-column:2/5;">仰卧凳上，哑铃下放至胸侧，肘45°，推起时夹胸。<b>10KG/手</b></span></div>
-  <div class="move-row" data-exercise="哑铃上斜卧推"><span class="move-num">2</span><span class="move-name">哑铃上斜卧推</span><span class="move-sets">3×10–12</span><span class="move-rest">休 90s</span><span class="move-note" style="grid-column:2/5;">凳调上斜约30°，哑铃推至头顶，胸上沿发力。<b>10KG/手</b></span></div>
-  <div class="move-row" data-exercise="哑铃坐姿肩推"><span class="move-num">3</span><span class="move-name">哑铃坐姿肩推</span><span class="move-sets">3×8–12</span><span class="move-rest">休 90s</span><span class="move-note" style="grid-column:2/5;">坐凳，哑铃从肩侧推至头顶，核心收紧不塌腰。<b>8KG/手</b></span></div>
-  <div class="move-row" data-exercise="哑铃仰卧臂屈伸"><span class="move-num">4</span><span class="move-name">哑铃仰卧臂屈伸</span><span class="move-sets">3×10–12</span><span class="move-rest">休 60s</span><span class="move-note" style="grid-column:2/5;">仰卧，哑铃在头顶做三头伸展，仅前臂动。<b>8KG/手</b></span></div>
-  <div class="move-row" data-exercise="哑铃侧平举"><span class="move-num">5</span><span class="move-name">哑铃侧平举</span><span class="move-sets">3×12–15</span><span class="move-rest">休 60s</span><span class="move-note" style="grid-column:2/5;">双臂侧举至肩高，小重量慢控制，练中束。<b>5KG/手</b></span></div>
- </div>
- <div class="caution"><strong> 进阶（20KG 封顶后）：</strong>同重量先把次数推到区间上限 → 加 1 次 / 减休息 5s / 改 3 秒慢速离心。</div>
- <p class="tip"> 哑铃跟练 51 分钟一对哑铃全程口令。先跟视频学动作，再按上方清单用自选重量完成。</p>
-<div style="background:rgba(34,197,94,0.06);border:1px solid rgba(34,197,94,0.2);border-radius:8px;padding:8px 12px;margin-top:8px;font-size:12px;color:#15803d;">🏃 <b>力量后 10 分钟有氧：</b>轻松走 / 慢骑，RPE 3–4（能聊天）。低强度收尾，不当加练。</div>
- </div>
- </div>
-
-</div>
-
-<!-- 周六 -->
-<div class="day-panel" id="panel-5">
-
-<div class="compact-card walk-card">
- <div class="cc-icon">🚶</div>
- <div class="cc-info">
-  <div class="cc-title">全天走路 90min（分 3 次）</div>
-  <div class="cc-sub">早空腹走 30min（低强度）· 午饭后走 30min · 晚饭后走 30min</div>
- </div>
-</div>
-
-<div class="day-section">
- <div class="day-header">
- <div class="day-badge"></div>
- <div class="day-info">
- <div class="day-name">09:30 腿日力量 60min + 有氧 10min</div>
- <div class="day-sub">股四+腘绳+臀 + 核心 | 哑铃+凳（单手 8–20KG 自选）</div>
- <div class="day-tags"><span>轻量日</span><span>RPE 6–7 留 3–4 次</span><span>无弹力绳</span></div>
+ <div class="day-name">21:00 腿/臀A力量 40min + 有氧 25min + 拉伸</div>
+ <div class="day-sub">股四+腘绳+臀 | 哑铃（8kg/手·保肩）</div>
+ <div class="day-tags"><span>保肩日</span><span>RPE 7–8 留 1–2 次</span><span>每天最多换1次片</span></div>
  </div>
  </div>
  <div class="day-body">
@@ -975,28 +719,253 @@
  <div class="vid-lazy" data-bvid="BV1RW42197ez" onclick="loadVid(this)"><div class="vid-play-btn">▶ 点击加载视频</div></div>
  </div>
  <div class="video-meta">
- <span class="vm-title">梅林FIT · 三分化 哑铃增肌 肩+臀腿 | 66′30″ 一步到位</span>
+ <span class="vm-title">梅林FIT · 三分化 哑铃增肌 臀腿 | 66′30″</span>
  <a class="vm-link" href="https://www.bilibili.com/video/BV1RW42197ez" target="_blank">打开B站 →</a>
  </div>
-<div style="background:rgba(220,38,38,0.06);border:1px solid rgba(220,38,38,0.2);border-radius:8px;padding:8px 12px;margin-bottom:8px;font-size:12px;color:#991b1b;">💡 <b>腿日（轻量日）：</b>RPE 6–7，每组留 3–4 次余量。动作放慢、控制为主，不冲大重量。</div>
- <button class="btn-start-training" data-day="leg-evening"><span class="btn-icon">▶</span> 开始腿日计时训练（轻量）</button>
+<div style="background:rgba(239,68,68,0.06);border:1px solid rgba(239,68,68,0.2);border-radius:8px;padding:8px 12px;margin-bottom:8px;font-size:12px;color:#991b1b;">💡 <b>腿日 = 最大受益日！</b>哑铃负重深蹲→最大化睾酮分泌→全身增肌减脂。重量：开局两手柄都上 8kg 做完主项，只把单只加到 12kg 做臀推（当天唯一1次换片）。末组能多2次→下周整档+2kg。</div>
+ <button class="btn-start-training" data-day="leg-evening"><span class="btn-icon">▶</span> 开始腿/臀A计时训练（保肩·最大受益日）</button>
  <div class="tm-estimate-row">
   <div class="tm-total-estimate">⏱ 预计 <span class="tm-total-estimate-val">计算中…</span></div>
   <button class="btn-adjust" data-session="leg-evening">⚙ 调整参数</button>
  </div>
-<div class="moves-title">📋 动作清单（轻量：3 组，组间休 90s）</div>
+<div class="moves-title">📋 动作清单（主项 3× 组，组间休 90s）</div>
  <div class="moves-grid">
-  <div class="move-row" data-exercise="哑铃高脚杯深蹲"><span class="move-num">1</span><span class="move-name">哑铃高脚杯深蹲</span><span class="move-sets">3×12–15</span><span class="move-rest">休 90s</span><span class="move-note" style="grid-column:2/5;">双手托铃于胸前，下蹲至大腿平行。<b>14KG</b></span></div>
-  <div class="move-row" data-exercise="哑铃臀推"><span class="move-num">2</span><span class="move-name">哑铃臀推（上背靠凳）</span><span class="move-sets">3×12–15</span><span class="move-rest">休 90s</span><span class="move-note" style="grid-column:2/5;">上背靠凳，哑铃置髋，顶髋至身体成直线。<b>14KG</b></span></div>
-  <div class="move-row" data-exercise="俄罗斯转体"><span class="move-num">3</span><span class="move-name">俄罗斯转体</span><span class="move-sets">3×每侧12</span><span class="move-rest">休 45s</span><span class="move-note" style="grid-column:2/5;">坐姿屈膝抬脚，持铃左右转体触地，练侧腹与旋转稳定。<b>5KG</b></span></div>
-  <div class="move-row" data-exercise="死虫"><span class="move-num">4</span><span class="move-name">死虫</span><span class="move-sets">3×12</span><span class="move-rest">休 45s</span><span class="move-note" style="grid-column:2/5;">仰卧，对侧手脚缓慢伸展，腰贴地。<b>自重</b></span></div>
+  <div class="move-row" data-exercise="哑铃高脚杯深蹲"><span class="move-num">1</span><span class="move-name">高脚杯深蹲</span><span class="move-sets">3×12</span><span class="move-rest">休 90s</span><span class="move-note" style="grid-column:2/5;">双手抱1个8kg于胸前，下蹲至大腿平行，膝盖不内扣。<b>抱1个8kg</b></span></div>
+  <div class="move-row" data-exercise="哑铃罗马尼亚硬拉"><span class="move-num">2</span><span class="move-name">罗马尼亚硬拉</span><span class="move-sets">3×10</span><span class="move-rest">休 90s</span><span class="move-note" style="grid-column:2/5;">微屈膝，臀部后推，哑铃沿大腿前侧下滑至小腿中段，感受腘绳拉伸。<b>8kg/手</b></span></div>
+  <div class="move-row" data-exercise="哑铃保加利亚分腿蹲"><span class="move-num">3</span><span class="move-name">保加利亚分腿蹲</span><span class="move-sets">3×10/腿</span><span class="move-rest">休 90s</span><span class="move-note" style="grid-column:2/5;">后脚搭凳，前腿下蹲至大腿平行，重心在前脚。<b>8kg/手</b></span></div>
+  <div class="move-row" data-exercise="哑铃臀推"><span class="move-num">4</span><span class="move-name">臀推（上背靠凳）</span><span class="move-sets">3×12</span><span class="move-rest">休 90s</span><span class="move-note" style="grid-column:2/5;">上背靠凳，哑铃置髋，顶髋至身体成直线，收紧臀。<b>髋上12kg·换片1次</b></span></div>
+  <div class="move-row" data-exercise="站姿提踵"><span class="move-num">5</span><span class="move-name">站姿提踵</span><span class="move-sets">3×15</span><span class="move-rest">休 60s</span><span class="move-note" style="grid-column:2/5;">站姿踮脚至顶峰停顿1s，慢落。<b>8kg/手</b></span></div>
  </div>
- <div class="caution"><strong> 轻量日原则：</strong>不冲重量，动作标准 + 肌肉感受为主。重量同主攻日但组数/余量更保守。</div>
- <p class="tip"> 哑铃跟练 66 分钟全程口令。先跟视频学动作规范，再按上方清单用自选重量完成。</p>
-<div style="background:rgba(34,197,94,0.06);border:1px solid rgba(34,197,94,0.2);border-radius:8px;padding:8px 12px;margin-top:8px;font-size:12px;color:#15803d;">🏃 <b>力量后 10 分钟有氧：</b>轻松走 / 慢骑，RPE 3–4（能聊天）。低强度收尾，不当加练。</div>
+ <div class="caution"><strong> 换片规则：</strong>开局两手柄都上 8kg 做完主项，只把单只哑铃加到 12kg 做臀推（当天唯一1次换片）。末组能多 2 次 → 下周整档 +2kg。</div>
+ <p class="tip"> 哑铃跟练 66 分钟全程口令。先跟视频学动作规范，再按上方清单用 8kg/手 完成（臀推换 12kg）。</p>
+<div style="background:rgba(34,197,94,0.06);border:1px solid rgba(34,197,94,0.2);border-radius:8px;padding:8px 12px;margin-top:8px;font-size:12px;color:#15803d;">🏃 <b>力量后 25 分钟有氧：</b>轻松骑车/快走坡度，RPE 3–4（能聊天）。低强度收尾，不当加练。</div>
  </div>
- </div>
+</div>
+</div>
 
+<!-- 周二 --><div class="day-panel" id="panel-1">
+
+<div class="compact-card walk-card">
+ <div class="cc-icon">🚶</div>
+ <div class="cc-info">
+  <div class="cc-title">全天走路 90min（分 3 次）</div>
+  <div class="cc-sub">早空腹走 30min（低强度）· 午饭后走 30min · 晚饭后走 30min</div>
+ </div>
+</div>
+<div class="day-section">
+ <div class="day-header">
+ <div class="day-badge pull"></div>
+ <div class="day-info">
+ <div class="day-name">21:00 拉/背A力量 40min + 有氧 25min + 拉伸</div>
+ <div class="day-sub">背部+肩后束+肱二头 | 哑铃（8kg/手·保肩）</div>
+ <div class="day-tags"><span>保肩日</span><span>RPE 7–8 留 1–2 次</span><span>推类暂停2–4周</span></div>
+ </div>
+ </div>
+ <div class="day-body">
+ <div class="video-box">
+ <div class="video-label"> 🏋️ 哑铃跟练（推荐）</div>
+ <div class="vid-lazy" data-bvid="BV1uZ42127Gz" onclick="loadVid(this)"><div class="vid-play-btn">▶ 点击加载视频</div></div>
+ </div>
+ <div class="video-meta">
+ <span class="vm-title">梅林FIT · 二分化拉日 哑铃增肌 | 52′ 一对哑铃 背+二头</span>
+ <a class="vm-link" href="https://www.bilibili.com/video/BV1uZ42127Gz" target="_blank">打开B站 →</a>
+ </div>
+<div style="background:rgba(59,130,246,0.06);border:1px solid rgba(59,130,246,0.2);border-radius:8px;padding:8px 12px;margin-bottom:8px;font-size:12px;color:#1e40af;">💡 <b>拉日 = 保肩主攻日！</b>推类动作（肩推/侧平举/卧推）暂停 2–4 周护右肩。重量：开局两手柄都上 8kg 做完主项，只把两手柄降到 2kg 做反向飞鸟（当天唯一1次换片）。</div>
+ <button class="btn-start-training" data-day="pull-evening"><span class="btn-icon">▶</span> 开始拉/背A计时训练（保肩·推类暂停）</button>
+ <div class="tm-estimate-row">
+  <div class="tm-total-estimate">⏱ 预计 <span class="tm-total-estimate-val">计算中…</span></div>
+  <button class="btn-adjust" data-session="pull-evening">⚙ 调整参数</button>
+ </div>
+<div class="moves-title">📋 动作清单（主项 3× 组，组间休 90s）</div>
+ <div class="moves-grid">
+  <div class="move-row" data-exercise="哑铃单臂划船"><span class="move-num">1</span><span class="move-name">单臂划船</span><span class="move-sets">3×12/臂</span><span class="move-rest">休 90s</span><span class="move-note" style="grid-column:2/5;">单手撑凳/膝，另一手持铃拉至腰侧，肘贴身，肩胛主动收缩。<b>8kg/手</b></span></div>
+  <div class="move-row" data-exercise="哑铃单臂划船"><span class="move-num">2</span><span class="move-name">胸支撑划船</span><span class="move-sets">3×12</span><span class="move-rest">休 90s</span><span class="move-note" style="grid-column:2/5;">趴上斜凳，双手持铃划至腹侧，背阔主导。<b>8kg/手</b></span></div>
+  <div class="move-row" data-exercise="哑铃锤式弯举"><span class="move-num">3</span><span class="move-name">锤式弯举</span><span class="move-sets">3×12</span><span class="move-rest">休 60s</span><span class="move-note" style="grid-column:2/5;">拳眼相对，练肱肌，加粗手臂。<b>8kg/手</b></span></div>
+  <div class="move-row" data-exercise="哑铃俯身反向飞鸟"><span class="move-num">4</span><span class="move-name">反向飞鸟（肩后束）</span><span class="move-sets">3×15</span><span class="move-rest">休 60s</span><span class="move-note" style="grid-column:2/5;">俯身约30°，双臂侧后举至与肩平，练肩后束、护肩姿态。<b>2kg/手·换片1次·保肩</b></span></div>
+ </div>
+ <div class="caution"><strong> 换片规则：</strong>开局两手柄都上 8kg 做完主项，只把两手柄降到 2kg 做反向飞鸟（当天唯一1次换片）。反向飞鸟/面拉永 2–3kg 不动。</div>
+ <p class="tip"> 哑铃跟练 52 分钟一对哑铃全程口令。先跟视频找动作感觉，再按上方清单用 8kg/手 完成（反向飞鸟换 2kg）。</p>
+<div style="background:rgba(34,197,94,0.06);border:1px solid rgba(34,197,94,0.2);border-radius:8px;padding:8px 12px;margin-top:8px;font-size:12px;color:#15803d;">🏃 <b>力量后 25 分钟有氧：</b>轻松骑车/快走坡度，RPE 3–4（能聊天）。低强度收尾，不当加练。</div>
+ </div>
+</div>
+</div>
+
+<!-- 周三 --><div class="day-panel" id="panel-2">
+
+<div class="compact-card walk-card">
+ <div class="cc-icon">🚶</div>
+ <div class="cc-info">
+  <div class="cc-title">全天走路 90min（分 3 次）</div>
+  <div class="cc-sub">早空腹走 30min（低强度）· 午饭后走 30min · 晚饭后走 30min</div>
+ </div>
+</div>
+<div class="day-section">
+ <div class="day-header">
+ <div class="day-badge" style="background:rgba(34,197,94,0.12);"></div>
+ <div class="day-info">
+ <div class="day-name">21:00 骑车/快走坡度 25–35min + 核心</div>
+ <div class="day-sub">纯有氧 + 核心 | 无哑铃·肩零负荷</div>
+ <div class="day-tags"><span>无哑铃</span><span>肩零负荷</span><span>不冲极限</span></div>
+ </div>
+ </div>
+ <div class="day-body">
+ <div class="video-box">
+ <div class="video-label"> 🏃 有氧跟练（推荐）</div>
+ <div class="vid-lazy" data-bvid="BV1oLpFeGEu6" onclick="loadVid(this)"><div class="vid-play-btn">▶ 点击加载视频</div></div>
+ </div>
+ <div class="video-meta">
+ <span class="vm-title">MIZI 20′ 晨起空腹有氧 | 循环播放凑够 25–35min</span>
+ <a class="vm-link" href="https://www.bilibili.com/video/BV1oLpFeGEu6" target="_blank">打开B站 →</a>
+ </div>
+<div style="background:rgba(34,197,94,0.06);border:1px solid rgba(34,197,94,0.2);border-radius:8px;padding:8px 12px;margin-bottom:8px;font-size:12px;color:#15803d;">💡 <b>今天无哑铃、不碰肩！</b>有氧循环播放凑够 25–35min（Z2·能聊天）；核心做完即收，不冲极限。</div>
+<div class="moves-title">📋 核心清单（自重·无哑铃）</div>
+ <div class="moves-grid">
+  <div class="core-item"><span class="ci-name">死虫式</span><span class="ci-meta">3×12/侧 · 自重</span></div>
+  <div class="core-item"><span class="ci-name">鸟狗式</span><span class="ci-meta">3×10/侧 · 自重</span></div>
+  <div class="core-item"><span class="ci-name">平板支撑</span><span class="ci-meta">3×30s · 自重</span></div>
+  <div class="core-item"><span class="ci-name">俄罗斯转体</span><span class="ci-meta">3×20 · 自重</span></div>
+ </div>
+ <div class="caution"><strong> 今日要点：</strong>无哑铃、不碰肩。有氧循环播放凑够 25–35min；核心自重完成，做完即收，不冲极限。</div>
+ <p class="tip"> 跟练 20 分钟空腹有氧视频循环播放，凑够 25–35min 即可。核心自重完成，肩完全卸负荷。</p>
+ </div>
+</div>
+</div>
+
+<!-- 周四 --><div class="day-panel" id="panel-3">
+
+<div class="compact-card walk-card">
+ <div class="cc-icon">🚶</div>
+ <div class="cc-info">
+  <div class="cc-title">全天走路 90min（分 3 次）</div>
+  <div class="cc-sub">早空腹走 30min（低强度）· 午饭后走 30min · 晚饭后走 30min</div>
+ </div>
+</div>
+<div class="day-section">
+ <div class="day-header">
+ <div class="day-badge leg"></div>
+ <div class="day-info">
+ <div class="day-name">21:00 腿/臀B力量 40min + 有氧 25min + 拉伸</div>
+ <div class="day-sub">股四+腘绳+臀（不同组合）| 哑铃（8kg/手·保肩）</div>
+ <div class="day-tags"><span>保肩日</span><span>RPE 7–8 留 1–2 次</span><span>每天最多换1次片</span></div>
+ </div>
+ </div>
+ <div class="day-body">
+ <div class="video-box">
+ <div class="video-label"> 🏋️ 哑铃跟练（推荐）</div>
+ <div class="vid-lazy" data-bvid="BV1RW42197ez" onclick="loadVid(this)"><div class="vid-play-btn">▶ 点击加载视频</div></div>
+ </div>
+ <div class="video-meta">
+ <span class="vm-title">梅林FIT · 三分化 哑铃增肌 臀腿 | 66′30″</span>
+ <a class="vm-link" href="https://www.bilibili.com/video/BV1RW42197ez" target="_blank">打开B站 →</a>
+ </div>
+<div style="background:rgba(239,68,68,0.06);border:1px solid rgba(239,68,68,0.2);border-radius:8px;padding:8px 12px;margin-bottom:8px;font-size:12px;color:#991b1b;">💡 <b>腿日B = 不同组合防适应！</b>与周一不同动作组合，持续刺激。重量：开局两手柄都上 8kg 做完主项，只把单只加到 14kg 做臀推（当天唯一1次换片）。末组能多2次→下周整档+2kg。</div>
+ <button class="btn-start-training" data-day="leg-evening"><span class="btn-icon">▶</span> 开始腿/臀B计时训练（保肩·不同组合）</button>
+ <div class="tm-estimate-row">
+  <div class="tm-total-estimate">⏱ 预计 <span class="tm-total-estimate-val">计算中…</span></div>
+  <button class="btn-adjust" data-session="leg-evening">⚙ 调整参数</button>
+ </div>
+<div class="moves-title">📋 动作清单（主项 3× 组，组间休 90s）</div>
+ <div class="moves-grid">
+  <div class="move-row" data-exercise="箱式深蹲"><span class="move-num">1</span><span class="move-name">箱式深蹲</span><span class="move-sets">3×12</span><span class="move-rest">休 90s</span><span class="move-note" style="grid-column:2/5;">臀轻触矮凳再起，控制离心，蹲到底不弹。<b>抱1个8kg</b></span></div>
+  <div class="move-row" data-exercise="哑铃箭步蹲"><span class="move-num">2</span><span class="move-name">哑铃箭步蹲</span><span class="move-sets">3×10/腿</span><span class="move-rest">休 90s</span><span class="move-note" style="grid-column:2/5;">向前迈步下蹲，前腿臀腿发力，躯干直立。<b>8kg/手</b></span></div>
+  <div class="move-row" data-exercise="哑铃罗马尼亚硬拉"><span class="move-num">3</span><span class="move-name">单腿罗马尼亚硬拉</span><span class="move-sets">3×10</span><span class="move-rest">休 90s</span><span class="move-note" style="grid-column:2/5;">单腿微屈支撑，另腿后伸，髋部后推哑铃沿腿下滑，练腘绳+臀。<b>8kg/手</b></span></div>
+  <div class="move-row" data-exercise="哑铃臀推"><span class="move-num">4</span><span class="move-name">臀推（上背靠凳）</span><span class="move-sets">3×12</span><span class="move-rest">休 90s</span><span class="move-note" style="grid-column:2/5;">上背靠凳，哑铃置髋，顶髋至身体成直线，收紧臀。<b>髋上14kg·换片1次</b></span></div>
+  <div class="move-row" data-exercise="站姿提踵"><span class="move-num">5</span><span class="move-name">站姿提踵</span><span class="move-sets">3×15</span><span class="move-rest">休 60s</span><span class="move-note" style="grid-column:2/5;">站姿踮脚至顶峰停顿1s，慢落。<b>8kg/手</b></span></div>
+ </div>
+ <div class="caution"><strong> 换片规则：</strong>开局两手柄都上 8kg 做完主项，只把单只哑铃加到 14kg 做臀推（当天唯一1次换片）。末组能多 2 次 → 下周整档 +2kg。</div>
+ <p class="tip"> 哑铃跟练 66 分钟全程口令。先跟视频学动作规范，再按上方清单用 8kg/手 完成（臀推换 14kg）。</p>
+<div style="background:rgba(34,197,94,0.06);border:1px solid rgba(34,197,94,0.2);border-radius:8px;padding:8px 12px;margin-top:8px;font-size:12px;color:#15803d;">🏃 <b>力量后 25 分钟有氧：</b>轻松骑车/快走坡度，RPE 3–4（能聊天）。低强度收尾，不当加练。</div>
+ </div>
+</div>
+</div>
+
+<!-- 周五 --><div class="day-panel" id="panel-4">
+
+<div class="compact-card walk-card">
+ <div class="cc-icon">🚶</div>
+ <div class="cc-info">
+  <div class="cc-title">全天走路 90min（分 3 次）</div>
+  <div class="cc-sub">早空腹走 30min（低强度）· 午饭后走 30min · 晚饭后走 30min</div>
+ </div>
+</div>
+<div class="day-section">
+ <div class="day-header">
+ <div class="day-badge pull"></div>
+ <div class="day-info">
+ <div class="day-name">21:00 拉/臂B力量 40min + 有氧 25min + 拉伸</div>
+ <div class="day-sub">背+肱二头+肩后束 | 哑铃（8kg/手·保肩）</div>
+ <div class="day-tags"><span>保肩日</span><span>RPE 7–8 留 1–2 次</span><span>加面拉护肩</span></div>
+ </div>
+ </div>
+ <div class="day-body">
+ <div class="video-box">
+ <div class="video-label"> 🏋️ 哑铃跟练（推荐）</div>
+ <div class="vid-lazy" data-bvid="BV1uZ42127Gz" onclick="loadVid(this)"><div class="vid-play-btn">▶ 点击加载视频</div></div>
+ </div>
+ <div class="video-meta">
+ <span class="vm-title">梅林FIT · 二分化拉日 哑铃增肌 | 52′ 一对哑铃 背+二头</span>
+ <a class="vm-link" href="https://www.bilibili.com/video/BV1uZ42127Gz" target="_blank">打开B站 →</a>
+ </div>
+<div style="background:rgba(59,130,246,0.06);border:1px solid rgba(59,130,246,0.2);border-radius:8px;padding:8px 12px;margin-bottom:8px;font-size:12px;color:#1e40af;">💡 <b>拉/臂日 = 保肩主攻！</b>推类暂停 2–4 周。加面拉强化肩后束/外旋，保护右肩。重量：开局两手柄都上 8kg 做完主项，只把两手柄降到 2kg 做反向飞鸟+面拉（当天唯一1次换片）。</div>
+ <button class="btn-start-training" data-day="pull-evening"><span class="btn-icon">▶</span> 开始拉/臂B计时训练（保肩·加面拉）</button>
+ <div class="tm-estimate-row">
+  <div class="tm-total-estimate">⏱ 预计 <span class="tm-total-estimate-val">计算中…</span></div>
+  <button class="btn-adjust" data-session="pull-evening">⚙ 调整参数</button>
+ </div>
+<div class="moves-title">📋 动作清单（主项 3× 组，组间休 90s）</div>
+ <div class="moves-grid">
+  <div class="move-row" data-exercise="哑铃单臂划船"><span class="move-num">1</span><span class="move-name">单臂划船</span><span class="move-sets">3×12/臂</span><span class="move-rest">休 90s</span><span class="move-note" style="grid-column:2/5;">单手撑凳/膝，另一手持铃拉至腰侧，肘贴身，肩胛主动收缩。<b>8kg/手</b></span></div>
+  <div class="move-row" data-exercise="哑铃锤式弯举"><span class="move-num">2</span><span class="move-name">锤式弯举</span><span class="move-sets">3×12</span><span class="move-rest">休 60s</span><span class="move-note" style="grid-column:2/5;">拳眼相对，练肱肌，加粗手臂。<b>8kg/手</b></span></div>
+  <div class="move-row" data-exercise="哑铃俯身反向飞鸟"><span class="move-num">3</span><span class="move-name">反向飞鸟（肩后束）</span><span class="move-sets">3×15</span><span class="move-rest">休 60s</span><span class="move-note" style="grid-column:2/5;">俯身约30°，双臂侧后举至与肩平，练肩后束、护肩姿态。<b>2kg/手·换片1次</b></span></div>
+  <div class="move-row" data-exercise="面拉"><span class="move-num">4</span><span class="move-name">面拉（弹力带/轻铃）</span><span class="move-sets">3×15</span><span class="move-rest">休 60s</span><span class="move-note" style="grid-column:2/5;">绳索/弹力带拉向眉心，肘外展后缩，强化肩外旋护肩。<b>2kg/手·换片1次</b></span></div>
+ </div>
+ <div class="caution"><strong> 换片规则：</strong>开局两手柄都上 8kg 做完主项，只把两手柄降到 2kg 做反向飞鸟+面拉（当天唯一1次换片）。面拉永 2–3kg 不动。</div>
+ <p class="tip"> 哑铃跟练 52 分钟一对哑铃全程口令。先跟视频找动作感觉，再按上方清单用 8kg/手 完成（反向飞鸟+面拉换 2kg）。</p>
+<div style="background:rgba(34,197,94,0.06);border:1px solid rgba(34,197,94,0.2);border-radius:8px;padding:8px 12px;margin-top:8px;font-size:12px;color:#15803d;">🏃 <b>力量后 25 分钟有氧：</b>轻松骑车/快走坡度，RPE 3–4（能聊天）。低强度收尾，不当加练。</div>
+ </div>
+</div>
+</div>
+
+<!-- 周六 --><div class="day-panel" id="panel-5">
+
+<div class="compact-card walk-card">
+ <div class="cc-icon">🚶</div>
+ <div class="cc-info">
+  <div class="cc-title">全天走路 90min（分 3 次）</div>
+  <div class="cc-sub">早空腹走 30min（低强度）· 午饭后走 30min · 晚饭后走 30min</div>
+ </div>
+</div>
+<div class="day-section">
+ <div class="day-header">
+ <div class="day-badge" style="background:rgba(34,197,94,0.12);"></div>
+ <div class="day-info">
+ <div class="day-name">21:00 骑车/快走坡度 35min + 核心</div>
+ <div class="day-sub">长有氧 + 核心 | 无哑铃·肩零负荷</div>
+ <div class="day-tags"><span>周末长有氧</span><span>无哑铃</span><span>肩零负荷</span></div>
+ </div>
+ </div>
+ <div class="day-body">
+ <div class="video-box">
+ <div class="video-label"> 🏃 有氧跟练（推荐）</div>
+ <div class="vid-lazy" data-bvid="BV1oLpFeGEu6" onclick="loadVid(this)"><div class="vid-play-btn">▶ 点击加载视频</div></div>
+ </div>
+ <div class="video-meta">
+ <span class="vm-title">MIZI 20′ 晨起空腹有氧 | 循环播放凑够 35min</span>
+ <a class="vm-link" href="https://www.bilibili.com/video/BV1oLpFeGEu6" target="_blank">打开B站 →</a>
+ </div>
+<div style="background:rgba(34,197,94,0.06);border:1px solid rgba(34,197,94,0.2);border-radius:8px;padding:8px 12px;margin-bottom:8px;font-size:12px;color:#15803d;">💡 <b>周末长有氧日！</b>有氧循环播放凑够 35min（Z2·能聊天）；核心做完即收，不冲极限。</div>
+<div class="moves-title">📋 核心清单（自重·无哑铃）</div>
+ <div class="moves-grid">
+  <div class="core-item"><span class="ci-name">死虫式</span><span class="ci-meta">3×12/侧 · 自重</span></div>
+  <div class="core-item"><span class="ci-name">鸟狗式</span><span class="ci-meta">3×10/侧 · 自重</span></div>
+  <div class="core-item"><span class="ci-name">平板支撑</span><span class="ci-meta">3×30s · 自重</span></div>
+  <div class="core-item"><span class="ci-name">俄罗斯转体</span><span class="ci-meta">3×20 · 自重</span></div>
+  <div class="core-item"><span class="ci-name">侧平板</span><span class="ci-meta">2×20s/侧 · 自重</span></div>
+ </div>
+ <div class="caution"><strong> 今日要点：</strong>无哑铃、不碰肩。有氧循环播放凑够 35min；核心自重完成，做完即收，不冲极限。</div>
+ <p class="tip"> 跟练 20 分钟空腹有氧视频循环播放，凑够 35min 即可。核心自重完成，肩完全卸负荷。</p>
+ </div>
+</div>
 </div>
 
 <!-- 周日 -->
@@ -2182,7 +2151,7 @@ var WorkoutTimer = (function() {
     // 设置标题
     sessionName.textContent = sessionTitle || '今日训练';
     // 存储训练日类型，用于finishWorkout记录
-    var dayTypeMap = { 'panel-0': 'pull', 'panel-1': 'cardio', 'panel-2': 'push', 'panel-3': 'cardio', 'panel-4': 'leg', 'panel-5': 'recovery', 'panel-6': 'recovery' };
+    var dayTypeMap = { 'panel-0': 'leg', 'panel-1': 'pull', 'panel-2': 'cardio', 'panel-3': 'leg', 'panel-4': 'pull', 'panel-5': 'cardio', 'panel-6': 'recovery' };
     sessionDayType = dayTypeMap[activePanel.id] || '';
     sessionPanelId = activePanel ? activePanel.id : '';
 

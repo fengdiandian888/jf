@@ -324,13 +324,13 @@ details.ref-wrap[open] > summary::before { content: '▾ '; }
     <div class="card ref-card">
       <h2>每周节奏</h2>
       <div class="week-grid">
-        <div class="week-day pull"><div class="week-label">周一</div><div class="week-name">拉日</div><div class="week-tag wtag-pull">力量</div></div>
-        <div class="week-day cardio"><div class="week-label">周二</div><div class="week-name">有氧+核心</div><div class="week-tag wtag-cardio">有氧</div></div>
-        <div class="week-day push"><div class="week-label">周三</div><div class="week-name">推日</div><div class="week-tag wtag-push">力量</div></div>
-        <div class="week-day cardio"><div class="week-label">周四</div><div class="week-name">有氧+核心</div><div class="week-tag wtag-cardio">有氧</div></div>
-        <div class="week-day leg"><div class="week-label">周五</div><div class="week-name">腿日</div><div class="week-tag wtag-leg">力量</div></div>
-        <div class="week-day recovery"><div class="week-label">周六</div><div class="week-name">维持+瑜伽</div><div class="week-tag wtag-recovery">维持</div></div>
-        <div class="week-day rest"><div class="week-label">周日</div><div class="week-name">恢复</div><div class="week-tag tag-rest">备餐+休息</div></div>
+        <div class="week-day leg"><div class="week-label">周一</div><div class="week-name">腿/臀A</div><div class="week-tag wtag-leg">力量</div></div>
+        <div class="week-day pull"><div class="week-label">周二</div><div class="week-name">拉/背A</div><div class="week-tag wtag-pull">力量</div></div>
+        <div class="week-day cardio"><div class="week-label">周三</div><div class="week-name">有氧+核心</div><div class="week-tag wtag-cardio">有氧</div></div>
+        <div class="week-day leg"><div class="week-label">周四</div><div class="week-name">腿/臀B</div><div class="week-tag wtag-leg">力量</div></div>
+        <div class="week-day pull"><div class="week-label">周五</div><div class="week-name">拉/臂B</div><div class="week-tag wtag-pull">力量</div></div>
+        <div class="week-day cardio"><div class="week-label">周六</div><div class="week-name">长有氧</div><div class="week-tag wtag-cardio">有氧</div></div>
+        <div class="week-day recovery"><div class="week-label">周日</div><div class="week-name">恢复</div><div class="week-tag wtag-recovery">备餐+休息</div></div>
       </div>
     </div>
 
@@ -400,7 +400,7 @@ const plans = {
  {t:'07:00',bar:'exercise',txt:'柔韧/瑜伽20′',isMorning:true},
  {t:'07:30',bar:'rest',txt:'放松·洗漱'},
  {t:'08:00',bar:'rest',txt:'洗澡'},
- {t:'09:00',bar:'food',txt:'早餐：2全蛋+250ml牛奶+燕麦片50g（蛋白28g）'},
+ {t:'09:00',bar:'food',txt:'早餐：旧粉+2全蛋（去牛奶·钙片）'},
  {t:'09:30',bar:'water',txt:'第1次补水 400ml'},
  {t:'10:30',bar:'rest',txt:'周日备餐 40′',prep:true},
  {t:'11:30',bar:'water',txt:'第2次补水 400ml'},
@@ -416,66 +416,15 @@ const plans = {
  morning:{type:'柔韧瑜伽',txt:'Yoga Nancy 16′晨间舒展',vids:[{id:'BV1M9GC6uE1V',title:'Yoga Nancy 16′ 晨间舒展',bvid:'BV1M9GC6uE1V'}]},
  evening:{type:'纯恢复',txt:'轻松散步（不求强度）+ 全身静态拉伸 — 神经系统完全休息，为周一蓄力'},
  tx:null,vd:null,
- nx:{d:'周一',t:'拉日(重)',nt:'',nc:'var(--pull)',n:'早空腹有氧 → 晚拉日力量(RPE7-8)'}},
- 1:{l:'拉日(重)',icon:'',
- s:[
- {t:'07:00',bar:'rest',txt:'起床'},
- {t:'07:00',bar:'exercise',txt:'空腹有氧20′',isMorning:true},
- {t:'07:30',bar:'rest',txt:'放松·洗漱'},
- {t:'08:00',bar:'rest',txt:'洗澡'},
- {t:'08:30',bar:'move',txt:'小电动通勤'},
- {t:'09:00',bar:'food',txt:'早餐：2全蛋+250ml牛奶+燕麦片50g（蛋白28g）'},
- {t:'09:30',bar:'water',txt:'第1次补水 400ml'},
- {t:'11:30',bar:'water',txt:'第2次补水 400ml'},
- {t:'12:00',bar:'food',txt:'午餐：杂粮饭150g+鸡胸肉130g+黄瓜1根（蛋白46g）'},
- {t:'13:00',bar:'move',txt:'午餐后散步 10′'},
- {t:'13:30',bar:'water',txt:'第3次补水 400ml'},
- {t:'15:30',bar:'water',txt:'第4次补水 400ml'},
- {t:'17:30',bar:'water',txt:'第5次补水 400ml'},
- {t:'18:00',bar:'move',txt:'小电动回家'},
- {t:'19:00',bar:'food',txt:'晚餐（练前2h吃完）',isDinner:true},
- {t:'21:00',bar:'exercise',txt:'拉日力量60′ + 有氧10′ + 拉伸',isTraining:true},
- {t:'00:00',bar:'sleep',txt:'睡觉，侧卧'}
- ],
- dn:'鸡胸肉130g(蛋白39g) + 杂粮饭150g(碳水42g) + 黄瓜1根 · 练前2h吃完',
- morning:{type:'空腹有氧',txt:'MIZI 20′晨起空腹有氧',vids:[{id:'BV1oLpFeGEu6',title:'MIZI 20′ 晨起空腹有氧',bvid:'BV1oLpFeGEu6'}]},
- evening:{type:'拉日力量(RPE7-8)','txt':'单臂划船11kg·俯身划船11kg → 交替弯举8kg·俯身反向飞鸟8kg（哑铃+凳，换片1次）'},
- tx:{moves:[['单臂划船','4×10–12（11kg/手）'],['俯身划船','4×10–12（11kg/手）'],['交替弯举','3×12–15（8kg/手）'],['俯身反向飞鸟','3×15（8kg/手）']]},
- vd:{id:'BV1uZ42127Gz',title:'梅林FIT · 二分化拉日 哑铃增肌'},
- nx:{d:'周二',t:'推日(轻)',nt:'',nc:'var(--push)',n:'早核心 → 晚推日力量(RPE6-7)'}},
- 2:{l:'推日(轻)',icon:'',
- s:[
- {t:'07:00',bar:'rest',txt:'起床'},
- {t:'07:00',bar:'exercise',txt:'核心15′',isMorning:true},
- {t:'07:30',bar:'rest',txt:'放松·洗漱'},
- {t:'08:00',bar:'rest',txt:'洗澡'},
- {t:'08:30',bar:'move',txt:'小电动通勤'},
- {t:'09:00',bar:'food',txt:'早餐：2全蛋+250ml牛奶+燕麦片50g（蛋白28g）'},
- {t:'09:30',bar:'water',txt:'第1次补水 400ml'},
- {t:'11:30',bar:'water',txt:'第2次补水 400ml'},
- {t:'12:00',bar:'food',txt:'午餐：杂粮饭150g+鸡胸肉130g+黄瓜1根（蛋白46g）'},
- {t:'13:30',bar:'water',txt:'第3次补水 400ml'},
- {t:'15:30',bar:'water',txt:'第4次补水 400ml'},
- {t:'17:30',bar:'water',txt:'第5次补水 400ml'},
- {t:'18:00',bar:'move',txt:'小电动回家'},
- {t:'19:00',bar:'food',txt:'晚餐',isDinner:true},
- {t:'21:00',bar:'exercise',txt:'推日力量50′ + 有氧10′ + 拉伸',isTraining:true},
- {t:'00:00',bar:'sleep',txt:'睡觉，侧卧'}
- ],
- dn:'鸡胸肉130g(蛋白39g) + 杂粮饭150g(碳水42g) + 黄瓜1根',
- morning:{type:'核心',txt:'MIZI 15′初学者核心',vids:[{id:'BV1Ss421P7Uz',title:'MIZI 15′ 腹部核心（零基础）',bvid:'BV1Ss421P7Uz'}]},
- evening:{type:'推日力量(RPE6-7)','txt':'平板推胸8kg·上斜卧推8kg·坐姿肩推8kg → 侧平举5kg·仰卧臂屈伸5kg（哑铃+凳，换片1次）'},
- tx:{moves:[['平板推胸','4×10–12（8kg/手或总重）'],['上斜卧推','4×10–12（8kg/手）'],['坐姿肩推','3×12–15（8kg/手）'],['侧平举','3×15（5kg/手）'],['仰卧臂屈伸','3×12–15（5kg/手）']]},
- vd:{id:'BV1qF4m1M7rL',title:'梅林FIT · 二分化推日 哑铃增肌'},
- nx:{d:'周三',t:'腿日(重)',nt:'',nc:'var(--leg)',n:'早柔韧拉伸 → 晚腿日力量 力竭'}},
- 3:{l:'腿日(重)',icon:'',
+ nx:{d:'周一',t:'腿/臀A',nt:'',nc:'var(--leg)',n:'早柔韧拉伸 → 晚腿日力量（保肩·不冲极限）'}},
+ 1:{l:'腿/臀A',icon:'',
  s:[
  {t:'07:00',bar:'rest',txt:'起床'},
  {t:'07:00',bar:'exercise',txt:'柔韧拉伸20′',isMorning:true},
  {t:'07:30',bar:'rest',txt:'放松·洗漱'},
  {t:'08:00',bar:'rest',txt:'洗澡'},
  {t:'08:30',bar:'move',txt:'小电动通勤'},
- {t:'09:00',bar:'food',txt:'早餐：2全蛋+250ml牛奶+燕麦片50g（蛋白28g）'},
+ {t:'09:00',bar:'food',txt:'早餐：旧粉+2全蛋（去牛奶·钙片）'},
  {t:'09:30',bar:'water',txt:'第1次补水 400ml'},
  {t:'11:30',bar:'water',txt:'第2次补水 400ml'},
  {t:'12:00',bar:'food',txt:'午餐：杂粮饭150g+鸡胸肉130g+黄瓜1根（蛋白46g）'},
@@ -485,48 +434,23 @@ const plans = {
  {t:'17:30',bar:'water',txt:'第5次补水 400ml'},
  {t:'18:00',bar:'move',txt:'小电动回家'},
  {t:'19:00',bar:'food',txt:'晚餐（练前2h吃完）',isDinner:true},
- {t:'21:00',bar:'exercise',txt:'腿日力量60′ + 有氧10′ + 拉伸 力竭',isTraining:true},
+ {t:'21:00',bar:'exercise',txt:'腿/臀A力量40′ + 有氧25′ + 拉伸',isTraining:true},
  {t:'00:00',bar:'sleep',txt:'睡觉，侧卧'}
  ],
  dn:'鸡胸肉130g(蛋白39g) + 杂粮饭150g(碳水42g) + 黄瓜1根 · 练前2h吃完',
- morning:{type:'柔韧拉伸',txt:'Yoga Nancy 16′晨间舒展',vids:[{id:'BV1M9GC6uE1V',title:'Yoga Nancy 16′ 晨间',bvid:'BV1M9GC6uE1V'}]},
- evening:{type:'腿日力量(RPE7-8)','txt':'高脚杯深蹲18kg·臀推18kg(上背靠凳) → 罗马尼亚硬拉12kg·保加利亚分腿蹲12kg（哑铃+凳，换片1次）'},
- tx:{moves:[['高脚杯深蹲','4×8–10（18kg或总重）'],['臀推（上背靠凳）','4×8–10（18kg/手或总重）'],['罗马尼亚硬拉','4×10–12（12kg/手）'],['保加利亚分腿蹲','3×10/侧（12kg/手）']]},
+ morning:{type:'柔韧拉伸',txt:'Yoga Nancy 16′晨间舒展',vids:[{id:'BV1M9GC6uE1V',title:'Yoga Nancy 16′ 晨间舒展',bvid:'BV1M9GC6uE1V'}]},
+ evening:{type:'腿/臀A力量(保肩)',txt:'高脚杯深蹲·罗马尼亚硬拉·保加利亚分腿蹲·提踵（8kg/手） → 臀推（12kg·换片1次）。保肩优先·不冲极限·每天最多换1次片'},
+ tx:{moves:[['高脚杯深蹲','3×12（抱1个8kg）'],['罗马尼亚硬拉','3×10（8kg/手）'],['保加利亚分腿蹲','3×10/腿（8kg/手）'],['臀推（上背靠凳）','3×12（髋上12kg·换片1次）'],['站姿提踵','3×15（8kg/手）']],caution:'换片规则：开局两手柄都上8kg做完主项，只把单只哑铃加到12kg做臀推（当天唯一1次换片）。末组能多2次→下周整档+2kg。'},
  vd:{id:'BV1RW42197ez',title:'梅林FIT · 三分化 哑铃增肌 臀腿'},
- nx:{d:'周四',t:'拉日(轻)',nt:'',nc:'var(--pull)',n:'早空腹有氧 → 晚拉日力量(RPE6-7)'}},
- 4:{l:'拉日(轻)',icon:'',
+ nx:{d:'周二',t:'拉/背A',nt:'',nc:'var(--pull)',n:'早空腹有氧 → 晚拉日力量'}},
+ 2:{l:'拉/背A',icon:'',
  s:[
  {t:'07:00',bar:'rest',txt:'起床'},
  {t:'07:00',bar:'exercise',txt:'空腹有氧20′',isMorning:true},
  {t:'07:30',bar:'rest',txt:'放松·洗漱'},
  {t:'08:00',bar:'rest',txt:'洗澡'},
  {t:'08:30',bar:'move',txt:'小电动通勤'},
- {t:'09:00',bar:'food',txt:'早餐：2全蛋+250ml牛奶+燕麦片50g（蛋白28g）'},
- {t:'09:30',bar:'water',txt:'第1次补水 400ml'},
- {t:'11:30',bar:'water',txt:'第2次补水 400ml'},
- {t:'12:00',bar:'food',txt:'午餐：杂粮饭150g+鸡胸肉130g+黄瓜1根（蛋白46g）'},
- {t:'13:30',bar:'water',txt:'第3次补水 400ml'},
- {t:'15:30',bar:'water',txt:'第4次补水 400ml'},
- {t:'17:30',bar:'water',txt:'第5次补水 400ml'},
- {t:'18:00',bar:'move',txt:'小电动回家'},
- {t:'19:00',bar:'food',txt:'晚餐',isDinner:true},
- {t:'21:00',bar:'exercise',txt:'拉日力量45′ + 有氧10′ + 拉伸',isTraining:true},
- {t:'00:00',bar:'sleep',txt:'睡觉，侧卧'}
- ],
- dn:'鸡胸肉130g(蛋白39g) + 杂粮饭150g(碳水42g) + 黄瓜1根',
- morning:{type:'空腹有氧',txt:'MIZI 20′晨起空腹有氧（力量日后最佳燃脂窗口）',vids:[{id:'BV1oLpFeGEu6',title:'MIZI 20′ 晨起空腹有氧',bvid:'BV1oLpFeGEu6'}]},
- evening:{type:'拉日力量(RPE6-7)','txt':'单臂划船9kg·俯身划船9kg → 交替弯举6kg·锤式弯举6kg（哑铃+凳，换片1次）'},
- tx:{moves:[['单臂划船','4×10–12（9kg/手）'],['俯身划船','4×10–12（9kg/手）'],['交替弯举','3×12–15（6kg/手）'],['锤式弯举','3×12–15（6kg/手）']]},
- vd:{id:'BV1uZ42127Gz',title:'梅林FIT · 二分化拉日 哑铃增肌'},
- nx:{d:'周五',t:'推日(重)',nt:'',nc:'var(--push)',n:'早核心 → 晚推日力量 力竭'}},
- 5:{l:'推日(重)',icon:'',
- s:[
- {t:'07:00',bar:'rest',txt:'起床'},
- {t:'07:00',bar:'exercise',txt:'核心15′',isMorning:true},
- {t:'07:30',bar:'rest',txt:'放松·洗漱'},
- {t:'08:00',bar:'rest',txt:'洗澡'},
- {t:'08:30',bar:'move',txt:'小电动通勤'},
- {t:'09:00',bar:'food',txt:'早餐：2全蛋+250ml牛奶+燕麦片50g（蛋白28g）'},
+ {t:'09:00',bar:'food',txt:'早餐：旧粉+2全蛋（去牛奶·钙片）'},
  {t:'09:30',bar:'water',txt:'第1次补水 400ml'},
  {t:'11:30',bar:'water',txt:'第2次补水 400ml'},
  {t:'12:00',bar:'food',txt:'午餐：杂粮饭150g+鸡胸肉130g+黄瓜1根（蛋白46g）'},
@@ -536,41 +460,120 @@ const plans = {
  {t:'17:30',bar:'water',txt:'第5次补水 400ml'},
  {t:'18:00',bar:'move',txt:'小电动回家'},
  {t:'19:00',bar:'food',txt:'晚餐（练前2h吃完）',isDinner:true},
- {t:'21:00',bar:'exercise',txt:'推日力量55′ + 有氧10′ + 拉伸 力竭',isTraining:true},
+ {t:'21:00',bar:'exercise',txt:'拉/背A力量40′ + 有氧25′ + 拉伸',isTraining:true},
  {t:'00:00',bar:'sleep',txt:'睡觉，侧卧'}
  ],
  dn:'鸡胸肉130g(蛋白39g) + 杂粮饭150g(碳水42g) + 黄瓜1根 · 练前2h吃完',
- morning:{type:'核心',txt:'MIZI 15′初学者核心（蓄力给晚上力量训练）',vids:[{id:'BV1Ss421P7Uz',title:'MIZI 15′ 腹部核心（零基础）',bvid:'BV1Ss421P7Uz'}]},
- evening:{type:'推日力量(RPE7-8)','txt':'平板推胸10kg·上斜卧推10kg → 坐姿肩推8kg·仰卧臂屈伸8kg → 侧平举5kg（哑铃+凳，换片2次）'},
- tx:{moves:[['平板推胸','4×8–10（10kg/手或总重）'],['上斜卧推','4×8–10（10kg/手）'],['坐姿肩推','3×12–15（8kg/手）'],['仰卧臂屈伸','3×12–15（8kg/手）'],['侧平举','3×15（5kg/手）']]},
- vd:{id:'BV1qF4m1M7rL',title:'梅林FIT · 二分化推日 哑铃增肌'},
- nx:{d:'周六',t:'腿日(轻)+核心',nt:'',nc:'var(--recovery)',n:'早空腹有氧 → 晚腿日轻量+核心'}},
- 6:{l:'腿日(轻)+核心',icon:'',
+ morning:{type:'空腹有氧',txt:'MIZI 20′晨起空腹有氧',vids:[{id:'BV1oLpFeGEu6',title:'MIZI 20′ 晨起空腹有氧',bvid:'BV1oLpFeGEu6'}]},
+ evening:{type:'拉/背A力量(保肩)',txt:'单臂划船·胸支撑划船·锤式弯举（8kg/手） → 反向飞鸟（2kg/手·换片1次）。推类暂停2–4周·保肩优先'},
+ tx:{moves:[['单臂划船','3×12/臂（8kg/手）'],['胸支撑划船','3×12（8kg/手）'],['锤式弯举','3×12（8kg/手）'],['反向飞鸟','3×15（2kg/手·换片1次·保肩）']],caution:'换片规则：开局两手柄都上8kg做完主项，只把两手柄降到2kg做反向飞鸟（当天唯一1次换片）。反向飞鸟/面拉永2–3kg不动。'},
+ vd:{id:'BV1uZ42127Gz',title:'梅林FIT · 二分化拉日 哑铃增肌'},
+ nx:{d:'周三',t:'有氧+核心',nt:'',nc:'var(--cardio)',n:'骑车/快走 + 核心（无哑铃·肩零负荷）'}},
+ 3:{l:'有氧+核心',icon:'',
  s:[
  {t:'07:00',bar:'rest',txt:'起床'},
  {t:'07:00',bar:'exercise',txt:'空腹有氧20′',isMorning:true},
  {t:'07:30',bar:'rest',txt:'放松·洗漱'},
  {t:'08:00',bar:'rest',txt:'洗澡'},
  {t:'08:30',bar:'move',txt:'小电动通勤'},
- {t:'09:00',bar:'food',txt:'早餐：2全蛋+250ml牛奶+燕麦片50g（蛋白28g）'},
+ {t:'09:00',bar:'food',txt:'早餐：旧粉+2全蛋（去牛奶·钙片）'},
  {t:'09:30',bar:'water',txt:'第1次补水 400ml'},
  {t:'11:30',bar:'water',txt:'第2次补水 400ml'},
  {t:'12:00',bar:'food',txt:'午餐：杂粮饭150g+鸡胸肉130g+黄瓜1根（蛋白46g）'},
+ {t:'13:00',bar:'move',txt:'午餐后散步 10′'},
  {t:'13:30',bar:'water',txt:'第3次补水 400ml'},
  {t:'15:30',bar:'water',txt:'第4次补水 400ml'},
  {t:'17:30',bar:'water',txt:'第5次补水 400ml'},
+ {t:'18:00',bar:'move',txt:'小电动回家'},
  {t:'19:00',bar:'food',txt:'晚餐',isDinner:true},
- {t:'21:00',bar:'exercise',txt:'腿日轻量40′ + 核心10′ + 拉伸',isTraining:true},
+ {t:'21:00',bar:'exercise',txt:'骑车/快走坡度25–35min + 核心',isTraining:true},
  {t:'00:00',bar:'sleep',txt:'睡觉，侧卧'}
  ],
  dn:'鸡胸肉130g(蛋白39g) + 杂粮饭150g(碳水42g) + 黄瓜1根',
  morning:{type:'空腹有氧',txt:'MIZI 20′晨起空腹有氧',vids:[{id:'BV1oLpFeGEu6',title:'MIZI 20′ 晨起空腹有氧',bvid:'BV1oLpFeGEu6'}]},
- evening:{type:'腿日轻量+核心(RPE6-7)','txt':'高脚杯深蹲14kg·臀推14kg(上背靠凳) → 俄罗斯转体(自重)·死虫式(自重)（哑铃+凳，换片1次）'},
- tx:{moves:[['高脚杯深蹲','4×10–12（14kg或总重）'],['臀推（上背靠凳）','4×10–12（14kg/手或总重）'],['俄罗斯转体','3×20（自重）'],['死虫式','3×10/侧（自重）']]},
+ evening:{type:'有氧+核心(肩零负荷)',txt:'骑车/快走坡度25–35min（Z2·能聊天） + 核心（死虫·鸟狗·平板·俄罗斯转体）。无哑铃·肩完全卸负荷'},
+ tx:{moves:[['死虫式','3×12/侧（自重）'],['鸟狗式','3×10/侧（自重）'],['平板支撑','3×30s（自重）'],['俄罗斯转体','3×20（自重）']],caution:'今天无哑铃、不碰肩。有氧循环播放凑够25–35min；核心做完即收，不冲极限。'},
+ vd:{id:'BV1oLpFeGEu6',title:'MIZI 20′ 晨起空腹有氧'},
+ nx:{d:'周四',t:'腿/臀B',nt:'',nc:'var(--leg)',n:'早柔韧拉伸 → 晚腿日力量B'}},
+ 4:{l:'腿/臀B',icon:'',
+ s:[
+ {t:'07:00',bar:'rest',txt:'起床'},
+ {t:'07:00',bar:'exercise',txt:'柔韧拉伸20′',isMorning:true},
+ {t:'07:30',bar:'rest',txt:'放松·洗漱'},
+ {t:'08:00',bar:'rest',txt:'洗澡'},
+ {t:'08:30',bar:'move',txt:'小电动通勤'},
+ {t:'09:00',bar:'food',txt:'早餐：旧粉+2全蛋（去牛奶·钙片）'},
+ {t:'09:30',bar:'water',txt:'第1次补水 400ml'},
+ {t:'11:30',bar:'water',txt:'第2次补水 400ml'},
+ {t:'12:00',bar:'food',txt:'午餐：杂粮饭150g+鸡胸肉130g+黄瓜1根（蛋白46g）'},
+ {t:'13:00',bar:'move',txt:'午餐后散步 10′'},
+ {t:'13:30',bar:'water',txt:'第3次补水 400ml'},
+ {t:'15:30',bar:'water',txt:'第4次补水 400ml'},
+ {t:'17:30',bar:'water',txt:'第5次补水 400ml'},
+ {t:'18:00',bar:'move',txt:'小电动回家'},
+ {t:'19:00',bar:'food',txt:'晚餐（练前2h吃完）',isDinner:true},
+ {t:'21:00',bar:'exercise',txt:'腿/臀B力量40′ + 有氧25′ + 拉伸',isTraining:true},
+ {t:'00:00',bar:'sleep',txt:'睡觉，侧卧'}
+ ],
+ dn:'鸡胸肉130g(蛋白39g) + 杂粮饭150g(碳水42g) + 黄瓜1根 · 练前2h吃完',
+ morning:{type:'柔韧拉伸',txt:'Yoga Nancy 16′晨间舒展',vids:[{id:'BV1M9GC6uE1V',title:'Yoga Nancy 16′ 晨间舒展',bvid:'BV1M9GC6uE1V'}]},
+ evening:{type:'腿/臀B力量(保肩)',txt:'箱式深蹲·箭步蹲·单腿RDL·提踵（8kg/手） → 臀推（14kg·换片1次）。与周一不同组合避免适应·保肩优先'},
+ tx:{moves:[['箱式深蹲','3×12（抱1个8kg）'],['哑铃箭步蹲','3×10/腿（8kg/手）'],['单腿罗马尼亚硬拉','3×10（8kg/手）'],['臀推（上背靠凳）','3×12（髋上14kg·换片1次）'],['站姿提踵','3×15（8kg/手）']],caution:'换片规则：开局两手柄都上8kg做完主项，只把单只哑铃加到14kg做臀推（当天唯一1次换片）。末组能多2次→下周整档+2kg。'},
  vd:{id:'BV1RW42197ez',title:'梅林FIT · 三分化 哑铃增肌 臀腿'},
- nx:{d:'周日',t:'纯恢复日',nt:'',nc:'var(--recovery)',n:'早柔韧瑜伽 → 晚散步+拉伸 · 神经系统休息'}}
-};
-const p = plans[DI];
+ nx:{d:'周五',t:'拉/臂B',nt:'',nc:'var(--pull)',n:'早空腹有氧 → 晚拉/臂力量'}},
+ 5:{l:'拉/臂B',icon:'',
+ s:[
+ {t:'07:00',bar:'rest',txt:'起床'},
+ {t:'07:00',bar:'exercise',txt:'空腹有氧20′',isMorning:true},
+ {t:'07:30',bar:'rest',txt:'放松·洗漱'},
+ {t:'08:00',bar:'rest',txt:'洗澡'},
+ {t:'08:30',bar:'move',txt:'小电动通勤'},
+ {t:'09:00',bar:'food',txt:'早餐：旧粉+2全蛋（去牛奶·钙片）'},
+ {t:'09:30',bar:'water',txt:'第1次补水 400ml'},
+ {t:'11:30',bar:'water',txt:'第2次补水 400ml'},
+ {t:'12:00',bar:'food',txt:'午餐：杂粮饭150g+鸡胸肉130g+黄瓜1根（蛋白46g）'},
+ {t:'13:00',bar:'move',txt:'午餐后散步 10′'},
+ {t:'13:30',bar:'water',txt:'第3次补水 400ml'},
+ {t:'15:30',bar:'water',txt:'第4次补水 400ml'},
+ {t:'17:30',bar:'water',txt:'第5次补水 400ml'},
+ {t:'18:00',bar:'move',txt:'小电动回家'},
+ {t:'19:00',bar:'food',txt:'晚餐（练前2h吃完）',isDinner:true},
+ {t:'21:00',bar:'exercise',txt:'拉/臂B力量40′ + 有氧25′ + 拉伸',isTraining:true},
+ {t:'00:00',bar:'sleep',txt:'睡觉，侧卧'}
+ ],
+ dn:'鸡胸肉130g(蛋白39g) + 杂粮饭150g(碳水42g) + 黄瓜1根 · 练前2h吃完',
+ morning:{type:'空腹有氧',txt:'MIZI 20′晨起空腹有氧',vids:[{id:'BV1oLpFeGEu6',title:'MIZI 20′ 晨起空腹有氧',bvid:'BV1oLpFeGEu6'}]},
+ evening:{type:'拉/臂B力量(保肩)',txt:'单臂划船·锤式弯举（8kg/手） → 反向飞鸟+面拉（2kg/手·换片1次）。推类暂停2–4周·加面拉护肩'},
+ tx:{moves:[['单臂划船','3×12/臂（8kg/手）'],['锤式弯举','3×12（8kg/手）'],['反向飞鸟','3×15（2kg/手·换片1次）'],['面拉','3×15（2kg/手·换片1次）']],caution:'换片规则：开局两手柄都上8kg做完主项，只把两手柄降到2kg做反向飞鸟+面拉（当天唯一1次换片）。'},
+ vd:{id:'BV1uZ42127Gz',title:'梅林FIT · 二分化拉日 哑铃增肌'},
+ nx:{d:'周六',t:'长有氧+核心',nt:'',nc:'var(--cardio)',n:'骑车/快走长有氧 + 核心'}},
+ 6:{l:'长有氧+核心',icon:'',
+ s:[
+ {t:'07:00',bar:'rest',txt:'起床'},
+ {t:'07:00',bar:'exercise',txt:'空腹有氧20′',isMorning:true},
+ {t:'07:30',bar:'rest',txt:'放松·洗漱'},
+ {t:'08:00',bar:'rest',txt:'洗澡'},
+ {t:'08:30',bar:'move',txt:'小电动通勤'},
+ {t:'09:00',bar:'food',txt:'早餐：旧粉+2全蛋（去牛奶·钙片）'},
+ {t:'09:30',bar:'water',txt:'第1次补水 400ml'},
+ {t:'11:30',bar:'water',txt:'第2次补水 400ml'},
+ {t:'12:00',bar:'food',txt:'午餐：杂粮饭150g+鸡胸肉130g+黄瓜1根（蛋白46g）'},
+ {t:'13:00',bar:'move',txt:'午餐后散步 10′'},
+ {t:'13:30',bar:'water',txt:'第3次补水 400ml'},
+ {t:'15:30',bar:'water',txt:'第4次补水 400ml'},
+ {t:'17:30',bar:'water',txt:'第5次补水 400ml'},
+ {t:'18:00',bar:'move',txt:'小电动回家'},
+ {t:'19:00',bar:'food',txt:'晚餐',isDinner:true},
+ {t:'21:00',bar:'exercise',txt:'骑车/快走坡度35min + 核心',isTraining:true},
+ {t:'00:00',bar:'sleep',txt:'睡觉，侧卧'}
+ ],
+ dn:'鸡胸肉130g(蛋白39g) + 杂粮饭150g(碳水42g) + 黄瓜1根',
+ morning:{type:'空腹有氧',txt:'MIZI 20′晨起空腹有氧',vids:[{id:'BV1oLpFeGEu6',title:'MIZI 20′ 晨起空腹有氧',bvid:'BV1oLpFeGEu6'}]},
+ evening:{type:'长有氧+核心(肩零负荷)',txt:'骑车/快走坡度35min（Z2） + 核心（死虫·鸟狗·平板·俄罗斯转体·侧平板）。无哑铃·肩完全卸负荷'},
+ tx:{moves:[['死虫式','3×12/侧（自重）'],['鸟狗式','3×10/侧（自重）'],['平板支撑','3×30s（自重）'],['俄罗斯转体','3×20（自重）'],['侧平板','2×20s/侧（自重）']],caution:'周末长有氧日：有氧循环播放凑够35min；核心做完即收，不冲极限。'},
+ vd:{id:'BV1oLpFeGEu6',title:'MIZI 20′ 晨起空腹有氧'},
+ nx:{d:'周日',t:'纯恢复日',nt:'',nc:'var(--recovery)',n:'柔韧瑜伽 → 散步+拉伸 · 神经系统休息'}}
+};const p = plans[DI];
 
 // ========== RENDER TODAY ==========
 function renderToday(d) {
@@ -621,9 +624,10 @@ function renderToday(d) {
  }
 
  // Training day badge color
- let badgeColor = 'var(--cardio)';
- if (['拉日训练','推日训练','腿日训练'].includes(p.l)) badgeColor = 'var(--primary)';
- if (p.l.includes('恢复') || p.l.includes('维持')) badgeColor = 'var(--recovery)';
+let badgeColor = 'var(--cardio)';
+if (p.l.includes('腿') || p.l.includes('拉')) badgeColor = 'var(--primary)';
+if (p.l.includes('有氧') || p.l.includes('核心')) badgeColor = 'var(--cardio)';
+if (p.l.includes('恢复')) badgeColor = 'var(--recovery)';
 
  // 全天标准三餐宏量（碳水/脂肪），与饮食页同源 FIXED_GRAMS
  const _dfoods = [
