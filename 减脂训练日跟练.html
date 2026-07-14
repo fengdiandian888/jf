@@ -237,6 +237,17 @@
  .tab-btn { padding: 7px 11px; font-size: 14px; }
  }
 
+/* 桌面端优先：屏幕≥768px 放宽整体布局与弹窗，图片更大更清晰 */
+@media (min-width: 768px) {
+ body { max-width: 780px; font-size: 16px; }
+ .container { padding: 32px 28px 80px; }
+ .corner-layer { max-width: 780px; }
+ .vc-modal { max-width: 620px; }
+ .adj-modal { max-width: 620px; }
+ .move-row { padding: 14px 14px; font-size: 16px; }
+ .day-body { padding: 18px 20px; }
+}
+
 /* Top Nav (sticky) */
 .top-nav {
  display: flex; gap: 0; background: var(--card); border-bottom: 1px solid var(--border);
@@ -1823,7 +1834,7 @@ var WorkoutTimer = (function() {
     wrapper.className = 'tm-gif-ref';
     wrapper.style.cssText = 'display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;';
     wrapper.innerHTML = '<div style="font-size:12px;color:var(--sub);margin-bottom:6px">📐 标准动作示范</div>' +
-      '<img src="' + gifPath + '" style="width:280px;height:280px;object-fit:contain;border-radius:8px;background:var(--card);padding:8px" />';
+      '<img src="' + gifPath + '" style="width:360px;max-width:92%;height:auto;object-fit:contain;border-radius:8px;background:var(--card);padding:8px" />';
     videoArea.appendChild(wrapper);
   }
 
@@ -2561,7 +2572,7 @@ var VideoManager = (function() {
     if (gifPath) {
       var approxTag = window.__gifApprox ? ' <span style="color:#d97706;font-size:10px;">· ⚠️示意·同部位近似</span>' : '';
       $('vcPreview').style.display = 'block';
-      $('vcPreview').innerHTML = '<div style="text-align:center;padding:8px;background:var(--card);border-radius:8px"><div style="font-size:11px;color:var(--sub);margin-bottom:6px">📐 标准动作示范 (GIF)' + approxTag + '</div><img src="' + gifPath + '" style="width:180px;height:180px;object-fit:contain;border-radius:6px" alt="标准示范" /></div>';
+      $('vcPreview').innerHTML = '<div style="text-align:center;padding:8px;background:var(--card);border-radius:8px"><div style="font-size:11px;color:var(--sub);margin-bottom:6px">📐 标准动作示范 (GIF)' + approxTag + '</div><img src="' + gifPath + '" style="width:100%;max-width:420px;height:auto;object-fit:contain;border-radius:6px" alt="标准示范" /></div>';
     } else {
       $('vcPreview').style.display = 'none';
     }
@@ -2656,7 +2667,7 @@ var VideoManager = (function() {
       var approxTag2 = window.__gifApprox ? ' <span style="color:#d97706;font-size:10px;">· ⚠️示意·同部位近似</span>' : '';
       html += '<div style="text-align:center;margin-top:8px;padding:6px;background:var(--card);border-radius:8px">' +
         '<div style="font-size:11px;color:var(--sub);margin-bottom:4px">📐 标准示范 (GIF)' + approxTag2 + '</div>' +
-        '<img src="' + gifPath + '" style="width:180px;height:180px;object-fit:contain;border-radius:6px" alt="标准示范" />' +
+        '<img src="' + gifPath + '" style="width:100%;max-width:420px;height:auto;object-fit:contain;border-radius:6px" alt="标准示范" />' +
         '</div>';
     }
     p.innerHTML = html;
