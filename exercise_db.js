@@ -1096,6 +1096,45 @@ window.EXERCISE_DB = [
     ]
   }
 }
+,
+{
+  "name": "鸟狗式",
+  "name_en": "bird dog",
+  "target": "lower back",
+  "secondary": ["glutes", "abs"],
+  "equipment": "body weight",
+  "gif": "",
+  "gif_url": "",
+  "instructions_cn": "",
+  "instructions_en": "",
+  "instruction_steps": ""
+}
+,
+{
+  "name": "平板支撑",
+  "name_en": "plank",
+  "target": "abs",
+  "secondary": ["shoulders", "glutes"],
+  "equipment": "body weight",
+  "gif": "",
+  "gif_url": "",
+  "instructions_cn": "",
+  "instructions_en": "",
+  "instruction_steps": ""
+}
+,
+{
+  "name": "侧平板",
+  "name_en": "side plank",
+  "target": "obliques",
+  "secondary": ["abs", "shoulders"],
+  "equipment": "body weight",
+  "gif": "",
+  "gif_url": "",
+  "instructions_cn": "",
+  "instructions_en": "",
+  "instruction_steps": ""
+}
   ];
 
 window.EXERCISE_ALIASES = {};
