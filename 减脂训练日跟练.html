@@ -1386,6 +1386,7 @@ if('serviceWorker' in navigator){
       <button class="vc-modal-close" id="vcClose">✕</button>
     </div>
     <div class="vc-modal-body">
+      <div id="vcMeta" style="display:none;margin-bottom:10px;padding:10px 12px;background:rgba(249,115,22,.08);border:1px solid rgba(249,115,22,.22);border-radius:8px;font-size:13px;line-height:1.7;color:var(--text);"></div>
       <div id="vcCurrentInfo" style="display:none;" class="vc-current-info">
         <span>✅</span>
         <span id="vcCurrentText">已配置视频</span>
@@ -2548,6 +2549,30 @@ var VideoManager = (function() {
     currentExercise = exerciseName;
     $('vcTitle').textContent = '🎬 ' + exerciseName;
     $('vcUrlInput').value = getUrl(exerciseName) || '';
+
+    // 提取该动作的组数/重量，显示在弹窗顶部「训练弹窗」里
+    (function(){
+      var rows = document.querySelectorAll('.move-row[data-exercise], .core-item[data-exercise]');
+      var row = null;
+      for (var i = 0; i < rows.length; i++) {
+        var r = rows[i];
+        var rn = (r.querySelector('.move-name') ? r.querySelector('.move-name').textContent.trim() : '') || r.getAttribute('data-exercise') || '';
+        if (rn === exerciseName || r.getAttribute('data-exercise') === exerciseName) { row = r; break; }
+      }
+      var metaBox = $('vcMeta');
+      if (!row) { metaBox.style.display = 'none'; return; }
+      var setsEl = row.querySelector('.move-sets');
+      var setsTxt = setsEl ? setsEl.textContent.trim() : '';
+      var bEls = row.querySelectorAll('.move-note b');
+      var wts = [];
+      for (var j = 0; j < bEls.length; j++) wts.push(bEls[j].textContent.trim());
+      wts = wts.filter(function(s){ return s; });
+      var parts = [];
+      if (setsTxt) parts.push('<b style="color:var(--primary)">组数/次数：</b>' + setsTxt);
+      if (wts.length) parts.push('<b style="color:var(--primary)">重量：</b>' + wts.join('　·　'));
+      if (parts.length) { metaBox.style.display = 'block'; metaBox.innerHTML = parts.join('<br>'); }
+      else { metaBox.style.display = 'none'; }
+    })();
 
     // 检查是否有已配置视频
     var hasUrl = !!getUrl(exerciseName);
