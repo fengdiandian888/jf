@@ -46,12 +46,13 @@
 .th-block .sub { font-size: 13px; color: var(--sub); display: block; margin-top: 2px; font-weight: 400; }
 
 .move-row {
- display: flex; align-items: center; gap: 8px; padding: 5px 0;
+ display: flex; align-items: center; flex-wrap: wrap; gap: 8px; padding: 5px 0;
  border-bottom: 1px solid rgba(0,0,0,0.03); font-size: 14px; font-weight: 500;
 }
 .move-row:last-child { border-bottom: none; }
 .move-name { flex: 1; color: var(--text); }
 .move-sets { color: var(--sub); white-space: nowrap; font-size: 12px; font-weight: 600; }
+.move-wt { flex-basis: 100%; font-size: 12px; color: var(--warn); font-weight: 600; margin-top: 2px; line-height: 1.4; }
 
 /* Today data row */
 .th-data {
@@ -604,7 +605,7 @@ function renderToday(d) {
  let trHTML = '';
  if (p.tx) {
  trHTML = `<div class="th-block move-item">
- ${p.tx.moves.map(m => `<div class="move-row" data-exercise="${getExKey(m[0])}"><span class="move-name">${m[0]}</span><span class="move-sets">${m[1]}</span></div>`).join('')}
+ ${p.tx.moves.map(m => { const _mm = m[1].match(/^(.*?)（(.*)）$/); const _sets = _mm ? _mm[1].trim() : m[1]; const _wt = _mm ? _mm[2].trim() : ''; return `<div class="move-row" data-exercise="${getExKey(m[0])}"><span class="move-name">${m[0]}</span><span class="move-sets">${_sets}</span>${_wt ? `<span class="move-wt">🔔 用哑铃：${_wt}</span>` : ''}</div>`; }).join('')}
  ${p.tx.caution ? `<div style="font-size: 12px;color:var(--warn);margin-top:4px"> ${p.tx.caution}</div>` : ''}
  </div>`;
  }

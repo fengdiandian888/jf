@@ -2569,7 +2569,7 @@ var VideoManager = (function() {
       wts = wts.filter(function(s){ return s; });
       var parts = [];
       if (setsTxt) parts.push('<b style="color:var(--primary)">组数/次数：</b>' + setsTxt);
-      if (wts.length) parts.push('<b style="color:var(--primary)">重量：</b>' + wts.join('　·　'));
+      if (wts.length) parts.push('<b style="color:var(--primary)">🔔 用哑铃：</b>' + wts.join('　·　'));
       if (parts.length) { metaBox.style.display = 'block'; metaBox.innerHTML = parts.join('<br>'); }
       else { metaBox.style.display = 'none'; }
     })();
