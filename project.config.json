@@ -1,0 +1,38 @@
+{
+  "description": "健身指南小程序（哑铃 · 自重 · 三分化 · 减脂保肌）",
+  "appid": "wxedf476467e3dd8e7",
+  "compileType": "miniprogram",
+  "libVersion": "3.15.3",
+  "projectname": "健身指南小程序",
+  "setting": {
+    "es6": true,
+    "postcss": true,
+    "minified": false,
+    "urlCheck": false,
+    "compileWorklet": false,
+    "uglifyFileName": false,
+    "uploadWithSourceMap": true,
+    "enhance": false,
+    "packNpmManually": false,
+    "packNpmRelationList": [],
+    "minifyWXSS": true,
+    "minifyWXML": true,
+    "localPlugins": false,
+    "disableUseStrict": false,
+    "useCompilerPlugins": false,
+    "condition": false,
+    "swc": false,
+    "disableSWC": true,
+    "babelSetting": {
+      "ignore": [],
+      "disablePlugins": [],
+      "outputPath": ""
+    }
+  },
+  "simulatorPluginLibVersion": {},
+  "packOptions": {
+    "ignore": [],
+    "include": []
+  },
+  "editorSetting": {}
+}

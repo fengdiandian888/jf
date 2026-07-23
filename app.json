@@ -1,0 +1,27 @@
+{
+  "pages": [
+    "pages/today/today",
+    "pages/week/week",
+    "pages/knowledge/knowledge",
+    "pages/mine/mine"
+  ],
+  "window": {
+    "navigationBarTitleText": "健身指南",
+    "navigationBarBackgroundColor": "#ffffff",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#f4f6f9"
+  },
+  "tabBar": {
+    "color": "#5b6573",
+    "selectedColor": "#13a36b",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "black",
+    "list": [
+      { "pagePath": "pages/today/today", "text": "今日", "iconPath": "assets/tab/today.png", "selectedIconPath": "assets/tab/today_on.png" },
+      { "pagePath": "pages/week/week", "text": "一周", "iconPath": "assets/tab/week.png", "selectedIconPath": "assets/tab/week_on.png" },
+      { "pagePath": "pages/knowledge/knowledge", "text": "知识", "iconPath": "assets/tab/knowledge.png", "selectedIconPath": "assets/tab/knowledge_on.png" },
+      { "pagePath": "pages/mine/mine", "text": "我的", "iconPath": "assets/tab/mine.png", "selectedIconPath": "assets/tab/mine_on.png" }
+    ]
+  },
+  "sitemapLocation": "sitemap.json"
+}

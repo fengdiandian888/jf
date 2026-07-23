@@ -1,0 +1,124 @@
+<view class="app theme-{{theme}} knav">
+  <view class="appbar">
+    <view class="brand">
+      <view class="logo">📖</view>
+      <view>
+        <view class="title">方法论与原理</view>
+        <view class="sub">哑铃 · 自重 · 三分化 · 减脂保肌</view>
+      </view>
+    </view>
+    <view class="iconbtn" bindtap="onToggleTheme">{{theme === 'dark' ? '☀️' : '🌙'}}</view>
+  </view>
+
+  <view class="segtab">
+    <view wx:for="{{segs}}" wx:key="key" class="seg {{seg === item.key ? 'on' : ''}}" bindtap="onSeg" data-key="{{item.key}}">{{item.label}}</view>
+  </view>
+
+  <scroll-view scroll-y class="kb" scroll-into-view="{{scrollTo}}" scroll-with-animation>
+    <view id="cat-method" class="cat">
+      <view class="h2">方法论与原理</view>
+      <view class="h3">一、体型判断与目标</view>
+      <view class="p">身形站在「超重 / 肥胖」临界线，体脂率大概率偏高。<text class="b">首要目标不是练出大块肌肉，而是减脂、在减脂中保住肌肉</text>——肌肉掉得少，代谢才不掉、反弹才少。轻器械（11 公斤 哑铃）对增肌不是瓶颈，对「保肌、维持训练量」完全够用。</view>
+      <view class="p">合理节奏：每周减 1.5–2.5% 体重为健康区间，按 5–6 公斤 一阶 递进，目标落在健康体重区间。别预期两三月出腹肌。</view>
+      <view class="star">★ 提醒：随年龄增长，减重速度比年轻时慢一点正常，不要靠「再少吃」硬砸，否则基础代谢崩、反弹更狠。以「能坚持 3 个月以上」为第一原则。</view>
+
+      <view class="h3">二、每周安排总览（3 练、3 骑、1 休）</view>
+      <view class="p">按方法三分化：胸 / 背 / 腿彼此独立不同天，大肌群约 9 组、小肌群约 6 组，每次 1–1.5 小时。其余 3 天（周二 / 四 / 六）骑车有氧，周日唯一休息日。日常散步算日常活动消耗。</view>
+
+      <view class="h3">三、轻器械下的渐进超负荷（关键）</view>
+      <view class="p">11 公斤 是天花板，加不了重量时，靠变式、次数、节奏继续进步：同一动作加到目标次数上限 → 仍轻松 → 换更难变式，而非硬加重量。</view>
+      <view class="note"><text class="b">配重原则（每天只换 1–2 次重）：</text>11 公斤 = 你单手可持最大，双手动作每手各一（胸前 / 过头可抱双只共 22 公斤）。每天固定用 11 公斤 做主项、一档轻哑铃（约 5 公斤，做侧平举 / 后束 / 肩外旋等小肌群），腿日仅 11 公斤。轻哑铃全天固定一档，避免来回调重。</view>
+    </view>
+
+    <view id="cat-nutri" class="cat">
+      <view class="h3">四、饮食方案（减脂 · 方法论）</view>
+      <view class="p"><text class="b">4.1 当前执行版（以训练日为例 · 实测营养）</text></view>
+      <view class="table">
+        <view class="trow head">
+          <view class="tcell">餐</view><view class="tcell">内容</view><view class="tcell">蛋白</view><view class="tcell">脂肪</view><view class="tcell">碳水</view><view class="tcell">热量</view>
+        </view>
+        <view class="trow">
+          <view class="tcell">早</view>
+          <view class="tcell"><text class="fc fc-pro">2 个鸡蛋</text><text class="fc fc-pro">250 毫升牛奶</text><text class="fc fc-carb">麦片 5 勺（50 克）</text></view>
+          <view class="tcell">~28</view><view class="tcell">~20</view><view class="tcell">~40</view><view class="tcell">~478</view>
+        </view>
+        <view class="trow">
+          <view class="tcell">午</view>
+          <view class="tcell"><text class="fc fc-carb">150 克糙米饭</text><text class="fc fc-pro">130 克鸡胸肉</text><text class="fc fc-fat">花生 15 克</text><text class="fc fc-veg">黄瓜 1 根</text></view>
+          <view class="tcell">~50</view><view class="tcell">~13</view><view class="tcell">~43</view><view class="tcell">~497</view>
+        </view>
+        <view class="trow">
+          <view class="tcell">练前</view>
+          <view class="tcell"><text class="fc fc-carb">150 克糙米饭</text><text class="fc fc-pro">130 克鸡胸肉</text><text class="fc fc-fat">花生 15 克</text></view>
+          <view class="tcell">~48</view><view class="tcell">~13</view><view class="tcell">~37</view><view class="tcell">~468</view>
+        </view>
+        <view class="trow">
+          <view class="tcell">练后</view>
+          <view class="tcell"><text class="fc fc-pro">乳清蛋白粉 60 克</text><text class="fc fc-carb">麦片 2 勺（20 克）</text><text class="fc fc-veg">黄瓜 1 根</text></view>
+          <view class="tcell">~47</view><view class="tcell">~5</view><view class="tcell">~12</view><view class="tcell">~332</view>
+        </view>
+        <view class="trow">
+          <view class="tcell">补脂</view>
+          <view class="tcell"><text class="fc fc-fat">花生 15 克</text></view>
+          <view class="tcell">~4</view><view class="tcell">~7</view><view class="tcell">~2</view><view class="tcell">~85</view>
+        </view>
+        <view class="trow">
+          <view class="tcell"><text class="b">合计</text></view>
+          <view class="tcell">—</view>
+          <view class="tcell"><text class="b">~177</text></view><view class="tcell"><text class="b">~59</text></view><view class="tcell"><text class="b">~150</text></view><view class="tcell"><text class="b">~1861</text></view>
+        </view>
+      </view>
+      <view class="note">训练日：蛋白 ~177 克、脂肪 ~59 克、碳水 ~150 克，共 ≈1861 大卡。骑车日：蛋白 ~150 克、脂肪 ~75 克、碳水 ~179 克，共 ≈1987 大卡。周日基础餐 ≈1559 大卡，自由吃可补到 2500 内。</view>
+
+      <view class="p"><text class="b">4.2 重排原则（方法铁律）</text></view>
+      <view class="ul">
+        <view class="li"><text class="b">蛋白保底 1.8 克/公斤 ≈ 146 克</text>：保留蛋奶、鸡胸、粉；</view>
+        <view class="li"><text class="b">脂肪保底 0.9 克/公斤 ≈ 73 克</text>：用花生补足（每餐拌一勺 15 克、睡前花生）；</view>
+        <view class="li"><text class="b">缺口只调碳水</text>，落在 10–20%（约 2000–2050 大卡）。<text style="color:var(--warn)">你当前执行因低热量优先，部分日缺口达 22–28%，已超此舒适线；若掉肌肉或乏力，优先加日常活动消耗或微调碳水，勿再减。</text></view>
+        <view class="li"><text class="b">练后餐 = 全天最大碳水 40–50%、30–50 克 蛋白、脂肪 &lt;20 克，半小时内吃</text>。<text style="color:var(--warn)">当前执行版因去香蕉、练后仅麦片 2 勺，练后碳水占比约 8%，明显低于此目标；若想保肌更稳，练后麦片可加到 4 勺。</text></view>
+      </view>
+
+      <view class="p"><text class="b">4.3 为什么练后必须吃碳水（你这个作息的关键）</text></view>
+      <view class="p">你晚 9 点练完，之前练完只喝粉——身体刚耗尽糖原，却只给蛋白不给碳水：① 肌糖原恢复慢，周三 / 周五训练状态会掉；② 皮质醇偏高下掉肌肉风险大；③ 睡前容易饿、暴食。按方法：练后半小时内吃粉、麦片这类「快碳、蛋白」，恢复快、保肌好。</view>
+
+      <view class="p"><text class="b">4.4 试吃两周判据（唯一调整旋钮 = 碳水 ±0.3–0.5 克/公斤）</text></view>
+      <view class="table">
+        <view class="trow head"><view class="tcell">两周体重变化</view><view class="tcell">判断</view><view class="tcell">操作</view></view>
+        <view class="trow"><view class="tcell">降 1.5–2.5%</view><view class="tcell">合适</view><view class="tcell">维持当前配合</view></view>
+        <view class="trow"><view class="tcell">几乎不掉</view><view class="tcell">平衡点</view><view class="tcell">练日麦片 加 20 克 或午餐糙米 加 50 克</view></view>
+        <view class="trow"><view class="tcell">降 &gt;3–4%</view><view class="tcell">缺口过大</view><view class="tcell">练后麦片加量 / 加餐麦片 加 30 克</view></view>
+      </view>
+
+      <view class="p"><text class="b">4.5 花生与食用油换算</text></view>
+      <view class="table">
+        <view class="trow head"><view class="tcell">来源</view><view class="tcell">用量</view></view>
+        <view class="trow"><view class="tcell">花生</view><view class="tcell">15 克</view></view>
+        <view class="trow"><view class="tcell">植物油</view><view class="tcell">≈7 克（约半汤匙）</view></view>
+        <view class="trow"><view class="tcell">猪油</view><view class="tcell">≈7 克（约半汤匙）</view></view>
+      </view>
+      <view class="p">即 15 克花生 ≈ 7 克植物油 ≈ 7 克猪油。</view>
+    </view>
+
+    <view id="cat-train" class="cat">
+      <view class="h3">五、平台期自查（减不动时按此排查）</view>
+      <view class="p">方法定义：平台期 = 体重一两周不降（非两三天）。核心论断：绝大多数减不动是「执行不了方案」，不是方案错。逐项查：是否定量还是靠感觉、是否错录混合食物、是否无意识脂肪超标、是否故意「干净饮食」致脂肪不足、计划有氧又少做、爱吃水果不置换主食、是否在外就餐乱吃、是否经常喝酒、大体重每降 10 公斤 基础代谢降 100–150 大卡。</view>
+
+      <view class="h3">六、减脂进度原理（为什么减重目标约 10–11 个月）</view>
+      <view class="p">按当前方案：训练日缺口 ~28%、骑车日缺口 17–28%、周日自由吃，周赤字≈3900 大卡。1 公斤 纯脂肪≈7700 大卡 → 瘦 1 公斤 脂肪约 2.5–3 周。但总减重目标不能简单乘：</view>
+      <view class="ul">
+        <view class="li"><text class="b">代谢随体重下降而掉</text>：体重越轻，一天总消耗与基础代谢越低，赤字随之腰斩，必须周期性把碳水再降 0.3–0.5 克/公斤 保持节奏。</view>
+        <view class="li"><text class="b">体重秤≠脂肪</text>：你减脂、练薄肌同步，肌肉略长抵消脂肪掉的量，腰围 / 镜子比秤更准。</view>
+        <view class="li"><text class="b">前快后慢</text>：开头糖原耗竭带掉 1–2 公斤 水重（非脂肪），稳定期才是 ~1 公斤/2.5–3 周。</view>
+      </view>
+      <view class="star">★ 别为快去硬砸热量（缺口&gt;20% 会掉肌肉、崩代谢、反弹）。你现在执行缺口普遍 22–28%（已超 20% 健康线），是你选的低热量优先；若掉肌肉或乏力，优先加日常活动消耗（多走 / 多骑）或微调碳水，不是再少吃。</view>
+
+      <view class="h3">七、边界与就医提醒</view>
+      <view class="ul">
+        <view class="li">本指南 = 科学健身科普，<text class="b">不是医疗 / 康复建议</text>。急性伤痛、不明疼痛、康复训练 → 康复师 / 医生。</view>
+        <view class="li">病理饮食（糖尿病 / 肾病限蛋白 / 服药影响体重）→ 遵医嘱。</view>
+        <view class="li">补充：久未系统运动、有高血压 / 心肺 / 关节旧患，开始计划前建议体检。训练中胸痛、眩晕、关节持续刺痛，立即停止就医。</view>
+      </view>
+      <view class="quote">方法来源：B站 UP主「颠覆宇宙的奇葩」（昵称「好人松松」）12 个健身视频 语音识别转写 → 知识蒸馏 →「好人松松健身指南」方法体系。本页为该方法在「哑铃、自重三分化」约束下的个人化落地版。「135」= 周一 / 三 / 五 训练日；哑铃按「单手 11 公斤 已吃力」为上限。你晚上骑车无日照，维生素D3 全靠补剂。</view>
+    </view>
+  </scroll-view>
+</view>

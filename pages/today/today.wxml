@@ -1,0 +1,158 @@
+<view class="app theme-{{theme}}">
+  <view class="appbar">
+    <view class="brand">
+      <view class="logo">🏋️</view>
+      <view>
+        <view class="title">健身指南</view>
+        <view class="sub">哑铃 · 自重 · 三分化 · 减脂保肌</view>
+      </view>
+    </view>
+    <view class="iconbtn" bindtap="onToggleTheme">{{theme === 'dark' ? '☀️' : '🌙'}}</view>
+  </view>
+
+  <scroll-view scroll-x enable-flex class="weekbar">
+    <view wx:for="{{weekChips}}" wx:key="key" class="wchip {{item.type}} {{currentKey === item.key ? 'on' : ''}}" bindtap="onWeekTap" data-key="{{item.key}}">
+      <view class="wlabel">{{item.label}}</view>
+      <view class="wsub">{{item.sub}}</view>
+    </view>
+  </scroll-view>
+
+  <view class="content">
+    <!-- 首页目标概览卡 -->
+    <view class="overview {{day.type}}">
+      <view class="ov-top">
+        <view class="ov-type">{{day.sub}}</view>
+        <view class="ov-tag">{{day.type === 'tr' ? '训练日' : (day.type === 'act' ? '骑行日' : '休息日')}}</view>
+      </view>
+      <view class="ov-name">{{day.name}}</view>
+      <view class="ov-kcal">目标 ≈{{day.kcal}} 大卡<text class="ov-def">{{day.def}}</text></view>
+    </view>
+
+    <view class="dayhead">
+      <view>
+        <view class="dt">{{day.name}}</view>
+      </view>
+      <view class="tagk {{day.type}}">{{day.sub}}</view>
+      <view class="kcal">
+        <text class="kcal-val">{{day.kcal}}</text>
+        <text class="deficit">{{day.def}}</text>
+      </view>
+    </view>
+
+    <view class="block">
+      <view class="bl-h"><text class="em">🍱</text><text>今日饮食</text></view>
+      <view class="diet-grid">
+        <view wx:for="{{day.diet}}" wx:key="t" class="meal-card {{item.clr}} {{item.ride ? 'ride' : ''}}">
+          <view class="mc-time">{{item.t}}</view>
+          <view class="mc-dot"></view>
+          <view class="mc-name">{{item.m}}</view>
+          <view class="chips">
+            <text wx:for="{{item.f}}" wx:for-item="c" wx:key="text" class="fc fc-{{c.type}}">{{c.text}}</text>
+          </view>
+          <view class="mc-foot">
+            <view class="meal-kcal">{{item.k}} 大卡</view>
+          </view>
+        </view>
+      </view>
+      <!-- 补剂卡：跨满整行，结构与饮食卡一致 -->
+      <view wx:if="{{suppList.length > 0}}" class="meal-card supp-card">
+        <view class="mc-dot"></view>
+        <view class="mc-name">补剂</view>
+        <view class="chips">
+          <text wx:for="{{suppList}}" wx:key="t" class="fc fc-supp">{{item.text}}</text>
+        </view>
+      </view>
+      <view class="summary">{{day.summary}}</view>
+    </view>
+
+    <view class="block">
+      <view class="bl-h"><text class="em">🏋️</text><text>今日运动</text><text class="ex-hint" wx:if="{{day.type === 'tr'}}">👆 点我打开训练器</text></view>
+
+      <!-- 训练日：动作清单，点开训练器 -->
+      <view wx:if="{{day.type === 'tr'}}" bindtap="onOpenEx" class="ex">
+        <view wx:for="{{day.ex.rows}}" wx:key="name" class="row">
+          <view class="nm">{{item.name}}</view>
+          <view class="meta">
+            <text class="mtag w">{{item.weight}}</text>
+            <text class="mtag">{{item.sets}}</text>
+            <text class="mtag">休 {{item.rest}}</text>
+          </view>
+          <view class="tip">{{item.tip}}</view>
+        </view>
+      </view>
+
+      <!-- 骑行日：多方案可选（点一下选今天做哪套） -->
+      <view wx:elif="{{day.type === 'act'}}" class="plans">
+        <view wx:for="{{day.ex.plans}}" wx:key="name" class="plan {{picked === index ? 'on' : ''}}" catchtap="onPickPlan" data-i="{{index}}">
+          <view class="plan-h">
+            <view class="plan-name">{{item.name}}</view>
+            <view class="plan-check">{{picked === index ? '✓' : ''}}</view>
+          </view>
+          <view class="plan-items">
+            <view wx:for="{{item.items}}" wx:for-item="it" wx:key="act" class="pitem">
+              <text class="pi-ic">{{it.ic}}</text>
+              <view class="pi-main">
+                <text class="pi-act">{{it.act}}</text>
+                <text class="pi-dur">{{it.dur}}</text>
+              </view>
+              <text wx:if="{{it.note}}" class="pi-note">{{it.note}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <!-- 休息日 -->
+      <view wx:else class="ridenote">{{day.ex.note}}</view>
+    </view>
+
+    <view class="walks">{{day.walks}}</view>
+
+    <!-- 每日额外训练：不进正式训练，走路前后做 -->
+    <view class="block extra-block">
+      <view class="bl-h"><text class="em">➕</text><text>每日额外训练</text><text class="ex-hint">走路前/后做 · 不计入正式训练</text></view>
+      <view class="extra-list">
+        <view wx:for="{{extra}}" wx:key="name" class="ex-item">
+          <view class="ex-ic">{{item.icon}}</view>
+          <view class="ex-body">
+            <view class="ex-row1">
+              <text class="ex-name">{{item.name}}</text>
+              <text class="ex-sets">{{item.sets}}</text>
+            </view>
+            <view class="ex-detail">{{item.detail}}</view>
+            <view class="ex-tip">{{item.tip}}</view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 训练弹窗（底部上滑面板） -->
+  <view wx:if="{{modalOpen}}" class="mask" bindtap="onMaskTap">
+    <view class="modal" catchtap="noop">
+      <view class="sheet-bar"></view>
+      <view class="modal-head">
+        <view>
+          <view class="modal-ex">{{exName}}</view>
+          <view class="modal-prog">{{exProg}}</view>
+          <view wx:if="{{exTotalText}}" class="modal-total">总时长 {{exTotalText}}</view>
+        </view>
+        <view class="modal-x" bindtap="onCloseEx">✕</view>
+      </view>
+      <view wx:if="{{exWeight}}" class="modal-w">配重：{{exWeight}}</view>
+      <view class="modal-set">{{exSet}}</view>
+      <view class="modal-reps">{{exReps}}</view>
+      <view class="modal-tip">{{exTip}}</view>
+      <view wx:if="{{exNext.show}}" class="modal-next {{exNext.isNext ? 'is-next' : ''}}">
+        <text class="mn-label">{{exNext.label}}</text><text>{{exNext.text}}</text>
+      </view>
+      <view class="modal-timer {{timerCls}}">
+        <text class="mt-label">{{exTimerLabel}}</text>
+        <text class="mt-val">{{exTimerVal}}</text>
+      </view>
+      <view class="modal-actions">
+        <view class="mbtn mbtn-primary" bindtap="onDoneTap">{{exDoneText}}</view>
+      </view>
+      <view wx:if="{{showSkip}}" class="modal-skip" bindtap="onSkip">跳过休息 ▶</view>
+    </view>
+  </view>
+</view>

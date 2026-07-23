@@ -1,0 +1,111 @@
+<view class="app theme-{{theme}}">
+  <view class="appbar">
+    <view class="brand">
+      <view class="logo">👤</view>
+      <view>
+        <view class="title">我的</view>
+        <view class="sub">备餐与补剂 · 进度追踪</view>
+      </view>
+    </view>
+    <view class="iconbtn" bindtap="onToggleTheme">{{theme === 'dark' ? '☀️' : '🌙'}}</view>
+  </view>
+
+  <view class="content">
+    <view class="prepcard">
+      <view class="pp-h">每周固定备餐份（一次备好，吃时取用）</view>
+      <view class="pp-b">每份 = <text style="font-weight:700">150 克糙米饭（熟）</text> + <text style="font-weight:700">130 克鸡胸肉（熟）</text>。一周备约 17 份（训练日每日 3 份：午 / 晚 / 练前；骑车日每日 2 份：午 / 晚；周日 2 份：午 / 晚），冷藏或冷冻，吃时加热。花生统一 15 克，黄瓜：午、晚各 1 根（训练日练后加 1 根）。</view>
+    </view>
+
+    <view class="block" style="margin-top:20px">
+      <view class="bl-h"><text class="em">💊</text><text>每日补剂时间表（全中文）</text></view>
+      <view class="table">
+        <view class="trow head">
+          <view class="tcell">时间</view>
+          <view class="tcell">补剂</view>
+        </view>
+        <view class="trow">
+          <view class="tcell">早（7:00 随早餐脂肪）</view>
+          <view class="tcell">维生素D3、钙片、鱼油 2 粒、叶黄素、肌酸</view>
+        </view>
+        <view class="trow">
+          <view class="tcell">练后（训练日 21:00）</view>
+          <view class="tcell">蛋白粉 60 克</view>
+        </view>
+        <view class="trow">
+          <view class="tcell">23:00（睡前）</view>
+          <view class="tcell">甘氨酸镁</view>
+        </view>
+      </view>
+      <view class="note" style="margin-top:8px">你是晚上骑车（20:00），没有日照 → 维生素D3 全靠补剂，这一步必要，不是可有可无。钙和镁分早晚吃，吸收更稳。</view>
+    </view>
+
+    <view class="h3">进度追踪</view>
+    <view class="cards">
+      <view class="card"><view class="k">减 1 公斤 脂肪</view><view class="v">~2.5–3 周</view><view class="s">周赤字≈3900 大卡</view></view>
+      <view class="card"><view class="k">减重总时长</view><view class="v">~10–11 月</view><view class="s">按当前节奏递进</view></view>
+      <view class="card"><view class="k">健康终点</view><view class="v">达标即停</view><view class="s">体脂率 / 腰围 比秤更准</view></view>
+    </view>
+    <view class="star">★ 进度原理：① 体重秤≠脂肪，腰围 / 镜子比秤更准；② 前两周掉得快是水分，稳定期才是 ~1 公斤/2.5–3 周；③ 越轻掉越慢——体重下降时代谢同步降，需周期性把碳水再降 0.3–0.5 克/公斤 才能保持节奏。</view>
+
+    <view class="h3">运动训练记录（按周几归类）</view>
+    <view class="legend">完成一次训练后自动保存（≥30 分钟）；也可手动补记。周几的归周几，方便对比每次时长是否变少。</view>
+    <view wx:if="{{trainTotal > 0}}" class="trend">
+      <view class="trend-h">各周几训练时长趋势（左旧 → 右新，柱越高练越久）</view>
+      <view wx:for="{{trainGroups}}" wx:key="wd" class="trend-row">
+        <view class="twd">{{item.wd}}</view>
+        <view class="tbars">
+          <view wx:for="{{item.items}}" wx:for-item="b" wx:key="ts" class="tbar" style="height:{{b.pct}}%">
+            <text class="tval">{{b.min}}</text>
+          </view>
+        </view>
+        <view class="tavg">均{{item.avg}}</view>
+      </view>
+    </view>
+    <view wx:if="{{trainTotal === 0}}" class="empty">还没有记录。完成训练后，时长 ≥30 分钟会自动保存到这里。</view>
+    <view wx:else class="traingroups">
+      <view wx:for="{{trainGroups}}" wx:key="wd" class="tgroup">
+        <view class="tgh">{{item.wd}}（{{item.items.length}} 次）</view>
+        <view wx:for="{{item.items}}" wx:for-item="it" wx:key="ts" class="titem">
+          <view class="tit">{{it.date}}{{item.wd}}，运动时间 {{it.min}} 分钟</view>
+          <view class="tdel" data-idx="{{it.idx}}" bindtap="onDelTrain">×</view>
+        </view>
+      </view>
+    </view>
+    <view class="addbar">
+      <view class="btn" wx:if="{{!showAdd}}" bindtap="onAddOpen">＋ 补记一次训练</view>
+      <view wx:if="{{showAdd}}" class="addform">
+        <view class="af-row"><text class="af-k">日期</text><input class="af-input" type="date" value="{{addDate}}" bindchange="onAddDate" /></view>
+        <view class="af-row"><text class="af-k">分钟</text><input class="af-input" type="number" value="{{addMin}}" bindinput="onAddMin" placeholder="如 90" /></view>
+        <view class="af-acts">
+          <view class="btn" bindtap="onAddSave">保存</view>
+          <view class="btn btn-ghost" bindtap="onAddCancel">取消</view>
+        </view>
+      </view>
+    </view>
+
+    <view class="h3">双周体重 / 腰围记录（每两周回填）</view>
+    <view class="legend">体重以两周看趋势，两三天波动是噪声。</view>
+    <view class="table">
+      <view class="trow head">
+        <view class="tcell">日期</view>
+        <view class="tcell">体重(公斤)</view>
+        <view class="tcell">腰围(厘米)</view>
+        <view class="tcell">两周变化</view>
+        <view class="tcell">判断/操作</view>
+      </view>
+      <view wx:for="{{log}}" wx:key="index" class="trow">
+        <view class="tcell"><input type="text" value="{{item.d}}" data-i="{{index}}" data-f="d" bindinput="onLogInput" placeholder="日期" /></view>
+        <view class="tcell"><input type="text" value="{{item.w}}" data-i="{{index}}" data-f="w" bindinput="onLogInput" placeholder="公斤" /></view>
+        <view class="tcell"><input type="text" value="{{item.c}}" data-i="{{index}}" data-f="c" bindinput="onLogInput" placeholder="厘米" /></view>
+        <view class="tcell"><input type="text" value="{{item.n}}" data-i="{{index}}" data-f="n" bindinput="onLogInput" placeholder="变化" /></view>
+        <view class="tcell"><input type="text" value="{{item.m}}" data-i="{{index}}" data-f="m" bindinput="onLogInput" placeholder="操作" /></view>
+      </view>
+    </view>
+    <view class="note" style="margin-top:8px">判据：两周降 1.5–2.5% 维持；几乎不掉 → 碳水再降 0.3–0.5 克/公斤；降 &gt;3–4% → 加点碳水。</view>
+    <view style="margin-top:10px;display:flex">
+      <view class="btn" bindtap="saveLog">保存记录</view>
+      <view class="btn" bindtap="clearLog">清空体重记录</view>
+    </view>
+    <view class="footer-note">方法来源：B站 UP主「颠覆宇宙的奇葩」（昵称「好人松松」）。本应用为「哑铃、自重三分化」个人化落地版，非医疗建议。</view>
+  </view>
+</view>

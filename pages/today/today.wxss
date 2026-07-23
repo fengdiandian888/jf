@@ -1,0 +1,169 @@
+/* 本页覆盖：底部弹层滚动安全 + 首页概览卡 + 时段图标 + 饮食行对齐 */
+
+/* ===== 底部上滑面板（覆盖 app.wxss 居中样式） ===== */
+.modal {
+  max-height: 86vh;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 4px 18px calc(20px + env(safe-area-inset-bottom));
+}
+.sheet-bar {
+  width: 40px; height: 4px; border-radius: 2px;
+  background: var(--line); margin: 8px auto 12px;
+}
+
+/* ===== 首页目标概览卡 ===== */
+.overview {
+  border-radius: 16px;
+  padding: 14px 16px;
+  margin-bottom: var(--gap-block);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow-sm);
+}
+.overview.tr { border-left: 4px solid var(--train); }
+.overview.act { border-left: 4px solid var(--ride); }
+.overview.rs { border-left: 4px solid var(--rest); }
+.ov-top { display: flex; align-items: center; justify-content: space-between; }
+.ov-type { font-size: 13px; color: var(--muted); font-weight: 600; }
+.ov-tag {
+  font-size: 12px; font-weight: 700; padding: 3px 10px; border-radius: 999px;
+  background: var(--surface-2); color: var(--muted); border: 1px solid var(--line);
+}
+.overview.tr .ov-tag { background: var(--train-bg); color: var(--train-ink); border-color: transparent; }
+.overview.act .ov-tag { background: var(--ride-bg); color: var(--ride-ink); border-color: transparent; }
+.overview.rs .ov-tag { background: var(--rest-bg); color: var(--rest-ink); border-color: transparent; }
+.ov-name { font-size: 19px; font-weight: 800; margin-top: 8px; line-height: 1.35; }
+.ov-kcal { margin-top: 6px; font-size: 14px; font-weight: 600; color: var(--fg); }
+.ov-def { margin-left: 8px; font-size: 12px; font-weight: 500; color: var(--muted); }
+
+/* ===== 饮食网格卡：每个时段一张卡，不滑动；补剂单独占一格 ===== */
+.diet-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+.meal-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  box-sizing: border-box;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 10px 8px;
+  box-shadow: var(--shadow-sm);
+  min-height: 0;
+}
+.meal-card.ride { border-top: 3px solid var(--ride); }
+.mc-time {
+  font-size: 13px; font-weight: 800; color: var(--fg);
+  font-variant-numeric: tabular-nums;
+}
+.mc-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  margin: 6px 0;
+  background: var(--muted);
+}
+.meal-card.orange .mc-dot { background: #f0a03e; }
+.meal-card.yellow .mc-dot { background: #e0b359; }
+.meal-card.blue   .mc-dot { background: #2f80ed; }
+.meal-card.red    .mc-dot { background: #e2554d; }
+.meal-card.green  .mc-dot { background: #2bb673; }
+.meal-card.teal   .mc-dot { background: #1abc9c; }
+.meal-card.purple .mc-dot { background: #7c5cff; }
+.meal-card.brown  .mc-dot { background: #a67c52; }
+.mc-name {
+  font-size: 13px; font-weight: 700; color: var(--fg);
+}
+.meal-card .chips {
+  display: flex; flex-wrap: wrap; justify-content: center;
+  gap: 4px; margin-top: 8px;
+}
+.meal-card .chips .fc { font-size: 10px; padding: 2px 5px; }
+.mc-foot {
+  margin-top: auto; padding-top: 8px;
+}
+.meal-card .meal-kcal { font-size: 11px; color: var(--muted); margin-top: 0; }
+
+/* ===== 补剂卡：跨满整行，结构与饮食卡一致 ===== */
+.supp-card {
+  grid-column: 1 / -1;
+}
+.supp-card .mc-dot { background: var(--brand); }
+.supp-card .chips { justify-content: center; }
+.fc-supp {
+  font-size: 11px; padding: 3px 8px;
+  background: var(--surface-2); color: var(--fg);
+}
+
+/* ===== 骑行日：多方案可选卡片 ===== */
+.plans { display: flex; flex-direction: column; gap: 12px; }
+.plan {
+  box-sizing: border-box;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 12px 14px;
+  box-shadow: var(--shadow-sm);
+  transition: border-color 150ms ease, box-shadow 150ms ease;
+}
+.plan.on {
+  border-color: var(--ride);
+  box-shadow: 0 0 0 2px var(--ride-bg), var(--shadow-sm);
+}
+.plan-h { display: flex; align-items: center; justify-content: space-between; }
+.plan-name { font-size: 15px; font-weight: 800; color: var(--fg); }
+.plan-check {
+  width: 22px; height: 22px; flex: 0 0 auto;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 50%; border: 1px solid var(--line);
+  color: var(--ride); font-size: 14px; font-weight: 800;
+}
+.plan.on .plan-check { background: var(--ride); color: #fff; border-color: var(--ride); }
+.plan-items { margin-top: 10px; }
+.pitem {
+  display: flex; align-items: flex-start; flex-wrap: wrap; gap: 8px;
+  padding: 7px 0; border-top: 1px dashed var(--line);
+}
+.pitem:first-child { border-top: none; }
+.pi-ic { font-size: 17px; line-height: 1.3; }
+.pi-main {
+  flex: 1 1 auto; min-width: 0;
+  display: flex; align-items: baseline; justify-content: space-between; gap: 8px;
+}
+.pi-act { font-size: 14px; font-weight: 600; color: var(--fg); }
+.pi-dur {
+  font-size: 14px; font-weight: 800; color: var(--ride-ink);
+  font-variant-numeric: tabular-nums;
+}
+.pi-note {
+  flex-basis: 100%;
+  font-size: 11px; color: var(--muted); line-height: 1.4;
+  padding-left: 25px;
+}
+
+/* ===== 每日额外训练（独立于正式训练，走路前后做） ===== */
+.extra-block { margin-bottom: 0; }
+.extra-list { display: flex; flex-direction: column; gap: 10px; }
+.ex-item {
+  display: flex; align-items: flex-start; gap: 12px;
+  background: var(--surface); border: 1px solid var(--line);
+  border-radius: 12px; padding: 11px 13px; box-shadow: var(--shadow-sm);
+}
+.ex-ic {
+  flex: 0 0 auto; width: 34px; height: 34px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; background: var(--surface-2);
+  border: 1px solid var(--line); border-radius: 9px;
+}
+.ex-body { flex: 1 1 auto; min-width: 0; }
+.ex-row1 { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; }
+.ex-name { font-size: 15px; font-weight: 700; color: var(--fg); }
+.ex-sets {
+  font-size: 14px; font-weight: 800; color: var(--brand);
+  font-variant-numeric: tabular-nums; white-space: nowrap;
+}
+.ex-detail { font-size: 12px; color: var(--muted); margin-top: 3px; }
+.ex-tip { font-size: 11px; color: var(--muted); margin-top: 4px; line-height: 1.4; }
