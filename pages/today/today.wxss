@@ -36,6 +36,7 @@
 .ov-name { font-size: 19px; font-weight: 800; margin-top: 8px; line-height: 1.35; }
 .ov-kcal { margin-top: 6px; font-size: 14px; font-weight: 600; color: var(--fg); }
 .ov-def { margin-left: 8px; font-size: 12px; font-weight: 500; color: var(--muted); }
+.ov-burn { margin-top: 2px; font-size: 14px; font-weight: 600; color: var(--muted); }
 
 /* ===== 饮食网格卡：每个时段一张卡，不滑动；补剂单独占一格 ===== */
 .diet-grid {

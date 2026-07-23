@@ -25,7 +25,8 @@
         <view class="ov-tag">{{day.type === 'tr' ? '训练日' : (day.type === 'act' ? '骑行日' : '休息日')}}</view>
       </view>
       <view class="ov-name">{{day.name}}</view>
-      <view class="ov-kcal">目标 ≈{{day.kcal}} 大卡<text class="ov-def">{{day.def}}</text></view>
+      <view class="ov-kcal">摄入 ≈{{day.kcal}} 大卡<text class="ov-def">{{day.def}}</text></view>
+      <view class="ov-burn">消耗 ≈{{day.burn}} 大卡</view>
     </view>
 
     <view class="dayhead">

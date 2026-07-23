@@ -26,6 +26,8 @@
 }
 .kb {
   flex: 1;
+  min-height: 0;
+  overflow: hidden;
   padding: 16px var(--pad-page) 28px;
   box-sizing: border-box;
 }

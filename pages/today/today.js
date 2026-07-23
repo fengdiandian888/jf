@@ -26,7 +26,7 @@ function parseRest(r) {
 const SLOT_COLOR = {
   '早': 'orange', '午': 'yellow', '晚': 'blue',
   '练前': 'red', '练后': 'green', '加餐': 'teal',
-  '骑行前': 'purple', '补脂': 'brown'
+  '骑行前': 'purple', '骑行后': 'green', '补脂': 'brown'
 };
 function slotColor(t) {
   return SLOT_COLOR[t] || 'gray';
