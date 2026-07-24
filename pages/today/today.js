@@ -15,11 +15,15 @@ function fmtTime(s) {
   var m = Math.floor(s / 60), ss = s % 60;
   return (m < 10 ? '0' : '') + m + ':' + (ss < 10 ? '0' : '') + ss;
 }
-// 解析计划里的休息时长（如 "90秒" / "120"），缺省 180 秒
+// 解析计划里的休息时长（如 "3 分钟" / "1.5 分钟" / "90秒"），缺省 180 秒
 function parseRest(r) {
   if (r == null) return 180;
-  var m = String(r).match(/(\d+)/);
-  return m ? parseInt(m[1], 10) : 180;
+  var s = String(r);
+  var m = s.match(/([\d.]+)/);   // 支持小数，如 1.5 分钟
+  if (!m) return 180;
+  var num = parseFloat(m[1]);
+  if (s.indexOf('秒') >= 0) return Math.round(num);   // 已标"秒"，直接取秒数
+  return Math.round(num * 60);                         // 含"分钟"或无单位，按分钟换算
 }
 
 // 时段圆点色（用于饮食网格卡）
@@ -133,7 +137,10 @@ Page({
   },
 
   /* ===== 训练器 ===== */
-  onOpenEx() { this.openEx(this.data.currentKey); },
+  onOpenEx() {
+    if (!this.data.day || this.data.day.type !== 'tr') return;
+    this.openEx(this.data.currentKey);
+  },
 
   openEx(key) {
     const d = plan.days[key];

@@ -7,7 +7,8 @@ Page({
     segs: [
       { key: 'method', label: '方法论' },
       { key: 'nutri', label: '营养' },
-      { key: 'train', label: '训练' }
+      { key: 'train', label: '训练' },
+      { key: 'warm', label: '热身拉伸' }
     ],
     scrollTo: 'cat-method'
   },

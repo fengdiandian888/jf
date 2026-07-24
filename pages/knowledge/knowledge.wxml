@@ -120,5 +120,56 @@
       </view>
       <view class="quote">方法来源：B站 UP主「颠覆宇宙的奇葩」（昵称「好人松松」）12 个健身视频 语音识别转写 → 知识蒸馏 →「好人松松健身指南」方法体系。本页为该方法在「哑铃、自重三分化」约束下的个人化落地版。「135」= 周一 / 三 / 五 训练日；哑铃按「单手 11 公斤 已吃力」为上限。你晚上骑车无日照，维生素D3 全靠补剂。</view>
     </view>
+
+    <view id="cat-warm" class="cat">
+      <view class="h2">热身与拉伸（力量 + 骑行）</view>
+
+      <view class="h3">一、为什么不能省</view>
+      <view class="p">40 岁减脂保肌，受伤停训 = 代谢掉、前功尽弃。力量训练前热身，激活神经肌肉、润滑关节、预防拉伤；练后和骑行后拉伸，缓解固定姿势下肌肉持续收缩的紧张，预防劳损、帮身体恢复。这块本身不燃脂，但保住训练质量，间接护住减脂节奏。</view>
+
+      <view class="h3">二、力量训练前热身（约 8–10 分钟）</view>
+      <view class="p">练前是「动态活动」，三步走：</view>
+      <view class="ul">
+        <view class="li"><text class="b">全身轻有氧 3–5 分钟</text>：开合跳、原地高抬腿、原地慢跑，到身体微汗、体温升起；</view>
+        <view class="li"><text class="b">动态活动关节</text>：肩绕环、髋绕环、踝腕绕环、胸椎左右旋转，每个方向 8–10 次（别静压、别弹震）；</view>
+        <view class="li"><text class="b">目标肌群激活 + 轻重量预热组</text>：用空手或最轻哑铃做当天主项动作 1–2 组，每组 10–12 次，重量循序渐进加到正式组，别一上来就上 11 公斤。</view>
+      </view>
+      <view class="p">三分化激活重点：</view>
+      <view class="ul">
+        <view class="li"><text class="b">推日（胸 / 肩 / 三头）</text>：肩外旋激活、肩胛骨后缩、上斜俯卧撑或空手卧推预热；</view>
+        <view class="li"><text class="b">拉日（背 / 二头）</text>：徒手划船、悬吊抓杠收紧肩胛、死虫核心激活；</view>
+        <view class="li"><text class="b">腿日（股四 / 腘绳 / 臀）</text>：徒手深蹲、臀桥、侧弓步，把髋和膝活动开。</view>
+      </view>
+
+      <view class="h3">三、力量训练后拉伸（练后，每肌群静态 30–45 秒）</view>
+      <view class="p">先慢走降温再拉，静态拉伸不弹震，拉到轻微牵拉感不疼、保持呼吸。按当天训练部位选：</view>
+      <view class="ul">
+        <view class="li"><text class="b">推日练后</text>：胸大肌（肘抵门框、身体前倾扩胸）、三角肌前束（单臂横过胸前向反方向轻拉）、三头肌（举臂屈肘、手摸后背）；</view>
+        <view class="li"><text class="b">拉日练后</text>：背阔肌（单臂上举向对侧侧屈）、肱二头肌（臂后伸、掌心朝外）、斜方肌（头向一侧侧屈）；</view>
+        <view class="li"><text class="b">腿日练后</text>：股四头肌（站姿单腿后拉脚踝贴臀）、腘绳肌（站姿单腿前伸体前屈）、臀部（仰卧抱膝或鸽式）、小腿（推墙，直腿与微屈腿各拉）、髋屈肌（弓步骨盆前推）；</view>
+        <view class="li"><text class="b">通用</text>：下背（仰卧抱单膝贴胸）、颈部（头侧屈左右）。</view>
+      </view>
+
+      <view class="h3">四、骑行后拉伸（骑完先慢骑 / 慢走 5 分钟降温）</view>
+      <view class="p">骑行固定前倾，髋屈肌与股四持续缩短、下背和颈肩紧张，必须拉。按这个顺序：</view>
+      <view class="ul">
+        <view class="li">股四头肌（站姿后拉，每侧 30–45 秒）；</view>
+        <view class="li">腘绳肌（站姿单腿前屈，每侧 30–45 秒）；</view>
+        <view class="li">小腿（推墙，腓肠肌直腿、比目鱼肌微屈腿，每侧 30 秒）；</view>
+        <view class="li">髋屈肌（弓步拉伸，每侧 30–45 秒）；</view>
+        <view class="li">下背与臀（仰卧抱膝、仰卧扭转）；</view>
+        <view class="li">颈肩胸（颈部侧屈、双手背后扩胸，打开含胸）。</view>
+      </view>
+
+      <view class="h3">五、通用注意事项（你的情况专属）</view>
+      <view class="ul">
+        <view class="li">静态拉伸不弹震，拉到「轻微牵拉感但不疼」就停，保持呼吸、别憋气；</view>
+        <view class="li">40 岁肌肉弹性下降，幅度量力而行，重点是「持续 30 秒以上」让肌肉放松，不是比谁幅度大；</view>
+        <view class="li">你打鼾：拉伸时保持鼻腔呼吸、别张口猛喘，练完这套心率呼吸都平了，反而利于当晚睡眠；</view>
+        <view class="li">别用拉伸替代热身：练前是动态活动、练后是静态拉伸，两件事别混；</view>
+        <view class="li">有泡沫轴可加滚：大腿前侧、外侧（髂胫束），各 30 秒，缓解骑行膝盖外侧紧张。</view>
+      </view>
+      <view class="star">★ 热身拉伸每天多花 15–20 分钟，但能让你第二天腿不僵、能正常走路和做额外训练（深蹲 / 爬楼），间接护住减脂节奏。比起受伤停训，这点时间极划算。</view>
+    </view>
   </scroll-view>
 </view>

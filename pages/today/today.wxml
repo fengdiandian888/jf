@@ -67,7 +67,7 @@
     </view>
 
     <view class="block">
-      <view class="bl-h"><text class="em">🏋️</text><text>今日运动</text><text class="ex-hint" wx:if="{{day.type === 'tr'}}">👆 点我打开训练器</text></view>
+      <view class="bl-h" bindtap="onOpenEx"><text class="em">🏋️</text><text>今日运动</text><text class="ex-hint" wx:if="{{day.type === 'tr'}}">👆 点我打开训练器</text></view>
 
       <!-- 训练日：动作清单，点开训练器 -->
       <view wx:if="{{day.type === 'tr'}}" bindtap="onOpenEx" class="ex">
