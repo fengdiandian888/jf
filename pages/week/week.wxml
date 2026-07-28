@@ -1,0 +1,23 @@
+<view class="app theme-{{theme}}">
+  <view class="appbar">
+    <view class="brand">
+      <view class="logo">🗓️</view>
+      <view>
+        <view class="title">本周总览</view>
+        <view class="sub">点任意一天，跳到「今日」查看完整饮食与动作</view>
+      </view>
+    </view>
+    <view class="iconbtn" bindtap="onToggleTheme">{{theme === 'dark' ? '☀️' : '🌙'}}</view>
+  </view>
+
+  <view class="content">
+    <view class="h2">一周安排（3 练、3 骑、1 休）</view>
+    <view class="grid">
+      <view wx:for="{{days}}" wx:key="key" class="daymini {{item.type}}" bindtap="onTapDay" data-key="{{item.key}}">
+        <view class="dm-h">{{item.name}}</view>
+        <view class="dm-k">{{item.kcal}}</view>
+        <view class="dm-x">{{item.exText}}</view>
+      </view>
+    </view>
+  </view>
+</view>
