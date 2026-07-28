@@ -125,6 +125,20 @@
         </view>
       </view>
     </view>
+    <!-- 体态矫正：久坐体态修复，每天做 -->
+    <view class="block extra-block">
+      <view class="bl-h"><text class="em">🧘</text><text>体态矫正 · 久坐体态修复</text><text class="ex-hint">每天做 · 慢做不计消耗</text></view>
+      <view class="extra-list">
+        <view wx:for="{{posture}}" wx:key="name" class="ex-item">
+          <view class="ex-ic">{{item.icon}}</view>
+          <view class="ex-body">
+            <view class="ex-row1"><text class="ex-name">{{item.name}}</text><text class="ex-sets">{{item.sets}}</text></view>
+            <view class="ex-detail">{{item.detail}}</view>
+            <view class="ex-tip">{{item.tip}}</view>
+          </view>
+        </view>
+      </view>
+    </view>
   </view>
 
   <!-- 训练弹窗（底部上滑面板） -->

@@ -54,6 +54,7 @@ Page({
     day: null,
     weekChips: [],
     extra: plan.extra,
+    posture: plan.posture,
     supp: {},
     picked: 0,
     modalOpen: false,
