@@ -50,7 +50,7 @@ const IMG = {
 function exImg(name) {
   const m = IMG[name];
   if (!m) return '<div class="ex-noimg">暂无示范图</div>';
-  return '<img class="ex-img" loading="lazy" src="' + CDN + m + '.jpg" alt="' + name + '" onerror="hideImg(this)">';
+  return '<div class="ex-img-wrap"><img class="ex-img" loading="lazy" src="' + CDN + m + '.jpg" alt="' + name + '" onerror="hideImg(this)"></div>';
 }
 
 function chipType(t) {
@@ -159,8 +159,9 @@ const html = '<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">' +
   'h3{font-size:14px;color:#374151;margin:14px 0 8px;border-left:3px solid #3182ce;padding-left:8px}' +
   '.ex-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}' +
   '.ex-card{border:1px solid #e5e7eb;border-radius:12px;overflow:hidden;background:#fff}' +
-  '.ex-img{width:100%;height:150px;object-fit:cover;display:block;background:#eef2f7}' +
-  '.ex-noimg{height:150px;display:flex;align-items:center;justify-content:center;background:#f3f4f6;color:#9ca3af;font-size:13px}' +
+  '.ex-img-wrap{height:170px;background:#f3f4f6;display:flex;align-items:center;justify-content:center}' +
+  '.ex-img{max-width:100%;max-height:170px;object-fit:contain;display:block}' +
+  '.ex-noimg{height:170px;display:flex;align-items:center;justify-content:center;background:#f3f4f6;color:#9ca3af;font-size:13px}' +
   '.body{padding:8px 10px 10px}.ex-name{font-weight:600;font-size:14px}.ex-meta{font-size:12px;color:#6b7280;margin-top:3px}' +
   '.ex-tip{font-size:12px;color:#9ca3af;margin-top:5px}.ex-detail{font-size:12px;color:#6b7280;margin-top:4px}' +
   '.rest{background:#f3f4f6;border-radius:8px;padding:10px 12px;color:#6b7280;font-size:13px}' +
